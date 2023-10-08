@@ -1,7 +1,7 @@
 
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 
-#include "Application.h"
+//#include "Application.h"
 
 
 //GLM test
@@ -18,7 +18,7 @@ glm::mat4 View = glm::lookAt(
 // Model matrix : an identity matrix (model will be at the origin)
 glm::mat4 Model = glm::mat4(1.0f);
 
-
+#include "Application.h"
 
 
 int main()

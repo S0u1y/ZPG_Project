@@ -89,11 +89,11 @@ public:
     }
 
     void draw(Shader shader) override{
-
+        Shape::draw(shader);
         shader.useShader();
 
         glBindVertexArray(VAO_A);
-        shader.setMatrixUniform("MVP", transformation.M);
+
 
         // draw triangles
         glDrawArrays(GL_TRIANGLES, 0, 6); //mode,first,count

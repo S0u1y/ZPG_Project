@@ -6,7 +6,7 @@
 #define TEST_SHAPE_H
 
 
-#include "Transformation.h"
+#include "Composite/Composite.h"
 
 class Shape {
 protected:
@@ -36,11 +36,12 @@ protected:
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     }
 public:
-    virtual void draw(Shader shader) = 0;
+    virtual void draw(Shader shader) {
+        transformation.action(shader);
+    };
 
-    void rotate(Shader shader, float angle, glm::vec3 axis){
-        transformation.rotate(angle, axis);
-        shader.setMatrixUniform("MVP", transformation.M);
+    void rotate(float angle, glm::vec3 axis){
+        transformation.Add(new Rotation(angle, axis));
     }
 };
 

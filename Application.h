@@ -119,11 +119,10 @@ public:
     };
 
     void drawModels(){
-//        for (auto&& shape: shapes) {
-//            shape->draw(shaderBlue.getSID());
-//        }
-        shapes[0]->rotate(shaderRed, 0.1, glm::vec3(0,0,-1));
+        shapes[0]->rotate(0.1, glm::vec3(0,0,-1));
         shapes[0]->draw(shaderRed);
+
+        shapes[1]->rotate(-0.1, glm::vec3(0,0,-1));
         shapes[1]->draw(shaderRed);
     }
 
