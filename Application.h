@@ -23,6 +23,7 @@
 #include "Shader.h"
 #include "Shape.h"
 #include "Square.h"
+#include "Triangle.h"
 
 using std::vector, std::unique_ptr;
 
@@ -114,7 +115,7 @@ public:
         shaderBlue.create();
     };
     void createModels(){
-        shapes.push_back(unique_ptr<Shape>(new Square(0,0,0))); //create class containing shapes
+        shapes.push_back(unique_ptr<Shape>(new Triangle(.5,-.5,0))); //create class containing shapes
         shapes.push_back(unique_ptr<Shape>(new Square(-.5,.5,0))); //create class containing shapes
     };
 
