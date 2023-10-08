@@ -122,8 +122,9 @@ public:
 //        for (auto&& shape: shapes) {
 //            shape->draw(shaderBlue.getSID());
 //        }
-        shapes[0]->draw(shaderRed.getSID());
-//        shapes[1]->draw(shaderBlue.getSID());
+        shapes[0]->rotate(shaderRed, 0.1, glm::vec3(0,0,-1));
+        shapes[0]->draw(shaderRed);
+        shapes[1]->draw(shaderRed);
     }
 
     void run(){

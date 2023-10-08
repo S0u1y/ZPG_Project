@@ -10,12 +10,10 @@
 
 class Square : public Shape {
 private:
-public:
-
     GLuint VBO_A = 0;
     GLuint VAO_A = 0;
-    GLuint VBO_B = 0;
-    GLuint VAO_B = 0;
+
+public:
 
     float color[4] = {1,1,1,1};
 
@@ -41,14 +39,13 @@ public:
     };
 
 
-    void makeVAOs(){
+    void makeBuffers(){
         glGenVertexArrays(1, &VAO_A);
         glBindVertexArray(VAO_A);
 
         makeVBO(&VBO_A, a);
 
-        //why do we use size for the pointer..
-        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(a[0]), (GLvoid *)0);
+        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(a[0]), nullptr);
         glEnableVertexAttribArray(0);
 
         glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(a[0]), (GLvoid *)(sizeof(a[0][0])));
@@ -57,7 +54,6 @@ public:
     }
 
     Square(float x, float y, float z) : Shape(x, y, z) {
-
 
         a[0][0][0] = x;
         a[0][0][1] = y;
@@ -89,14 +85,16 @@ public:
             }
         }
 
-        makeVAOs();
+        makeBuffers();
     }
 
-    void draw(GLuint shaderProgram) override{
+    void draw(Shader shader) override{
 
-        glUseProgram(shaderProgram);
+        shader.useShader();
 
         glBindVertexArray(VAO_A);
+        shader.setMatrixUniform("MVP", transformation.M);
+
         // draw triangles
         glDrawArrays(GL_TRIANGLES, 0, 6); //mode,first,count
     }

@@ -1,14 +1,14 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.20)
 project(Test)
 
 set(CMAKE_CXX_STANDARD 17)
 
 SET(CMAKE_BUILD_TYPE Debug)
 
-add_executable(Test main.cpp
+add_executable(${PROJECT_NAME} main.cpp
         Application.h
         Shape.h
-        Shader.h)
+        Shader.h Transformation.cpp Transformation.h)
 
 #Link libraries on unix OS
 if(UNIX)
@@ -28,14 +28,12 @@ endif ()
 #Link libraries on Windows OS
 if(WIN32)
 
-    set(LIBS_DIR ../libs)
+    set(LIBS_DIR ${CMAKE_SOURCE_DIR}/libs)
 
     find_package(OpenGL REQUIRED)
     set(GLFW_DIR "${LIBS_DIR}/glfw-3.3.8.bin.WIN64")
     set(GLEW_DIR "${LIBS_DIR}/glew-2.1.0")
     set(GLM_DIR "${LIBS_DIR}/glm")
-
-    add_executable(${PROJECT_NAME} main.cpp Constants.h Square.h)
 
     # Nastavení cest k hlavičkovým souborům pro GLFW, GLEW, GLM
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/include)

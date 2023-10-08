@@ -6,10 +6,14 @@
 #define TEST_SHAPE_H
 
 
+#include "Transformation.h"
+
 class Shape {
 protected:
     float x,y,z;
     float size = 0.5;
+
+    Transformation transformation;
 
     Shape(float x, float y, float z) : x(x), y(y), z(z) {};
     Shape(float x, float y, float z, float size) : x(x), y(y), z(z), size(size) {};
@@ -32,7 +36,12 @@ protected:
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     }
 public:
-    virtual void draw(GLuint shaderProgram) = 0;
+    virtual void draw(Shader shader) = 0;
+
+    void rotate(Shader shader, float angle, glm::vec3 axis){
+        transformation.rotate(angle, axis);
+        shader.setMatrixUniform("MVP", transformation.M);
+    }
 };
 
 

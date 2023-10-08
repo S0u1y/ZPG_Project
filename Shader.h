@@ -23,7 +23,7 @@ private:
             "out vec4 color;"
             "uniform mat4 MVP;"
             "void main () {"
-            "    gl_Position = vp;"
+            "    gl_Position = MVP * vp;"
             "    color = acolor;"
             "}";
 
@@ -37,6 +37,7 @@ private:
     GLuint vertexShader{};
     GLuint fragmentShader{};
     GLuint shaderProgram{};
+
 public:
     Shader(float r, float g, float b)
     {
@@ -65,16 +66,26 @@ public:
             GLint infoLogLength;
             GLchar * strInfoLog = new GLchar [ infoLogLength + 1];
             glGetProgramInfoLog ( shaderProgram , info , NULL , strInfoLog );
-            fprintf ( stderr , " Linker ␣ failure : ␣ % s \ n " , strInfoLog );
+            fprintf ( stderr , "Linker failure : %s \n" , strInfoLog );
             delete [] strInfoLog ;
         }
 
         return shaderProgram;
     }
 
-    GLuint getSID(){
-        return shaderProgram;
+    void useShader(){
+        glUseProgram(shaderProgram);
     }
+
+    GLint getUniform(const char* name){
+        return glGetUniformLocation(shaderProgram, name);
+    }
+
+    void setMatrixUniform(const char* name, glm::mat4 &mat){
+        useShader();
+        glUniformMatrix4fv(getUniform(name), 1, GL_FALSE, &mat[0][0]);
+    }
+
 };
 
 
