@@ -123,6 +123,7 @@ public:
 //        shapes.push_back(unique_ptr<Shape>(new Square(0,0,0)));
         shapes.push_back(unique_ptr<Shape>(new Model(0,0,0,suziFlat, sizeof(suziFlat)/sizeof(suziFlat[0]))));
 
+
     };
 
     void drawModels(){
@@ -136,7 +137,7 @@ public:
 //        shapes[1]->rotate(glm::radians(1.f), glm::vec3(0,0,-1));
 //        shapes[1]->move(glm::vec3(1,0,0));
 
-        shapes[0]->rotate(0.1, glm::vec3(0,1,0));
+        shapes[0]->rotate(glm::radians(1.f), glm::vec3(1,1,0));
 
         for (const auto &item : shapes){
             item->draw(shaderRed);

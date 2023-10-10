@@ -46,7 +46,7 @@ public:
         glBindVertexArray(VAO_A);
         Shape::draw(shader);
         // draw triangles
-        glDrawArrays(GL_TRIANGLES, 0, size); //mode,first,count
+        glDrawArrays(GL_TRIANGLES, 0, size/6); //mode,first,count
     }
 
 };
