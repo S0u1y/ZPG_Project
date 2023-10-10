@@ -8,7 +8,7 @@ SET(CMAKE_BUILD_TYPE Debug)
 add_executable(${PROJECT_NAME} main.cpp
         Application.h
         Shape.h
-        Shader.h Composite/Composite.h Triangle.h)
+        Shader.h Composite/Composite.h Triangle.h Model.h)
 
 #Link libraries on unix OS
 if(UNIX)

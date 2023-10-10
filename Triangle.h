@@ -75,7 +75,7 @@ public:
         }
 
         makeBuffers();
-        move(x,y,z);
+//        move(x,y,z);
     }
 
     void draw(Shader shader) override {

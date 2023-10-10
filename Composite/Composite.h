@@ -8,6 +8,7 @@
 #define TEST_COMPOSITE_H
 
 #include <vector>
+#include "../Shader.h"
 
 
 class Composite{

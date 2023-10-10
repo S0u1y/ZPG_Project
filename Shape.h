@@ -7,6 +7,9 @@
 
 
 #include "Composite/Composite.h"
+#include "Shader.h"
+
+#include <GL/glew.h>
 
 class Shape {
 protected:
@@ -38,9 +41,17 @@ public:
     float x,y,z;
     float size = 0.5;
 
+    glm::vec3 getPosition(){
+        return glm::vec3(x,y,z);
+    }
+
     virtual void draw(Shader shader) {
         transformation.action(shader);
     };
+
+    void performTransformations(Shader shader){
+        transformation.action(shader);
+    }
 
     virtual void rotate(float angle, glm::vec3 axis){
         glm::vec3 old_position = glm::vec3(this->x, this->y, this->z);

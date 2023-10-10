@@ -25,6 +25,9 @@
 #include "Square.h"
 #include "Triangle.h"
 
+#include "Models/suzi_flat.h"
+#include "Model.h"
+
 using std::vector, std::unique_ptr;
 
 class Application {
@@ -115,21 +118,32 @@ public:
         shaderBlue.create();
     };
     void createModels(){
-        shapes.push_back(unique_ptr<Shape>(new Triangle(0.5,0.5,0))); //create class containing shapes
-        shapes.push_back(unique_ptr<Shape>(new Square(0.,0.,0))); //create class containing shapes
+//        shapes.push_back(unique_ptr<Shape>(new Triangle(0.5,0.25,0))); //create class containing shapes
+//        shapes.push_back(unique_ptr<Shape>(new Square(0,0,0))); //create class containing shapes
+//        shapes.push_back(unique_ptr<Shape>(new Square(0,0,0)));
+        shapes.push_back(unique_ptr<Shape>(new Model(0,0,0,suziFlat, sizeof(suziFlat)/sizeof(suziFlat[0]))));
 
     };
 
     void drawModels(){
 
-        shapes[0]->rotate(glm::radians(1.f), glm::vec3(0,0,-1));
-        shapes[0]->draw(shaderRed);
 
-        //orbit O.O
-        shapes[1]->move(glm::vec3(0.5,-0.5,0));
-        shapes[1]->rotate(glm::radians(1.f), glm::vec3(0,0,-1));
-        shapes[1]->move(glm::vec3(-0.5,0.5,0));
-        shapes[1]->draw(shaderRed);
+//        shapes[2]->rotate(glm::radians(1.f), glm::vec3(0,0,-1));
+//
+//        //orbit O.O
+//
+////        shapes[1]->move(glm::vec3(-1,0,0));
+//        shapes[1]->rotate(glm::radians(1.f), glm::vec3(0,0,-1));
+//        shapes[1]->move(glm::vec3(1,0,0));
+
+        shapes[0]->rotate(0.1, glm::vec3(0,1,0));
+
+        for (const auto &item : shapes){
+            item->draw(shaderRed);
+        }
+
+//        shapes[1]->move(glm::vec3(-1,0,0));
+
 
     }
 
