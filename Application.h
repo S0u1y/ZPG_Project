@@ -115,16 +115,22 @@ public:
         shaderBlue.create();
     };
     void createModels(){
-        shapes.push_back(unique_ptr<Shape>(new Triangle(.5,-.5,0))); //create class containing shapes
-        shapes.push_back(unique_ptr<Shape>(new Square(-.5,.5,0))); //create class containing shapes
+        shapes.push_back(unique_ptr<Shape>(new Triangle(0.5,0.5,0))); //create class containing shapes
+        shapes.push_back(unique_ptr<Shape>(new Square(0.,0.,0))); //create class containing shapes
+
     };
 
     void drawModels(){
-        shapes[0]->rotate(0.1, glm::vec3(0,0,-1));
+
+        shapes[0]->rotate(glm::radians(1.f), glm::vec3(0,0,-1));
         shapes[0]->draw(shaderRed);
 
-        shapes[1]->rotate(-0.1, glm::vec3(0,0,-1));
+        //orbit O.O
+        shapes[1]->move(glm::vec3(0.5,-0.5,0));
+        shapes[1]->rotate(glm::radians(1.f), glm::vec3(0,0,-1));
+        shapes[1]->move(glm::vec3(-0.5,0.5,0));
         shapes[1]->draw(shaderRed);
+
     }
 
     void run(){

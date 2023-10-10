@@ -23,14 +23,15 @@ public:
 class Transformation: public Composite{
 protected:
     std::vector<Composite*> transformations;
-    glm::mat4 M{1};
+    glm::mat4 M{1.f};
 
 private:
     void action(glm::mat4 &M) override{
         for(auto i = 0; i <  transformations.size(); i++){
             transformations[i]->action(this->M);
-            Remove(0);
+            delete transformations[i];
         }
+        transformations.clear();
     }
 
 public:
@@ -76,7 +77,7 @@ public:
 
 };
 
-//leaf node
+//leaf node(s)
 class Rotation : public Composite{
 private:
     float angle;
@@ -85,17 +86,34 @@ private:
 
     void Add(Composite *composite) override {
     }
+    void Remove(Composite *composite) override {
+    }
 
 public:
     Rotation(float angle, const glm::vec3 &axis) : angle(angle), axis(axis) {}
-
-    void Remove(Composite *composite) override {
-    }
 
     void action(glm::mat4 &M) override {
         M = glm::rotate(M, angle, axis);
     }
 
+};
+
+class Move : public Composite{
+private:
+    glm::vec3 vector;
+
+
+    void Add(Composite *composite) override {
+    }
+    void Remove(Composite *composite) override {
+    }
+
+public:
+    Move(const glm::vec3 &vector) : vector(vector) {}
+
+    void action(glm::mat4 &M) override {
+        M = glm::translate(M, vector);
+    }
 };
 
 #endif //TEST_COMPOSITE_H

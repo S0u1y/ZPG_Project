@@ -44,16 +44,28 @@ private:
 public:
 
     Triangle(float x, float y, float z) : Shape(x, y, z) {
-        a[0][0][0] = x;
-        a[0][0][1] = y;
+//        a[0][0][0] = x;
+//        a[0][0][1] = y;
+//        a[0][0][2] = z;
+//
+//        a[1][0][0] = x+size;
+//        a[1][0][1] = y;
+//        a[1][0][2] = z;
+//
+//        a[2][0][0] = x;
+//        a[2][0][1] = y-size;
+//        a[2][0][2] = z;
+
+        a[0][0][0] = - size/4;
+        a[0][0][1] = + size/4;
         a[0][0][2] = z;
 
-        a[1][0][0] = x+size;
-        a[1][0][1] = y;
+        a[1][0][0] =size- size/4;
+        a[1][0][1] =size/4;
         a[1][0][2] = z;
 
-        a[2][0][0] = x;
-        a[2][0][1] = y-size;
+        a[2][0][0] =- size/4;
+        a[2][0][1] =-size + size/4;
         a[2][0][2] = z;
 
         for (auto & i : a) {
@@ -63,13 +75,13 @@ public:
         }
 
         makeBuffers();
+        move(x,y,z);
     }
 
     void draw(Shader shader) override {
-        Shape::draw(shader);
 
         glBindVertexArray(VAO_A);
-
+        Shape::draw(shader);
         // draw triangles
         glDrawArrays(GL_TRIANGLES, 0, 3); //mode,first,count
     }

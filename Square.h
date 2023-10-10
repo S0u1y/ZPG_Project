@@ -55,28 +55,28 @@ public:
 
     Square(float x, float y, float z) : Shape(x, y, z) {
 
-        a[0][0][0] = x;
-        a[0][0][1] = y;
+        a[0][0][0] = - size/2;
+        a[0][0][1] = + size/2;
         a[0][0][2] = z;
 
-        a[1][0][0] = x+size;
-        a[1][0][1] = y;
+        a[1][0][0] = size - size/2;
+        a[1][0][1] = size/2;
         a[1][0][2] = z;
 
-        a[2][0][0] = x;
-        a[2][0][1] = y-size;
+        a[2][0][0] = - size/2;
+        a[2][0][1] = - size + size/2;
         a[2][0][2] = z;
 
-        a[3][0][0] = x+size;
-        a[3][0][1] = y-size;
+        a[3][0][0] = size - size/2;
+        a[3][0][1] = - size + size/2;
         a[3][0][2] = z;
 
-        a[4][0][0] = x+size;
-        a[4][0][1] = y;
+        a[4][0][0] = size - size/2;
+        a[4][0][1] = size/2;
         a[4][0][2] = z;
 
-        a[5][0][0] = x;
-        a[5][0][1] = y-size;
+        a[5][0][0] = - size/2;
+        a[5][0][1] = - size + size/2;
         a[5][0][2] = z;
 
         for (auto & i : a) {
@@ -86,14 +86,15 @@ public:
         }
 
         makeBuffers();
+        move(glm::vec3(x,y,z));
     }
 
     void draw(Shader shader) override{
-        Shape::draw(shader);
+
         shader.useShader();
 
         glBindVertexArray(VAO_A);
-
+        Shape::draw(shader);
 
         // draw triangles
         glDrawArrays(GL_TRIANGLES, 0, 6); //mode,first,count

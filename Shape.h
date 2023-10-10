@@ -10,8 +10,7 @@
 
 class Shape {
 protected:
-    float x,y,z;
-    float size = 0.5;
+
 
     Transformation transformation;
 
@@ -36,13 +35,26 @@ protected:
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     }
 public:
+    float x,y,z;
+    float size = 0.5;
+
     virtual void draw(Shader shader) {
         transformation.action(shader);
     };
 
-    void rotate(float angle, glm::vec3 axis){
+    virtual void rotate(float angle, glm::vec3 axis){
+        glm::vec3 old_position = glm::vec3(this->x, this->y, this->z);
         transformation.Add(new Rotation(angle, axis));
+//        move(glm::vec3(this->size/4, -this->size/4, 0));
     }
+
+    virtual void move(glm::vec3 vector){
+        transformation.Add(new Move(vector));
+    }
+    virtual void move(float x, float y, float z){
+        move(glm::vec3 (x,y,z));
+    }
+
 };
 
 
