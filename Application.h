@@ -21,11 +21,13 @@
 #include <memory>
 
 #include "Shader.h"
+#include "Camera.h"
 #include "Shape.h"
 #include "Square.h"
 #include "Triangle.h"
 
 #include "Models/suzi_flat.h"
+#include "Models/sphere.h"
 #include "Model.h"
 
 using std::vector, std::unique_ptr;
@@ -60,12 +62,17 @@ private:
 
     GLFWwindow* window;
 
-    Shader shaderRed = Shader(1,0,0);
-    Shader shaderBlue = Shader("blue");
+    Shader shaderMain;
+    Camera camera{&shaderMain};
 
     vector<unique_ptr<Shape>> shapes;
 
 public:
+    explicit Application() {
+        shaderMain.linkCamera(&camera);
+        camera.setPerspective(60.f, 4.f/3.f, 0.1f, 5.f);
+    }
+
     void initialize(){
 
         glfwSetErrorCallback(error_callback);
@@ -114,41 +121,40 @@ public:
     };
 
     void createShaders(){//create class working with shaders..
-        shaderRed.create();
-        shaderBlue.create();
+        shaderMain.create();
     };
     void createModels(){
-//        shapes.push_back(unique_ptr<Shape>(new Triangle(0.5,0.25,0))); //create class containing shapes
 //        shapes.push_back(unique_ptr<Shape>(new Square(0,0,0))); //create class containing shapes
 //        shapes.push_back(unique_ptr<Shape>(new Square(0,0,0)));
-        shapes.push_back(unique_ptr<Shape>(new Model(0,0,0,suziFlat, sizeof(suziFlat)/sizeof(suziFlat[0]))));
-
+        shapes.push_back(unique_ptr<Shape>(new Model(0,0,0,sphere, sizeof(sphere)/sizeof(sphere[0]))));
+        shapes[0]->scale(glm::vec3(0.3));
 
     };
 
     void drawModels(){
 
+        shapes[0]->rotate(glm::radians(1.f), glm::vec3(1,1,0)); //rotate model :)
 
-//        shapes[2]->rotate(glm::radians(1.f), glm::vec3(0,0,-1));
-//
-//        //orbit O.O
-//
-////        shapes[1]->move(glm::vec3(-1,0,0));
 //        shapes[1]->rotate(glm::radians(1.f), glm::vec3(0,0,-1));
-//        shapes[1]->move(glm::vec3(1,0,0));
-
-        shapes[0]->rotate(glm::radians(1.f), glm::vec3(1,1,0));
+//
+////        //orbit O.O
+//
+//        shapes[0]->rotate(glm::radians(1.f), glm::vec3(0,0,-1));
+//        shapes[0]->move(glm::vec3(1,0,0));
 
         for (const auto &item : shapes){
-            item->draw(shaderRed);
+            camera.metoda();
+            item->draw(shaderMain);
         }
 
-//        shapes[1]->move(glm::vec3(-1,0,0));
+//        shapes[0]->move(glm::vec3(-1,0,0));
 
 
     }
 
     void run(){
+
+        glEnable(GL_DEPTH_TEST);
 
         while (!glfwWindowShouldClose(window))
         {

@@ -65,6 +65,9 @@ public:
     virtual void move(float x, float y, float z){
         move(glm::vec3 (x,y,z));
     }
+    virtual void scale(glm::vec3 scale){
+        transformation.Add(new Scale{scale});
+    }
 
 };
 

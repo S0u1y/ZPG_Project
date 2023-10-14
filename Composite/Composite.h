@@ -117,4 +117,24 @@ public:
     }
 };
 
+class Scale : public Composite{
+private:
+    glm::vec3 scale;
+
+    void Add(Composite *composite) override {
+
+    }
+
+    void Remove(Composite *composite) override {
+
+    }
+
+public:
+    explicit Scale(const glm::vec3 &scale) : scale(scale) {}
+
+    void action(glm::mat4 &M) override {
+        M = glm::scale(M, scale);
+    }
+};
+
 #endif //TEST_COMPOSITE_H

@@ -12,7 +12,11 @@
 
 #include <string>
 
+#include <glm/ext/matrix_float4x4.hpp>
+
 using std::vector;
+
+class Camera;
 
 class Shader {
 private:
@@ -22,8 +26,10 @@ private:
             "layout(location=1) in vec4 acolor;"
             "out vec4 color;"
             "uniform mat4 MVP;"
+            "uniform mat4 viewMatrix;"
+            "uniform mat4 projectionMatrix;"
             "void main () {"
-            "    gl_Position = MVP * vp;"
+            "    gl_Position = projectionMatrix * viewMatrix  * MVP * vp;"
             "    color = acolor;"
             "}";
 
@@ -38,55 +44,29 @@ private:
     GLuint fragmentShader{};
     GLuint shaderProgram{};
 
+    Camera* camera;
+
 public:
-    Shader(float r, float g, float b)
+    Shader(Camera* camera) : camera(camera)
     {
     }
-    Shader(const char* color){
+    Shader(){};
+
+    void linkCamera(Camera* camera){
+        this->camera = camera;
     }
 
-    GLuint create(){
-        vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, 1, &vertex_shader, NULL);
-        glCompileShader(vertexShader);
-        fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, 1, &fragment_shader, NULL);
-        glCompileShader(fragmentShader);
-        shaderProgram = glCreateProgram();
-        glAttachShader(shaderProgram, fragmentShader);
-        glAttachShader(shaderProgram, vertexShader);
-        glLinkProgram(shaderProgram);
+    GLuint create();
 
-        GLint status ;
-        glGetProgramiv ( shaderProgram , GL_LINK_STATUS , & status );
-        if ( status == GL_FALSE )
-        {
-            GLint info ;
-            glGetProgramiv ( shaderProgram , GL_INFO_LOG_LENGTH ,& info );
-            GLint infoLogLength;
-            GLchar * strInfoLog = new GLchar [ infoLogLength + 1];
-            glGetProgramInfoLog ( shaderProgram , info , NULL , strInfoLog );
-            fprintf ( stderr , "Linker failure : %s \n" , strInfoLog );
-            delete [] strInfoLog ;
-        }
+    void useShader();
 
-        return shaderProgram;
-    }
+    GLint getUniform(const char* name) const;
 
-    void useShader(){
-        glUseProgram(shaderProgram);
-    }
-
-    GLint getUniform(const char* name){
-        return glGetUniformLocation(shaderProgram, name);
-    }
-
-    void setMatrixUniform(const char* name, glm::mat4 &mat){
-        useShader();
-        glUniformMatrix4fv(getUniform(name), 1, GL_FALSE, &mat[0][0]);
-    }
+    void setMatrixUniform(const char* name, glm::mat4 mat);
 
 };
+
+
 
 
 #endif //TEST_SHADER_H
