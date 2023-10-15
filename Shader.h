@@ -29,7 +29,7 @@ private:
             "uniform mat4 viewMatrix;"
             "uniform mat4 projectionMatrix;"
             "void main () {"
-            "    gl_Position = projectionMatrix * viewMatrix  * MVP * vp;"
+            "    gl_Position = projectionMatrix * viewMatrix * MVP * vp;"
             "    color = acolor;"
             "}";
 

@@ -6,8 +6,10 @@
 #define TEST_SHAPE_H
 
 
-#include "Composite/Composite.h"
+
 #include "Shader.h"
+
+#include "Composite/Transformation/Transformation.h"
 
 #include <GL/glew.h>
 
@@ -41,33 +43,19 @@ public:
     float x,y,z;
     float size = 0.5;
 
-    glm::vec3 getPosition(){
-        return glm::vec3(x,y,z);
-    }
+    glm::vec3 getPosition();
 
-    virtual void draw(Shader shader) {
-        transformation.action(shader);
-    };
+    virtual void draw(Shader shader);;
 
     void performTransformations(Shader shader){
         transformation.action(shader);
     }
 
-    virtual void rotate(float angle, glm::vec3 axis){
-        glm::vec3 old_position = glm::vec3(this->x, this->y, this->z);
-        transformation.Add(new Rotation(angle, axis));
-//        move(glm::vec3(this->size/4, -this->size/4, 0));
-    }
+    virtual void rotate(float angle, glm::vec3 axis);
 
-    virtual void move(glm::vec3 vector){
-        transformation.Add(new Move(vector));
-    }
-    virtual void move(float x, float y, float z){
-        move(glm::vec3 (x,y,z));
-    }
-    virtual void scale(glm::vec3 scale){
-        transformation.Add(new Scale{scale});
-    }
+    virtual void move(glm::vec3 vector);
+    virtual void move(float x, float y, float z);
+    virtual void scale(glm::vec3 scale);
 
 };
 

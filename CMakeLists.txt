@@ -7,12 +7,18 @@ SET(CMAKE_BUILD_TYPE Debug)
 
 add_executable(${PROJECT_NAME} main.cpp
         Application.h
+        Application.cpp
         Shape.h
-        Shader.h Composite/Composite.h Triangle.h Model.h
+        Shader.h Triangle.h Model.h
         Camera.h
         Shader.cpp
         Camera.cpp
-        Observers/Observer.h)
+        Observers/Observer.h
+        Composite/Composite.h
+        Composite/Transformation/Transformation.cpp Composite/Transformation/Transformation.h
+        Composite/Transformation/Move.cpp Composite/Transformation/Move.h
+        Composite/Transformation/Rotation.cpp Composite/Transformation/Rotation.h
+        Composite/Transformation/Scale.cpp Composite/Transformation/Scale.h Shape.cpp Model.cpp Square.cpp Triangle.cpp Sphere.cpp Sphere.h)
 
 #Link libraries on unix OS
 if(UNIX)

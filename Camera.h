@@ -12,17 +12,29 @@ class Shader;
 class Camera{
 private:
     Shader *shader;
-    glm::vec3 eye{0,0,0.0};
-    glm::vec3 up{0,1,0};
-    glm::vec3 target{0,0,1};
+    glm::vec3 eye{0.f,0.f,1.78f};
+    glm::vec3 up{0.f,1.f,0.f};
+    glm::vec3 target{0.f,0.f,-0.1f};
 
-    glm::mat4 perspective;
+    glm::mat4 perspective{1.f};
 
 public:
     Camera(Shader* shader): shader(shader){};
     glm::mat4 getCamera();
     void setPerspective(float fov, float ratio, float near, float far);
     void metoda();
+
+    void moveRight(float deltaT);
+    void moveLeft(float deltaT);
+    void moveBack();
+    void moveForward();
+
+    void moveX(float amount);
+    void moveY(float amount);
+    void moveZ(float amount);
+
+    void lookX(float alpha, float fi);
+    void lookX(float amount);
 
 };
 
