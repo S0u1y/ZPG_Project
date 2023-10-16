@@ -16,7 +16,7 @@
 //glm::mat4 Model = glm::mat4(1.0f);
 
 #include "Application.h"
-#include "Model.h"
+#include "Models/Model.h"
 
 int main()
 {

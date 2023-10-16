@@ -6,12 +6,10 @@
 #define TEST_TRIANGLE_H
 
 #include "Shape.h"
-#include "Shader.h"
+#include "../Shader.h"
 
 class Triangle : public Shape{
 private:
-    GLuint VBO_A = 0;
-    GLuint VAO_A = 0;
 
     float color[4] = {1,1,1,1};
 

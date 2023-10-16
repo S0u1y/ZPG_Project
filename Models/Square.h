@@ -9,10 +9,6 @@
 #include "Shape.h"
 
 class Square : public Shape {
-private:
-    GLuint VBO_A = 0;
-    GLuint VAO_A = 0;
-
 public:
 
     float color[4] = {1,1,1,1};

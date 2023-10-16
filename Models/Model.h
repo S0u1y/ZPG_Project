@@ -12,8 +12,6 @@
 //class which takes an array of vertices and its size to create any kind of models..
 class Model : public Shape{
 private:
-    GLuint VBO_A = 0;
-    GLuint VAO_A = 0;
 
     std::unique_ptr<float> vertices;
     size_t size;

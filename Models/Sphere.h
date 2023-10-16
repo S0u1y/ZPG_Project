@@ -15,8 +15,6 @@ public:
     void draw(Shader shader) override;
 private:
 
-    GLuint VBO_A = 0;
-    GLuint VAO_A = 0;
 
     void makeBuffers() {
         glGenVertexArrays(1, &VAO_A);

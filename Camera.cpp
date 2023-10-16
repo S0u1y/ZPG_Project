@@ -4,6 +4,7 @@
 
 
 #include "Camera.h"
+
 #include "Shader.h"
 
 #include<glm/glm.hpp>
@@ -24,10 +25,15 @@ void Camera::setPerspective(float fov, float ratio, float near, float far) {
 }
 
 void Camera::metoda() {
-    shader->useShader();
     setPerspective(60.f, (float)4/3, 0.1f, 100.f);
-    shader->setMatrixUniform("projectionMatrix", perspective);
-    shader->setMatrixUniform("viewMatrix", getCamera());
+
+    for (const auto &item: shaders){
+        item->useShader();
+        item->setMatrixUniform("projectionMatrix", perspective);
+        item->setMatrixUniform("viewMatrix", getCamera());
+    }
+
+
 
 }
 
@@ -54,8 +60,6 @@ void Camera::lookX(float degrees) {
 
 void Camera::moveRight(float deltaT) {
     eye += ( glm::normalize ( glm::cross( target , up ))) * (1.f * deltaT);
-
-    printf("%f, %f, %f\n", eye.x, eye.y, eye.z);
 }
 
 void Camera::moveLeft(float deltaT) {
@@ -64,15 +68,10 @@ void Camera::moveLeft(float deltaT) {
 
 void Camera::moveBack() {
     eye += -glm::normalize(target) * 0.01f;
-
-    printf("%f, %f, %f\n", eye.x, eye.y, eye.z);
 }
 
 void Camera::moveForward() {
-
     eye += glm::normalize(target) * 0.01f;
-
-    printf("%f, %f, %f\n", eye.x, eye.y, eye.z);
 }
 
 

@@ -5,7 +5,7 @@
 #include "Application.h"
 
 #include "Models/suzi_smooth.h"
-#include "Sphere.h"
+#include "Models/Sphere.h"
 
 Application* Application::GLFWCallbackWrapper::application = nullptr;
 
@@ -68,7 +68,29 @@ void Application::GLFWCallbackWrapper::cursor_callback(GLFWwindow *window, doubl
 
 
 Application::Application() {
-    shaderMain.linkCamera(&camera);
+    shaderProgram.createShader("MainShader",
+                               "#version 330\n"
+                                             "layout(location=0) in vec4 vp;"
+                                             "layout(location=1) in vec4 acolor;"
+                                             "out vec4 color;"
+                                             "uniform mat4 MVP;"
+                                             "uniform mat4 viewMatrix;"
+                                             "uniform mat4 projectionMatrix;"
+                                             "void main () {"
+                                             "    gl_Position = projectionMatrix * viewMatrix * MVP * vp;"
+                                             "    color = acolor;"
+                                             "}"
+                                             ,"#version 330\n"
+                                                  "out vec4 frag_colour;"
+                                                  "in vec4 color;"
+                                                  "void main () {"
+                                                  "    frag_colour = color;"
+                                                  "}");
+
+
+
+    shaderProgram.getShader("MainShader").linkCamera(&camera);
+    camera.linkShader(&shaderProgram.getShader("MainShader"));
     camera.setPerspective(60.f, 4.f/3.f, 0.1f, 100.f);
     GLFWCallbackWrapper::setApplication(this);
 }
@@ -121,7 +143,7 @@ void Application::initialize() {
 }
 
 void Application::createShaders() {//create class working with shaders..
-    shaderMain.create();
+    shaderProgram.createAllShaders();
 }
 
 void Application::createModels() {
@@ -136,7 +158,7 @@ void Application::drawModels() {
 
     for (const auto &item : shapes){
 
-        item->draw(shaderMain);
+        item->draw(shaderProgram.getShader("MainShader"));
     }
 
 

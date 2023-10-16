@@ -20,25 +20,9 @@ class Camera;
 
 class Shader {
 private:
-    const char* vertex_shader =
-            "#version 330\n"
-            "layout(location=0) in vec4 vp;"
-            "layout(location=1) in vec4 acolor;"
-            "out vec4 color;"
-            "uniform mat4 MVP;"
-            "uniform mat4 viewMatrix;"
-            "uniform mat4 projectionMatrix;"
-            "void main () {"
-            "    gl_Position = projectionMatrix * viewMatrix * MVP * vp;"
-            "    color = acolor;"
-            "}";
+    const char* vertex_shader;
 
-    const char* fragment_shader = "#version 330\n"
-                                  "out vec4 frag_colour;"
-                                  "in vec4 color;"
-                                  "void main () {"
-                                  "    frag_colour = color;"
-                                  "}";
+    const char* fragment_shader;
 
     GLuint vertexShader{};
     GLuint fragmentShader{};
@@ -51,6 +35,10 @@ public:
     {
     }
     Shader(){};
+
+    Shader(const char* vertexShader, const char* fragmentShader)
+    : vertex_shader(vertexShader), fragment_shader(fragmentShader)
+    {}
 
     void linkCamera(Camera* camera){
         this->camera = camera;

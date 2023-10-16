@@ -5,20 +5,22 @@ set(CMAKE_CXX_STANDARD 17)
 
 SET(CMAKE_BUILD_TYPE Debug)
 
+file(GLOB_RECURSE MODELS "${CMAKE_SOURCE_DIR}/Models/*")
+file(GLOB_RECURSE COMPOSITE_TRANSFORMATIONS "${CMAKE_SOURCE_DIR}/Composite/Transformation/*")
+
 add_executable(${PROJECT_NAME} main.cpp
         Application.h
         Application.cpp
-        Shape.h
-        Shader.h Triangle.h Model.h
+        Models/Shape.h
+        Shader.h Models/Triangle.h Models/Model.h
         Camera.h
         Shader.cpp
         Camera.cpp
         Observers/Observer.h
         Composite/Composite.h
-        Composite/Transformation/Transformation.cpp Composite/Transformation/Transformation.h
-        Composite/Transformation/Move.cpp Composite/Transformation/Move.h
-        Composite/Transformation/Rotation.cpp Composite/Transformation/Rotation.h
-        Composite/Transformation/Scale.cpp Composite/Transformation/Scale.h Shape.cpp Model.cpp Square.cpp Triangle.cpp Sphere.cpp Sphere.h)
+        ${MODELS} ${COMPOSITE_TRANSFORMATIONS}
+        ShaderProgram.cpp
+        ShaderProgram.h)
 
 #Link libraries on unix OS
 if(UNIX)

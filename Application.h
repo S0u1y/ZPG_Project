@@ -20,15 +20,16 @@
 #include <vector>
 #include <memory>
 
-#include "Shader.h"
+#include "ShaderProgram.h"
+
 #include "Camera.h"
-#include "Shape.h"
-#include "Square.h"
-#include "Triangle.h"
+#include "Models/Shape.h"
+#include "Models/Square.h"
+#include "Models/Triangle.h"
 
 #include "Models/suzi_flat.h"
 #include "Models/sphere.h"
-#include "Model.h"
+#include "Models/Model.h"
 
 using std::vector, std::unique_ptr;
 
@@ -37,8 +38,9 @@ private:
 
     GLFWwindow* window;
 
-    Shader shaderMain;
-    Camera camera{&shaderMain};
+    ShaderProgram shaderProgram;
+
+    Camera camera;
 
     vector<unique_ptr<Shape>> shapes;
 

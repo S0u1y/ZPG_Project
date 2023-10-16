@@ -7,15 +7,17 @@
 
 
 
-#include "Shader.h"
+#include "../Shader.h"
 
-#include "Composite/Transformation/Transformation.h"
+#include "../Composite/Transformation/Transformation.h"
 
 #include <GL/glew.h>
 
 class Shape {
 protected:
 
+    GLuint VBO_A = 0;
+    GLuint VAO_A = 0;
 
     Transformation transformation;
 

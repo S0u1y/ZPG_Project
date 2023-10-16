@@ -7,7 +7,10 @@
 
 #include <glm/ext/matrix_float4x4.hpp>
 
+
+
 class Shader;
+#include <list>
 
 class Camera{
 private:
@@ -17,9 +20,16 @@ private:
     glm::vec3 target{0.f,0.f,-0.1f};
 
     glm::mat4 perspective{1.f};
+    std::list<Shader*> shaders;
 
 public:
-    Camera(Shader* shader): shader(shader){};
+    Camera(Shader* shader){
+        shaders.push_back(shader);
+    };
+    Camera(){};
+    void linkShader(Shader* shader){
+        shaders.push_back(shader);
+    }
     glm::mat4 getCamera();
     void setPerspective(float fov, float ratio, float near, float far);
     void metoda();
