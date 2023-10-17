@@ -4,7 +4,7 @@
 
 #include "ShaderProgram.h"
 
-GLuint ShaderProgram::createShader(char* name, const char *vertexShader, const char *fragmentShader) {
+void ShaderProgram::createShader(char* name, const char *vertexShader, const char *fragmentShader) {
 
     shaders.emplace(name, new Shader(vertexShader, fragmentShader));
 
@@ -18,4 +18,8 @@ void ShaderProgram::createAllShaders() {
     for (const auto &item: shaders){
         item.second->create();
     }
+}
+
+Shader *ShaderProgram::getShaderp(char *name) {
+    return shaders[name].get();
 }

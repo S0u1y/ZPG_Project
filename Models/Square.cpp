@@ -55,12 +55,10 @@ Square::Square(float x, float y, float z) : Shape(x, y, z) {
     move(glm::vec3(x,y,z));
 }
 
-void Square::draw(Shader shader) {
-
-    shader.useShader();
+void Square::draw() {
 
     glBindVertexArray(VAO_A);
-    Shape::draw(shader);
+    Shape::draw();
 
     // draw triangles
     glDrawArrays(GL_TRIANGLES, 0, 6); //mode,first,count

@@ -29,10 +29,10 @@ Model::Model(float x, float y, float z, const float *modelVertices, size_t size)
     makeBuffers();
 }
 
-void Model::draw(Shader shader) {
+void Model::draw() {
 
     glBindVertexArray(VAO_A);
-    Shape::draw(shader);
+    Shape::draw();
     // draw triangles
     glDrawArrays(GL_TRIANGLES, 0, size/6); //mode,first,count
 }

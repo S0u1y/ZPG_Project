@@ -23,13 +23,7 @@
 #include "ShaderProgram.h"
 
 #include "Camera.h"
-#include "Models/Shape.h"
-#include "Models/Square.h"
-#include "Models/Triangle.h"
-
-#include "Models/suzi_flat.h"
-#include "Models/sphere.h"
-#include "Models/Model.h"
+class Shape;
 
 using std::vector, std::unique_ptr;
 

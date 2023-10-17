@@ -18,8 +18,9 @@ private:
     std::unordered_map<char*, std::shared_ptr<Shader>> shaders;
 
 public:
-    GLuint createShader(char* name, const char* vertexShader, const char* fragmentShader);
+    void createShader(char* name, const char* vertexShader, const char* fragmentShader);
     Shader& getShader(char* name);
+    Shader* getShaderp(char* name);
     void createAllShaders();
 };
 

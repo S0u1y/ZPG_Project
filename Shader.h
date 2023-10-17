@@ -44,6 +44,8 @@ public:
         this->camera = camera;
     }
 
+    void onNotify();
+
     GLuint create();
 
     void useShader();
@@ -51,6 +53,12 @@ public:
     GLint getUniform(const char* name) const;
 
     void setMatrixUniform(const char* name, glm::mat4 mat);
+
+    void setUniformFloat(const char* name, float var){
+        useShader();
+        glUniform1f(getUniform(name), var);
+    }
+
 
 };
 

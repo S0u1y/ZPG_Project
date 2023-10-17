@@ -44,3 +44,10 @@ void Shader::setMatrixUniform(const char *name, glm::mat4 mat) {
     useShader();
     glUniformMatrix4fv(getUniform(name), 1, GL_FALSE, &mat[0][0]);
 }
+
+//pass camera through function instead?
+void Shader::onNotify() {
+    useShader();
+    setMatrixUniform("projectionMatrix", camera->getPerspective());
+    setMatrixUniform("viewMatrix", camera->getCamera());
+}

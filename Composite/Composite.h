@@ -1,7 +1,6 @@
 //
-// Created by Filip on 08.10.2023.
+// Created by wizzy on 08.10.2023.
 //
-//Za tohle pujdu do pekla.
 //
 
 #ifndef TEST_COMPOSITE_H

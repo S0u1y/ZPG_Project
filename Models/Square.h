@@ -39,7 +39,7 @@ public:
 
     Square(float x, float y, float z);
 
-    void draw(Shader shader) override;
+    void draw() override;
 
 };
 

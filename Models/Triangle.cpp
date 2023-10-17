@@ -54,10 +54,10 @@ Triangle::Triangle(float x, float y, float z) : Shape(x, y, z) {
 //        move(x,y,z);
 }
 
-void Triangle::draw(Shader shader) {
+void Triangle::draw() {
 
     glBindVertexArray(VAO_A);
-    Shape::draw(shader);
+    Shape::draw();
     // draw triangles
     glDrawArrays(GL_TRIANGLES, 0, 3); //mode,first,count
 }

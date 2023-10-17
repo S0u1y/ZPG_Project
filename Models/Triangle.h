@@ -31,7 +31,7 @@ public:
 
     Triangle(float x, float y, float z);
 
-    void draw(Shader shader) override;
+    void draw() override;
 };
 
 #endif //TEST_TRIANGLE_H

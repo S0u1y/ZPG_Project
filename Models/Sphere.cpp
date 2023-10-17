@@ -4,9 +4,9 @@
 
 #include "Sphere.h"
 
-void Sphere::draw(Shader shader) {
+void Sphere::draw() {
     glBindVertexArray(VAO_A);
-    Shape::draw(shader);
+    Shape::draw();
 
     // draw triangles
     glDrawArrays(GL_TRIANGLES, 0, 17280/6); //mode,first,count
@@ -14,4 +14,5 @@ void Sphere::draw(Shader shader) {
 
 Sphere::Sphere(float x, float y, float z) : Shape(x, y, z) {
     makeBuffers();
+    move(x, y, z);
 }

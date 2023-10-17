@@ -14,25 +14,27 @@ class Shader;
 
 class Camera{
 private:
-    Shader *shader;
-    glm::vec3 eye{0.f,0.f,1.78f};
+    std::list<Shader*> shaders; //observers :)
+
+    glm::vec3 eye{0.f,0.f,3.5f};
     glm::vec3 up{0.f,1.f,0.f};
     glm::vec3 target{0.f,0.f,-0.1f};
 
     glm::mat4 perspective{1.f};
-    std::list<Shader*> shaders;
+
 
 public:
     Camera(Shader* shader){
         shaders.push_back(shader);
     };
     Camera(){};
-    void linkShader(Shader* shader){
-        shaders.push_back(shader);
-    }
+    void linkShader(Shader* shader);
     glm::mat4 getCamera();
     void setPerspective(float fov, float ratio, float near, float far);
-    void metoda();
+
+    const glm::mat4 &getPerspective() const;
+
+    void notifyShaders();
 
     void moveRight(float deltaT);
     void moveLeft(float deltaT);
@@ -45,7 +47,7 @@ public:
 
     void lookX(float alpha, float fi);
     void lookX(float amount);
-
+    void lookY(float amount);
 };
 
 

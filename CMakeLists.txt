@@ -16,11 +16,10 @@ add_executable(${PROJECT_NAME} main.cpp
         Camera.h
         Shader.cpp
         Camera.cpp
-        Observers/Observer.h
         Composite/Composite.h
         ${MODELS} ${COMPOSITE_TRANSFORMATIONS}
         ShaderProgram.cpp
-        ShaderProgram.h)
+        ShaderProgram.h Factory/ModelFactory.cpp Factory/ModelFactory.h)
 
 #Link libraries on unix OS
 if(UNIX)

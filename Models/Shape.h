@@ -6,9 +6,7 @@
 #define TEST_SHAPE_H
 
 
-
-#include "../Shader.h"
-
+class Shader;
 #include "../Composite/Transformation/Transformation.h"
 
 #include <GL/glew.h>
@@ -19,10 +17,12 @@ protected:
     GLuint VBO_A = 0;
     GLuint VAO_A = 0;
 
+    Shader* shader;
+
     Transformation transformation;
 
-    Shape(float x, float y, float z) : x(x), y(y), z(z) {};
-    Shape(float x, float y, float z, float size) : x(x), y(y), z(z), size(size) {};
+    Shape(float x, float y, float z){};
+    Shape(float x, float y, float z, float size): size(size) {};
 
 
 
@@ -42,16 +42,11 @@ protected:
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     }
 public:
-    float x,y,z;
     float size = 0.5;
 
-    glm::vec3 getPosition();
+    void setShader(Shader* shader);
 
-    virtual void draw(Shader shader);;
-
-    void performTransformations(Shader shader){
-        transformation.action(shader);
-    }
+    virtual void draw() = 0;
 
     virtual void rotate(float angle, glm::vec3 axis);
 

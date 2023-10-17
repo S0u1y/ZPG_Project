@@ -21,7 +21,7 @@ private:
 public:
     Model(float x, float y, float z, const float *modelVertices, size_t size);
 
-    void draw(Shader shader) override;
+    void draw() override;
 
 };
 

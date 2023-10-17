@@ -23,8 +23,8 @@ int main()
     Application app{};
 
     app.initialize();
-    app.createModels();
     app.createShaders();
+    app.createModels();
     app.run();
 
 
