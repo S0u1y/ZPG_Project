@@ -1,5 +1,5 @@
 //
-// Created by Filip on 14.10.2023.
+// Created by wizzy on 14.10.2023.
 //
 
 #ifndef TEST_SPHERE_H

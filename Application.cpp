@@ -1,5 +1,5 @@
 //
-// Created by Filip on 14.10.2023.
+// Created by wizzy on 14.10.2023.
 //
 
 #include "Application.h"
@@ -19,43 +19,20 @@ void Application::GLFWCallbackWrapper::key_callback(GLFWwindow *window, int key,
         glfwSetWindowShouldClose(window, GL_TRUE);
     //add observer here for camera
     if(action == GLFW_PRESS or action == GLFW_REPEAT)
-    switch(key){
-        case GLFW_KEY_W:{
-
+    {
+        if(key == GLFW_KEY_W){
             application->camera.moveForward();
-
-            break;
         }
-        case GLFW_KEY_A:{
-
+        if(key == GLFW_KEY_A){
             application->camera.moveLeft(application->deltaT);
-
-            break;
         }
-        case GLFW_KEY_S:{
-
+        if(key == GLFW_KEY_S){
             application->camera.moveBack();
-
-            break;
         }
-        case GLFW_KEY_D:{
-
+        if(key == GLFW_KEY_D){
             application->camera.moveRight(application->deltaT);
-            break;
         }
-        case GLFW_KEY_RIGHT:{
-
-            application->camera.lookX(1);
-            break;
-        }
-        case GLFW_KEY_LEFT:{
-
-            application->camera.lookX(-1);
-
-            break;
-        }
-        case GLFW_KEY_Q:{
-
+        if(key== GLFW_KEY_Q){
             locked = !locked;
 
             if(locked){
@@ -63,8 +40,6 @@ void Application::GLFWCallbackWrapper::key_callback(GLFWwindow *window, int key,
             }else{
                 glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
             }
-
-            break;
         }
     }
 //    printf("key_callback [%d,%d,%d,%d] \n", key, scancode, action, mods);
@@ -117,7 +92,7 @@ Application::Application() {
                                              "void main () {\n"
                                              "      gl_Position = projectionMatrix * viewMatrix * MVP * vp;\n"
                                              "      float pct = abs(sin(time));\n"
-                                             "      color = mix(vec4(colorA, 1), normal, pct);\n"
+                                             "      color = mix(vec4(colorA, 1), vec4(colorB, 1), pct);\n"
                                              "}"
                                              ,"#version 330\n"
                                                   "out vec4 frag_colour;"
@@ -144,13 +119,46 @@ Application::Application() {
                                              "    frag_colour = color;"
                                              "}");
 
+    shaderProgram.createShader("Light", "#version 400\n"
+                                        "layout(location=0) in vec3 vp;"
+                                        "layout(location=1) in vec3 normal;"
+
+                                        "uniform mat4 MVP;"
+                                        "uniform mat4 viewMatrix;"
+                                        "uniform mat4 projectionMatrix;"
+
+                                        "out vec3 worldNormal;"
+                                        "out vec4 worldPosition;"
+
+                                        "void main () {\n"
+                                        "      gl_Position = projectionMatrix * viewMatrix * MVP * vec4(vp, 1.0);\n"
+                                        "      worldNormal = vec3(MVP * vec4(normal, 1.0));\n"
+                                        "      worldPosition = MVP * vec4(normal, 1);\n"
+                                        "}"
+                                        ,"#version 400\n"
+                                         "out vec4 frag_colour;"
+                                         "in vec3 worldNormal;"
+                                         "in vec4 worldPosition;"
+                                         "void main () {\n"
+                                         "      vec3 lightPosition = vec3(0,0.1,0);\n"
+                                         "      vec3 lightVector = vec3(1,1,0);\n"
+                                         "      float diff = max(dot(normalize(lightVector + lightPosition), normalize(worldNormal)), 0.0);\n"
+                                         "      vec4 ambient = vec4(0.01,0.1,0.1,1.0);\n"
+                                         "      vec4 diffuse = diff * vec4(1,1,1,1)\n;"
+                                         "      vec4 objectColor = vec4 (0.385 ,0.647 ,0.812 ,1.0);\n"
+                                         "      frag_colour = ( ambient + diffuse ) * objectColor ;\n"
+                                         "}");
 
 
-    shaderProgram.getShader("MainShader").linkCamera(&camera);
-    shaderProgram.getShaderp("Gradient")->linkCamera(&camera);
 
-    camera.linkShader(shaderProgram.getShaderp("MainShader"));
-    camera.linkShader(shaderProgram.getShaderp("Gradient"));
+
+    shaderProgram.getShaderp("MainShader")->linkToSubject(&camera);
+    shaderProgram.getShaderp("Gradient")->linkToSubject(&camera);
+    shaderProgram.getShaderp("Light")->linkToSubject(&camera);
+
+    camera.addObserver(shaderProgram.getShaderp("MainShader"));
+    camera.addObserver(shaderProgram.getShaderp("Gradient"));
+    camera.addObserver(shaderProgram.getShaderp("Light"));
 
     camera.setPerspective(60.f, 4.f/3.f, 0.1f, 100.f);
     GLFWCallbackWrapper::setApplication(this);
@@ -213,7 +221,7 @@ void Application::createShaders() {//create class working with shaders..
 
 //TODO create scene class
 void Application::createModels() {
-    camera.notifyShaders(); //initial render for camera. Shaders need to be created!
+    camera.notify(); //initial render for camera. Shaders need to be created!
 
     auto sphere0 = new Sphere(1.5,0,0);
     sphere0->setShader(shaderProgram.getShaderp("Gradient"));
@@ -222,13 +230,13 @@ void Application::createModels() {
     sphere1->setShader(shaderProgram.getShaderp("MainShader"));
 
     auto sphere2 = new Sphere(0,1.5,0);
-    sphere2->setShader(shaderProgram.getShaderp("Gradient"));
+    sphere2->setShader(shaderProgram.getShaderp("Light"));
 
     auto sphere3 = new Sphere(0,-1.5,0);
     sphere3->setShader(shaderProgram.getShaderp("MainShader"));
 
-    auto suziF = ModelFactory::createModel("suzi_flat", 0,0,0);
-    suziF->setShader(shaderProgram.getShaderp("MainShader"));
+//    auto suziF = ModelFactory::createModel("suzi_flat", 0,0,0);
+//    suziF->setShader(shaderProgram.getShaderp("MainShader"));
 
 
     shapes.push_back(unique_ptr<Shape>(sphere0));
@@ -236,7 +244,7 @@ void Application::createModels() {
     shapes.push_back(unique_ptr<Shape>(sphere2));
     shapes.push_back(unique_ptr<Shape>(sphere3));
 
-    shapes.push_back(unique_ptr<Shape>(suziF));
+//    shapes.push_back(unique_ptr<Shape>(suziF));
 
 //    shapes[0]->scale(glm::vec3(0.3));
 }
@@ -247,19 +255,13 @@ void Application::drawModels() {
 
     shaderProgram.getShader("Gradient").setUniformFloat("time", (float)glfwGetTime() );
 
-    shapes[0]->rotate(glm::radians(1.f), glm::vec3(0,1,0));
-    shapes[0]->move(-1.5, 0, 0);
-
-    shapes[1]->rotate(glm::radians(1.f), glm::vec3(0,1,0));
-    shapes[1]->move(1.5, 0, 0);
+    shapes[2]->rotate(glm::radians(1.f), glm::vec3(1,1,0));
 
     for (const auto &item : shapes){
 
         item->draw();
     }
 
-    shapes[0]->move(1.5, 0, 0);
-    shapes[1]->move(-1.5, 0, 0);
 }
 
 void Application::run() {

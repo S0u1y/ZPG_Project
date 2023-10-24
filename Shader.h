@@ -13,12 +13,13 @@
 #include <string>
 
 #include <glm/ext/matrix_float4x4.hpp>
+#include "Observer/Observer.h"
 
 using std::vector;
 
 class Camera;
 
-class Shader {
+class Shader : public Observer<Camera>{
 private:
     const char* vertex_shader;
 
@@ -28,23 +29,14 @@ private:
     GLuint fragmentShader{};
     GLuint shaderProgram{};
 
-    Camera* camera;
-
 public:
-    Shader(Camera* camera) : camera(camera)
-    {
-    }
     Shader(){};
 
     Shader(const char* vertexShader, const char* fragmentShader)
     : vertex_shader(vertexShader), fragment_shader(fragmentShader)
     {}
 
-    void linkCamera(Camera* camera){
-        this->camera = camera;
-    }
-
-    void onNotify();
+    void onNotify() override;
 
     GLuint create();
 
@@ -59,6 +51,10 @@ public:
         glUniform1f(getUniform(name), var);
     }
 
+    void setUniformVec3(const char* name, glm::vec3 vector){
+        useShader();
+        glUniform3f(getUniform(name), vector.x, vector.y, vector.z);
+    }
 
 };
 

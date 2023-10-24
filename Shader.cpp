@@ -8,15 +8,37 @@ GLuint Shader::create() {
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertex_shader, NULL);
     glCompileShader(vertexShader);
+
+    GLint status;
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
+    if(status == GL_FALSE){
+        GLint logSize;
+        glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &logSize);
+        GLchar* errorLog = new GLchar[logSize+1];
+        glGetShaderInfoLog(vertexShader, logSize, NULL, errorLog);
+        printf("Compile failed: %s \n", errorLog);
+        delete [] errorLog;
+    }
+
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragment_shader, NULL);
     glCompileShader(fragmentShader);
+
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
+    if(status == GL_FALSE){
+        GLint logSize;
+        glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &logSize);
+        GLchar* errorLog = new GLchar[logSize+1];
+        glGetShaderInfoLog(fragmentShader, logSize, NULL, errorLog);
+        printf("Compile failed: %s \n", errorLog);
+        delete [] errorLog;
+    }
+
     shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, fragmentShader);
     glAttachShader(shaderProgram, vertexShader);
     glLinkProgram(shaderProgram);
 
-    GLint status ;
     glGetProgramiv ( shaderProgram , GL_LINK_STATUS , & status );
     if ( status == GL_FALSE )
     {
@@ -48,6 +70,6 @@ void Shader::setMatrixUniform(const char *name, glm::mat4 mat) {
 //pass camera through function instead?
 void Shader::onNotify() {
     useShader();
-    setMatrixUniform("projectionMatrix", camera->getPerspective());
-    setMatrixUniform("viewMatrix", camera->getCamera());
+    setMatrixUniform("projectionMatrix", subject->getPerspective());
+    setMatrixUniform("viewMatrix", subject->getCamera());
 }

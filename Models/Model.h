@@ -1,5 +1,5 @@
 //
-// Created by Filip on 10.10.2023.
+// Created by wizzy on 10.10.2023.
 //
 
 #ifndef TEST_MODEL_H

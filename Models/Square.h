@@ -1,5 +1,5 @@
 //
-// Created by Filip on 27.09.2023.
+// Created by wizzy on 27.09.2023.
 //
 
 #ifndef PRVNICLION_SQUARE_H

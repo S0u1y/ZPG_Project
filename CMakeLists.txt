@@ -19,7 +19,11 @@ add_executable(${PROJECT_NAME} main.cpp
         Composite/Composite.h
         ${MODELS} ${COMPOSITE_TRANSFORMATIONS}
         ShaderProgram.cpp
-        ShaderProgram.h Factory/ModelFactory.cpp Factory/ModelFactory.h)
+        ShaderProgram.h Factory/ModelFactory.cpp Factory/ModelFactory.h
+        Observer/Observer.cpp
+        Observer/Observer.h
+        Observer/Subject.cpp
+        Observer/Subject.h)
 
 #Link libraries on unix OS
 if(UNIX)

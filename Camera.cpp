@@ -11,16 +11,6 @@
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtx/rotate_vector.hpp>
 
-void Camera::linkShader(Shader *shader) {
-    shaders.push_back(shader);
-}
-
-void Camera::notifyShaders() {//notify all observers :)
-    for (const auto &item: shaders){
-        item->onNotify();
-    }
-}
-
 glm::mat4 Camera::getCamera() {
     glm::mat4 view{1.f};
     view = glm::lookAt(eye, eye+target, up);
@@ -36,52 +26,52 @@ void Camera::setPerspective(float fov, float ratio, float near, float far) {
 
 void Camera::moveX(float amount) {
     eye.x += amount;
-    notifyShaders();
+    notify();
 }
 
 void Camera::moveY(float amount) {
     eye.y += amount;
-    notifyShaders();
+    notify();
 }
 
 void Camera::moveZ(float amount) {
     eye.z += amount;
-    notifyShaders();
+    notify();
 }
 
 void Camera::lookX(float alpha, float fi) {
     target.x += sin(alpha)*cos(fi);
-    notifyShaders();
+    notify();
 }
 
 void Camera::lookX(float degrees) {
     target = glm::rotate(target, glm::radians(-degrees), up);
-    notifyShaders();
+    notify();
 }
 
 void Camera::lookY(float amount) {
     target = glm::rotate(target, glm::radians(-amount), glm::normalize(glm::cross(target, up)));
-    notifyShaders();
+    notify();
 }
 
 void Camera::moveRight(float deltaT) {
     eye += ( glm::normalize ( glm::cross( target , up ))) * (1.f * deltaT);
-    notifyShaders();
+    notify();
 }
 
 void Camera::moveLeft(float deltaT) {
     eye += -( glm::normalize ( glm::cross( target , up ))) * (1.f * deltaT);
-    notifyShaders();
+    notify();
 }
 
 void Camera::moveBack() {
     eye += -glm::normalize(target) * 0.01f;
-    notifyShaders();
+    notify();
 }
 
 void Camera::moveForward() {
-    eye += glm::normalize(target) * 0.01f;
-    notifyShaders();
+    eye += glm::normalize(target) * 0.1f;
+    notify();
 }
 
 

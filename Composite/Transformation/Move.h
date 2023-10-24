@@ -1,5 +1,5 @@
 //
-// Created by Filip on 14.10.2023.
+// Created by wizzy on 14.10.2023.
 //
 
 #ifndef TEST_MOVE_H
@@ -19,9 +19,7 @@ private:
 public:
     Move(const glm::vec3 &vector) : vector(vector) {}
 
-    void action(glm::mat4 &M) override {
-        M = glm::translate(M, vector);
-    }
+    void action(glm::mat4 &M) override;
 };
 
 

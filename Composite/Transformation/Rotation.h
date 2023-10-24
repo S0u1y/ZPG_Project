@@ -1,5 +1,5 @@
 //
-// Created by Filip on 14.10.2023.
+// Created by wizzy on 14.10.2023.
 //
 
 #ifndef TEST_ROTATION_H
@@ -24,9 +24,7 @@ private:
 public:
     Rotation(float angle, const glm::vec3 &axis) : angle(angle), axis(axis) {}
 
-    void action(glm::mat4 &M) override {
-        M = glm::rotate(M, angle, axis);
-    }
+    void action(glm::mat4 &M) override;
 
 };
 

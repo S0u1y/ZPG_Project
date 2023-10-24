@@ -1,5 +1,5 @@
 //
-// Created by Filip on 14.10.2023.
+// Created by wizzy on 14.10.2023.
 //
 
 #ifndef TEST_SPHERE_H
@@ -12,7 +12,7 @@ class Sphere : public Shape{
 public:
     Sphere(float x, float y, float z);
 
-    void draw(Shader shader) override;
+    void draw() override;
 private:
 
 

@@ -1,5 +1,5 @@
 //
-// Created by Filip on 08.10.2023.
+// Created by wizzy on 08.10.2023.
 //
 
 #ifndef TEST_TRIANGLE_H

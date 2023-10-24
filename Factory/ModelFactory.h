@@ -1,5 +1,5 @@
 //
-// Created by Filip on 17.10.2023.
+// Created by wizzy on 17.10.2023.
 //
 
 #ifndef TEST_MODELFACTORY_H
