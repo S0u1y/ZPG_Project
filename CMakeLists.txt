@@ -23,7 +23,7 @@ add_executable(${PROJECT_NAME} main.cpp
         Observer/Observer.cpp
         Observer/Observer.h
         Observer/Subject.cpp
-        Observer/Subject.h)
+        Observer/Subject.h Light.cpp Light.h)
 
 #Link libraries on unix OS
 if(UNIX)

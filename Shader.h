@@ -18,7 +18,9 @@
 using std::vector;
 
 class Camera;
+class Light;
 
+//TODO add ShaderLoader functionality
 class Shader : public Observer<Camera>{
 private:
     const char* vertex_shader;
@@ -36,6 +38,9 @@ public:
     : vertex_shader(vertexShader), fragment_shader(fragmentShader)
     {}
 
+    void onNotify(Camera* camera);
+    void onNotify(Light* light);
+
     void onNotify() override;
 
     GLuint create();
@@ -51,10 +56,7 @@ public:
         glUniform1f(getUniform(name), var);
     }
 
-    void setUniformVec3(const char* name, glm::vec3 vector){
-        useShader();
-        glUniform3f(getUniform(name), vector.x, vector.y, vector.z);
-    }
+    void setUniformVec3(const char* name, glm::vec3 vector);
 
 };
 

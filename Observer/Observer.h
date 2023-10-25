@@ -8,15 +8,9 @@
 template<typename T>
 class Observer {
 protected:
-    T* subject;
 public:
-    void linkToSubject(T* subject){
-        this->subject = subject;
-    }
     virtual void onNotify() = 0;
-
-    template<typename ...A>
-    void onNotify(A... data) {};
+    virtual void onNotify(T* subject) = 0;
 };
 
 

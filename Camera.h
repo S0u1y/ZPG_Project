@@ -13,7 +13,7 @@ class Shader;
 #include <list>
 #include "Observer/Subject.h"
 
-class Camera : public Subject{
+class Camera : public Subject<Camera>{
 private:
 //    std::list<Shader*> shaders; //observers :)
 
@@ -25,9 +25,6 @@ private:
 
 
 public:
-    Camera(Shader* shader){
-        addObserver(shader);
-    };
     Camera(){};
     glm::mat4 getCamera();
     void setPerspective(float fov, float ratio, float near, float far);
@@ -46,6 +43,8 @@ public:
     void lookX(float alpha, float fi);
     void lookX(float amount);
     void lookY(float amount);
+
+    const glm::vec3 &getEye() const;
 };
 
 

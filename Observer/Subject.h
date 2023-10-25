@@ -6,33 +6,26 @@
 #define TEST_SUBJECT_H
 
 #include <list>
+#include <vector>
 #include "Observer.h"
 
+template<typename T>
 class Subject {
-protected:
-    std::list<Observer<Subject>*> observers;
 public:
-    void addObserver(Observer<Subject>* observer){
-
+    Subject() {}
+    virtual ~Subject() {}
+    void addObserver (Observer<T> *observer)
+    {
         observers.push_back(observer);
     }
-    //I will burn in programmers' hell for this as well...
-    void addObserver(void* observer){
-
-        observers.push_back(reinterpret_cast<Observer<Subject> *>(observer));
-    }
-    void notify(){
-        for (const auto &item: observers){
-            item->onNotify();
+    void notify ()
+    {
+        for (const auto &item : observers){
+            item->onNotify((T*)this);
         }
     }
-    //we want to add functionality for multiple data..
-    template<typename ...T>
-    void notify(T... data){
-        for (const auto &item: observers){
-            item->onNotify(data...);
-        }
-    }
+private:
+    std::vector<Observer<T> *> observers;
 };
 
 

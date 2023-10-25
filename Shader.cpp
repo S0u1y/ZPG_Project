@@ -1,8 +1,10 @@
 //
 // Created by wizzy on 11.10.23.
 //
+#include <cstring>
 #include "Shader.h"
 #include "Camera.h"
+#include "Light.h"
 
 GLuint Shader::create() {
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -64,12 +66,36 @@ GLint Shader::getUniform(const char *name) const {
 
 void Shader::setMatrixUniform(const char *name, glm::mat4 mat) {
     useShader();
-    glUniformMatrix4fv(getUniform(name), 1, GL_FALSE, &mat[0][0]);
+    auto id = getUniform(name);
+    if(id < 0)
+        return;
+    glUniformMatrix4fv(id, 1, GL_FALSE, &mat[0][0]);
+}
+
+void Shader::setUniformVec3(const char *name, glm::vec3 vector) {
+    useShader();
+    auto id = getUniform(name);
+    if(id < 0)
+        return;
+
+    glUniform3f(id, vector.x, vector.y, vector.z);
 }
 
 //pass camera through function instead?
-void Shader::onNotify() {
+void Shader::onNotify(Camera* subject) {
     useShader();
     setMatrixUniform("projectionMatrix", subject->getPerspective());
     setMatrixUniform("viewMatrix", subject->getCamera());
+    setUniformVec3("cameraPosition", subject->getEye());
 }
+
+void Shader::onNotify(Light *light) {
+
+}
+
+void Shader::onNotify() {
+}
+
+
+
+

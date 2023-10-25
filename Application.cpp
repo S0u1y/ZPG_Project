@@ -6,6 +6,8 @@
 
 #include "Factory/ModelFactory.h"
 
+#define SCENE 3
+
 Application* Application::GLFWCallbackWrapper::application = nullptr;
 
 void Application::GLFWCallbackWrapper::setApplication(Application *p_application) {
@@ -13,7 +15,6 @@ void Application::GLFWCallbackWrapper::setApplication(Application *p_application
 }
 
 bool locked = false;
-//TODO make camera into an observer, that listens to this callback
 void Application::GLFWCallbackWrapper::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
@@ -47,17 +48,16 @@ void Application::GLFWCallbackWrapper::key_callback(GLFWwindow *window, int key,
 
 int _width, _height;
 
-//TODO make camera into an observer, that listens to this callback
 void Application::GLFWCallbackWrapper::window_size_callback(GLFWwindow *window, int width, int height) {
 //    printf("resize %d, %d\n", width, height);
-    application->camera.setPerspective(60, (float)width/(float)height, 0.1, 100);
+    float ratio{(float)width/(float)height};
+    application->camera.setPerspective(60, ratio, 0.1, 100);
     glViewport(0, 0, width, height);
 
     _width = width;
     _height = height;
 }
 
-//TODO make camera into an observer, that listens to this callback
 void Application::GLFWCallbackWrapper::cursor_callback(GLFWwindow *window, double x, double y) {
 
     if(locked){
@@ -100,6 +100,23 @@ Application::Application() {
                                                   "void main () {"
                                                   "    frag_colour = color;"
                                                   "}");
+    shaderProgram.createShader("Constant", "#version 400\n"
+                                             "layout(location=0) in vec4 vp;"
+                                             "layout(location=1) in vec4 normal;"
+                                             "out vec4 color;"
+                                             "uniform mat4 MVP;"
+                                             "uniform mat4 viewMatrix;"
+                                             "uniform mat4 projectionMatrix;"
+
+                                             "void main () {\n"
+                                             "      gl_Position = projectionMatrix * viewMatrix * MVP * vp;\n"
+                                             "}"
+                                            ,"#version 330\n"
+                                             "out vec4 frag_colour;"
+                                             "in vec4 color;"
+                                             "void main () {"
+                                             "    frag_colour = vec4(0,0,0.35,1);"
+                                             "}");
     shaderProgram.createShader("MainShader", "#version 400\n"
                                              "layout(location=0) in vec4 vp;"
                                              "layout(location=1) in vec4 normal;"
@@ -112,12 +129,12 @@ Application::Application() {
                                              "      gl_Position = projectionMatrix * viewMatrix * MVP * vp;\n"
                                              "      color = normal;\n"
                                              "}"
-                                            ,"#version 330\n"
-                                             "out vec4 frag_colour;"
-                                             "in vec4 color;"
-                                             "void main () {"
-                                             "    frag_colour = color;"
-                                             "}");
+            ,"#version 330\n"
+             "out vec4 frag_colour;"
+             "in vec4 color;"
+             "void main () {"
+             "    frag_colour = color;"
+             "}");
 
     shaderProgram.createShader("Light", "#version 400\n"
                                         "layout(location=0) in vec3 vp;"
@@ -128,37 +145,125 @@ Application::Application() {
                                         "uniform mat4 projectionMatrix;"
 
                                         "out vec3 worldNormal;"
-                                        "out vec4 worldPosition;"
+                                        "out vec3 worldPosition;"
 
                                         "void main () {\n"
                                         "      gl_Position = projectionMatrix * viewMatrix * MVP * vec4(vp, 1.0);\n"
-                                        "      worldNormal = vec3(MVP * vec4(normal, 1.0));\n"
-                                        "      worldPosition = MVP * vec4(normal, 1);\n"
+                                        "      //\n"
+                                        "      worldNormal = transpose(inverse(mat3(MVP))) * normal;\n"
+                                        "      worldPosition = vec3(MVP * vec4(vp, 1.0));\n"
                                         "}"
                                         ,"#version 400\n"
                                          "out vec4 frag_colour;"
                                          "in vec3 worldNormal;"
                                          "in vec4 worldPosition;"
                                          "void main () {\n"
-                                         "      vec3 lightPosition = vec3(0,0.1,0);\n"
-                                         "      vec3 lightVector = vec3(1,1,0);\n"
-                                         "      float diff = max(dot(normalize(lightVector + lightPosition), normalize(worldNormal)), 0.0);\n"
+                                         "      vec3 lightPosition = vec3(0,0,0);\n"
+                                         "      vec3 lightVector = vec3(0,10,0);\n"
+                                         "      float diff = max(dot(normalize(lightPosition - vec3(worldPosition)), normalize(worldNormal)), 0.0);\n"
                                          "      vec4 ambient = vec4(0.01,0.1,0.1,1.0);\n"
                                          "      vec4 diffuse = diff * vec4(1,1,1,1)\n;"
                                          "      vec4 objectColor = vec4 (0.385 ,0.647 ,0.812 ,1.0);\n"
                                          "      frag_colour = ( ambient + diffuse ) * objectColor ;\n"
                                          "}");
 
+    shaderProgram.createShader("Phong", "#version 400\n"
+                                        "layout(location=0) in vec3 vp;"
+                                        "layout(location=1) in vec3 normal;"
+
+                                        "uniform mat4 MVP;"
+                                        "uniform mat4 viewMatrix;"
+                                        "uniform mat4 projectionMatrix;"
+
+                                        "out vec3 worldNormal;"
+                                        "out vec3 worldPosition;"
+
+                                        "void main () {\n"
+                                        "      gl_Position = projectionMatrix * viewMatrix * MVP * vec4(vp, 1.0);\n"
+                                        "      //\n"
+                                        "      worldNormal = transpose(inverse(mat3(MVP))) * normal;\n"
+                                        "      worldPosition = vec3(MVP * vec4(vp, 1.0));\n"
+                                        "}"
+                                        ,"#version 400\n"
+                                         "out vec4 frag_colour;"
+                                         "in vec3 worldNormal;"
+                                         "in vec4 worldPosition;"
+                                         ""
+                                         "uniform vec3 cameraPosition;"
+                                         "void main () {\n"
+                                         "      vec3 lightPosition = vec3(0,0,0);\n"
+                                         "      vec3 lightVector = vec3(0,10,0);\n"
+                                         "      vec3 lightDirection = normalize(lightPosition - vec3(worldPosition));\n"
+                                         "      float diff = max(dot(normalize(lightPosition - vec3(worldPosition)), normalize(worldNormal)), 0.0);\n"
+                                         ""
+                                         "      float specularLight = 0.50f;\n"
+                                         "      vec3 reflectionDirection = reflect(-lightDirection, worldNormal);\n"
+                                         "      vec3 viewDirection = normalize(cameraPosition - vec3(worldPosition));\n"
+                                         "      float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 8);\n"
+                                         "      float specular = specAmount * specularLight;\n"
+                                         ""
+                                         "      vec4 ambient = vec4(0.01, 0.1, 0.1, 1.0);\n"
+                                         "      vec4 diffuse = diff * vec4(1, 1, 1, 1)\n;"
+                                         ""
+                                         ""
+                                         "      vec4 objectColor = vec4 (0.385 ,0.647 ,0.812 ,1.0);\n"
+                                         "      frag_colour = ( ambient + diffuse + specular )* objectColor ;\n"
+                                         "}");
+
+    shaderProgram.createShader("Blinn-Phong", "#version 400\n"
+                                        "layout(location=0) in vec3 vp;"
+                                        "layout(location=1) in vec3 normal;"
+
+                                        "uniform mat4 MVP;"
+                                        "uniform mat4 viewMatrix;"
+                                        "uniform mat4 projectionMatrix;"
+
+                                        "out vec3 worldNormal;"
+                                        "out vec3 worldPosition;"
+
+                                        "void main () {\n"
+                                        "      gl_Position = projectionMatrix * viewMatrix * MVP * vec4(vp, 1.0);\n"
+                                        "      //\n"
+                                        "      worldNormal = transpose(inverse(mat3(MVP))) * normal;\n"
+                                        "      worldPosition = vec3(MVP * vec4(vp, 1.0));\n"
+                                        "}"
+                                        ,"#version 400\n"
+                                         "out vec4 frag_colour;"
+                                         "in vec3 worldNormal;"
+                                         "in vec4 worldPosition;"
+                                         ""
+                                         "uniform vec3 cameraPosition;"
+                                         "void main () {\n"
+                                         "      vec3 lightPosition = vec3(0,0,0);\n"
+                                         "      vec3 lightVector = vec3(0,10,0);\n"
+                                         "      vec3 lightDirection = normalize(lightPosition - vec3(worldPosition));\n"
+                                         "      float diff = max(dot(normalize(lightPosition - vec3(worldPosition)), normalize(worldNormal)), 0.0);\n"
+                                         ""
+                                         "      vec3 halfwayDir = normalize ( lightDirection + cameraPosition );\n"
+                                         "      float specularLight = 0.50f;\n"
+                                         "      vec3 reflectionDirection = reflect(-lightDirection, worldNormal);\n"
+                                         "      vec3 viewDirection = normalize(cameraPosition - vec3(worldPosition));\n"
+                                         "      float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 8);\n"
+                                         "      vec3 specular = lightDirection * reflectionDirection * max((worldNormal * halfwayDir), 0);\n"
+                                         ""
+                                         ""
+                                         ""
+                                         ""
+                                         "      vec4 ambient = vec4(0.01, 0.1, 0.1, 1.0);\n"
+                                         "      vec4 diffuse = diff * vec4(1, 1, 1, 1)\n;"
+                                         ""
+                                         ""
+                                         "      vec4 objectColor = vec4 (0.385 ,0.647 ,0.812 ,1.0);\n"
+                                         "      frag_colour = ( ambient + diffuse + vec4(specular,1) )* objectColor ;\n"
+                                         "}");
 
 
-
-    shaderProgram.getShaderp("MainShader")->linkToSubject(&camera);
-    shaderProgram.getShaderp("Gradient")->linkToSubject(&camera);
-    shaderProgram.getShaderp("Light")->linkToSubject(&camera);
-
-    camera.addObserver(shaderProgram.getShaderp("MainShader"));
+    camera.addObserver(shaderProgram.getShaderp("MainShader"));//TODO add for-each loop to shaderProgram
     camera.addObserver(shaderProgram.getShaderp("Gradient"));
     camera.addObserver(shaderProgram.getShaderp("Light"));
+    camera.addObserver(shaderProgram.getShaderp("Phong"));
+    camera.addObserver(shaderProgram.getShaderp("Blinn-Phong"));
+    camera.addObserver(shaderProgram.getShaderp("Constant"));
 
     camera.setPerspective(60.f, 4.f/3.f, 0.1f, 100.f);
     GLFWCallbackWrapper::setApplication(this);
@@ -215,47 +320,114 @@ void Application::initialize() {
 
 }
 
-void Application::createShaders() {//create class working with shaders..
+void Application::createShaders() {
     shaderProgram.createAllShaders();
 }
 
 //TODO create scene class
 void Application::createModels() {
+
     camera.notify(); //initial render for camera. Shaders need to be created!
 
-    auto sphere0 = new Sphere(1.5,0,0);
-    sphere0->setShader(shaderProgram.getShaderp("Gradient"));
+    switch(SCENE){
+        case 0:
+        {
 
-    auto sphere1 = new Sphere(-1.5,0,0);
-    sphere1->setShader(shaderProgram.getShaderp("MainShader"));
+            auto sphere0 = new Sphere(1.5,0,0);
+            sphere0->setShader(shaderProgram.getShaderp("Gradient"));
 
-    auto sphere2 = new Sphere(0,1.5,0);
-    sphere2->setShader(shaderProgram.getShaderp("Light"));
+            auto sphere1 = new Sphere(-1.5,0,0);
+            sphere1->setShader(shaderProgram.getShaderp("MainShader"));
 
-    auto sphere3 = new Sphere(0,-1.5,0);
-    sphere3->setShader(shaderProgram.getShaderp("MainShader"));
+            auto sphere2 = new Sphere(0,1.5,0);
+            sphere2->setShader(shaderProgram.getShaderp("Light"));
+
+            auto sphere3 = new Sphere(0,-1.5,0);
+            sphere3->setShader(shaderProgram.getShaderp("MainShader"));
 
 //    auto suziF = ModelFactory::createModel("suzi_flat", 0,0,0);
 //    suziF->setShader(shaderProgram.getShaderp("MainShader"));
 
 
-    shapes.push_back(unique_ptr<Shape>(sphere0));
-    shapes.push_back(unique_ptr<Shape>(sphere1));
-    shapes.push_back(unique_ptr<Shape>(sphere2));
-    shapes.push_back(unique_ptr<Shape>(sphere3));
+            shapes.push_back(unique_ptr<Shape>(sphere0));
+            shapes.push_back(unique_ptr<Shape>(sphere1));
+            shapes.push_back(unique_ptr<Shape>(sphere2));
+            shapes.push_back(unique_ptr<Shape>(sphere3));
 
 //    shapes.push_back(unique_ptr<Shape>(suziF));
 
 //    shapes[0]->scale(glm::vec3(0.3));
+
+            break;
+        }
+        case 1:{
+
+            auto sphere0 = new Sphere(0,0,1.5);
+            sphere0->setShader(shaderProgram.getShaderp("Light"));
+            shapes.push_back(unique_ptr<Shape>(sphere0));
+            break;
+        }
+        case 2:{
+
+            auto sphere0 = new Sphere(1.5,0,0);
+            sphere0->setShader(shaderProgram.getShaderp("Light"));
+
+            auto sphere1 = new Sphere(-1.5,0,0);
+            sphere1->setShader(shaderProgram.getShaderp("Light"));
+
+            auto sphere2 = new Sphere(0,1.5,0);
+            sphere2->setShader(shaderProgram.getShaderp("Light"));
+
+            auto sphere3 = new Sphere(0,-1.5,0);
+            sphere3->setShader(shaderProgram.getShaderp("Light"));
+
+            shapes.push_back(unique_ptr<Shape>(sphere0));
+            shapes.push_back(unique_ptr<Shape>(sphere1));
+            shapes.push_back(unique_ptr<Shape>(sphere2));
+            shapes.push_back(unique_ptr<Shape>(sphere3));
+
+            break;
+        }
+        case 3:{
+
+            auto sphere0 = new Sphere(1.5,0,0);
+            sphere0->setShader(shaderProgram.getShaderp("Light"));
+
+            auto sphere1 = new Sphere(-1.5,0,0);
+            sphere1->setShader(shaderProgram.getShaderp("Phong"));
+
+            auto sphere2 = new Sphere(0,1.5,0);
+            sphere2->setShader(shaderProgram.getShaderp("Blinn-Phong"));
+
+            auto sphere3 = new Sphere(0,-1.5,0);
+            sphere3->setShader(shaderProgram.getShaderp("Constant"));
+
+            shapes.push_back(unique_ptr<Shape>(sphere0));
+            shapes.push_back(unique_ptr<Shape>(sphere1));
+            shapes.push_back(unique_ptr<Shape>(sphere2));
+            shapes.push_back(unique_ptr<Shape>(sphere3));
+
+            break;
+        }
+    }
+
+
 }
 
 void Application::drawModels() {
 
-//    shapes[0]->rotate(glm::radians(1.f), glm::vec3(1,1,0)); //rotate model :)
-
     shaderProgram.getShader("Gradient").setUniformFloat("time", (float)glfwGetTime() );
 
-    shapes[2]->rotate(glm::radians(1.f), glm::vec3(1,1,0));
+    switch(SCENE){
+        case 0:
+        {
+            shapes[2]->rotate(glm::radians(1.f), glm::vec3(1,0,0));
+
+            break;
+        }
+    }
+
+
 
     for (const auto &item : shapes){
 

@@ -80,6 +80,10 @@ const glm::mat4 &Camera::getPerspective() const {
     return perspective;
 }
 
+const glm::vec3 &Camera::getEye() const {
+    return eye;
+}
+
 
 
 
