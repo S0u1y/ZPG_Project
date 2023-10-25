@@ -21,7 +21,7 @@ class Camera;
 class Light;
 
 //TODO add ShaderLoader functionality
-class Shader : public Observer<Camera>{
+class Shader : public Observer<Camera>, public Observer<Light>{
 private:
     const char* vertex_shader;
 
