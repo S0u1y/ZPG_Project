@@ -20,9 +20,11 @@
 #include <vector>
 #include <memory>
 
-#include "ShaderProgram.h"
+//#include "ShaderProgram.h"
 
 #include "Camera.h"
+#include "Shaders/ShaderProgramHolder.h"
+
 class Shape;
 
 using std::vector, std::unique_ptr;
@@ -32,7 +34,9 @@ private:
 
     GLFWwindow* window;
 
-    ShaderProgram shaderProgram;
+//    ShaderProgram shaderProgram;
+
+    ShaderProgramHolder shaderProgramHolder;
 
     Camera camera;
 

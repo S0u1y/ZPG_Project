@@ -6,7 +6,7 @@
 
 #include "Factory/ModelFactory.h"
 
-#define SCENE 3
+#define SCENE 0
 
 Application* Application::GLFWCallbackWrapper::application = nullptr;
 
@@ -72,8 +72,11 @@ void Application::GLFWCallbackWrapper::cursor_callback(GLFWwindow *window, doubl
     }
 }
 
-
+//TODO place shader code into their respective files
+//TODO make all shaders using the new ShaderProgram and ShaderProgramHolder
+//TODO maybe create singleton for ShaderProgram ?
 Application::Application() {
+    /*
     shaderProgram.createShader("Gradient",
                                "#version 400\n"
                                              "layout(location=0) in vec4 vp;"
@@ -255,15 +258,16 @@ Application::Application() {
                                          ""
                                          "      vec4 objectColor = vec4 (0.385 ,0.647 ,0.812 ,1.0);\n"
                                          "      frag_colour = ( ambient + diffuse + vec4(specular,1) )* objectColor ;\n"
-                                         "}");
+                                         "}");*/
 
 
-    camera.addObserver(shaderProgram.getShaderp("MainShader"));//TODO add for-each loop to shaderProgram
-    camera.addObserver(shaderProgram.getShaderp("Gradient"));
-    camera.addObserver(shaderProgram.getShaderp("Light"));
-    camera.addObserver(shaderProgram.getShaderp("Phong"));
-    camera.addObserver(shaderProgram.getShaderp("Blinn-Phong"));
-    camera.addObserver(shaderProgram.getShaderp("Constant"));
+//    camera.addObserver(shaderProgram.getShaderp("MainShader"));//TODO add for-each loop to shaderProgram
+//    camera.addObserver(shaderProgram.getShaderp("Gradient"));
+//    camera.addObserver(shaderProgram.getShaderp("Light"));
+//    camera.addObserver(shaderProgram.getShaderp("Phong"));
+//    camera.addObserver(shaderProgram.getShaderp("Blinn-Phong"));
+//    camera.addObserver(shaderProgram.getShaderp("Constant"));
+
 
     camera.setPerspective(60.f, 4.f/3.f, 0.1f, 100.f);
     GLFWCallbackWrapper::setApplication(this);
@@ -321,7 +325,9 @@ void Application::initialize() {
 }
 
 void Application::createShaders() {
-    shaderProgram.createAllShaders();
+    shaderProgramHolder.createShader("Gradient", new ShaderProgram(Shader("gradient.vert"), Shader("gradient.frag")));
+
+    camera.addObserver(shaderProgramHolder.getShaderp("Gradient"));
 }
 
 //TODO create scene class
@@ -334,25 +340,25 @@ void Application::createModels() {
         {
 
             auto sphere0 = new Sphere(1.5,0,0);
-            sphere0->setShader(shaderProgram.getShaderp("Gradient"));
+            sphere0->setShader(shaderProgramHolder.getShaderp("Gradient"));
 
-            auto sphere1 = new Sphere(-1.5,0,0);
-            sphere1->setShader(shaderProgram.getShaderp("MainShader"));
-
-            auto sphere2 = new Sphere(0,1.5,0);
-            sphere2->setShader(shaderProgram.getShaderp("Light"));
-
-            auto sphere3 = new Sphere(0,-1.5,0);
-            sphere3->setShader(shaderProgram.getShaderp("MainShader"));
-
-//    auto suziF = ModelFactory::createModel("suzi_flat", 0,0,0);
-//    suziF->setShader(shaderProgram.getShaderp("MainShader"));
-
-
+//            auto sphere1 = new Sphere(-1.5,0,0);
+//            sphere1->setShader(shaderProgram.getShaderp("MainShader"));
+//
+//            auto sphere2 = new Sphere(0,1.5,0);
+//            sphere2->setShader(shaderProgram.getShaderp("Light"));
+//
+//            auto sphere3 = new Sphere(0,-1.5,0);
+//            sphere3->setShader(shaderProgram.getShaderp("MainShader"));
+//
+////    auto suziF = ModelFactory::createModel("suzi_flat", 0,0,0);
+////    suziF->setShader(shaderProgram.getShaderp("MainShader"));
+//
+//
             shapes.push_back(unique_ptr<Shape>(sphere0));
-            shapes.push_back(unique_ptr<Shape>(sphere1));
-            shapes.push_back(unique_ptr<Shape>(sphere2));
-            shapes.push_back(unique_ptr<Shape>(sphere3));
+//            shapes.push_back(unique_ptr<Shape>(sphere1));
+//            shapes.push_back(unique_ptr<Shape>(sphere2));
+//            shapes.push_back(unique_ptr<Shape>(sphere3));
 
 //    shapes.push_back(unique_ptr<Shape>(suziF));
 
@@ -362,50 +368,50 @@ void Application::createModels() {
         }
         case 1:{
 
-            auto sphere0 = new Sphere(0,0,1.5);
-            sphere0->setShader(shaderProgram.getShaderp("Light"));
-            shapes.push_back(unique_ptr<Shape>(sphere0));
+//            auto sphere0 = new Sphere(0,0,1.5);
+//            sphere0->setShader(shaderProgram.getShaderp("Light"));
+//            shapes.push_back(unique_ptr<Shape>(sphere0));
             break;
         }
         case 2:{
 
-            auto sphere0 = new Sphere(1.5,0,0);
-            sphere0->setShader(shaderProgram.getShaderp("Light"));
-
-            auto sphere1 = new Sphere(-1.5,0,0);
-            sphere1->setShader(shaderProgram.getShaderp("Light"));
-
-            auto sphere2 = new Sphere(0,1.5,0);
-            sphere2->setShader(shaderProgram.getShaderp("Light"));
-
-            auto sphere3 = new Sphere(0,-1.5,0);
-            sphere3->setShader(shaderProgram.getShaderp("Light"));
-
-            shapes.push_back(unique_ptr<Shape>(sphere0));
-            shapes.push_back(unique_ptr<Shape>(sphere1));
-            shapes.push_back(unique_ptr<Shape>(sphere2));
-            shapes.push_back(unique_ptr<Shape>(sphere3));
+//            auto sphere0 = new Sphere(1.5,0,0);
+//            sphere0->setShader(shaderProgram.getShaderp("Light"));
+//
+//            auto sphere1 = new Sphere(-1.5,0,0);
+//            sphere1->setShader(shaderProgram.getShaderp("Light"));
+//
+//            auto sphere2 = new Sphere(0,1.5,0);
+//            sphere2->setShader(shaderProgram.getShaderp("Light"));
+//
+//            auto sphere3 = new Sphere(0,-1.5,0);
+//            sphere3->setShader(shaderProgram.getShaderp("Light"));
+//
+//            shapes.push_back(unique_ptr<Shape>(sphere0));
+//            shapes.push_back(unique_ptr<Shape>(sphere1));
+//            shapes.push_back(unique_ptr<Shape>(sphere2));
+//            shapes.push_back(unique_ptr<Shape>(sphere3));
 
             break;
         }
         case 3:{
 
-            auto sphere0 = new Sphere(1.5,0,0);
-            sphere0->setShader(shaderProgram.getShaderp("Light"));
-
-            auto sphere1 = new Sphere(-1.5,0,0);
-            sphere1->setShader(shaderProgram.getShaderp("Phong"));
-
-            auto sphere2 = new Sphere(0,1.5,0);
-            sphere2->setShader(shaderProgram.getShaderp("Blinn-Phong"));
-
-            auto sphere3 = new Sphere(0,-1.5,0);
-            sphere3->setShader(shaderProgram.getShaderp("Constant"));
-
-            shapes.push_back(unique_ptr<Shape>(sphere0));
-            shapes.push_back(unique_ptr<Shape>(sphere1));
-            shapes.push_back(unique_ptr<Shape>(sphere2));
-            shapes.push_back(unique_ptr<Shape>(sphere3));
+//            auto sphere0 = new Sphere(1.5,0,0);
+//            sphere0->setShader(shaderProgram.getShaderp("Light"));
+//
+//            auto sphere1 = new Sphere(-1.5,0,0);
+//            sphere1->setShader(shaderProgram.getShaderp("Phong"));
+//
+//            auto sphere2 = new Sphere(0,1.5,0);
+//            sphere2->setShader(shaderProgram.getShaderp("Blinn-Phong"));
+//
+//            auto sphere3 = new Sphere(0,-1.5,0);
+//            sphere3->setShader(shaderProgram.getShaderp("Constant"));
+//
+//            shapes.push_back(unique_ptr<Shape>(sphere0));
+//            shapes.push_back(unique_ptr<Shape>(sphere1));
+//            shapes.push_back(unique_ptr<Shape>(sphere2));
+//            shapes.push_back(unique_ptr<Shape>(sphere3));
 
             break;
         }
@@ -416,12 +422,12 @@ void Application::createModels() {
 
 void Application::drawModels() {
 
-    shaderProgram.getShader("Gradient").setUniformFloat("time", (float)glfwGetTime() );
+    shaderProgramHolder.getShader("Gradient").setUniform("time", (float)glfwGetTime() );
 
     switch(SCENE){
         case 0:
         {
-            shapes[2]->rotate(glm::radians(1.f), glm::vec3(1,0,0));
+//            shapes[2]->rotate(glm::radians(1.f), glm::vec3(1,0,0));
 
             break;
         }

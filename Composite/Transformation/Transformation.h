@@ -8,10 +8,7 @@
 #include <vector>
 
 #include "../Composite.h"
-
-#include "Rotation.h"
-#include "Move.h"
-#include "Scale.h"
+#include "../../Shaders/ShaderProgram.h"
 
 class Transformation :public Composite {
 protected:
@@ -23,7 +20,7 @@ private:
 
 public:
 
-    void action(Shader shader);
+    void action(ShaderProgram shader);
 
     void Add(Composite *composite) override ;
     void Remove(Composite *composite) override {

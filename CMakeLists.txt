@@ -7,6 +7,9 @@ SET(CMAKE_BUILD_TYPE Debug)
 
 file(GLOB_RECURSE MODELS "${CMAKE_SOURCE_DIR}/Models/*")
 file(GLOB_RECURSE COMPOSITE_TRANSFORMATIONS "${CMAKE_SOURCE_DIR}/Composite/Transformation/*")
+file(GLOB_RECURSE SHADERS_SOURCES "${CMAKE_SOURCE_DIR}/Shaders/Sources/*")
+
+file(COPY ${SHADERS_SOURCES} DESTINATION ${CMAKE_BINARY_DIR})
 
 add_executable(${PROJECT_NAME} main.cpp
         Application.h
@@ -19,11 +22,21 @@ add_executable(${PROJECT_NAME} main.cpp
         Composite/Composite.h
         ${MODELS} ${COMPOSITE_TRANSFORMATIONS}
         ShaderProgram.cpp
-        ShaderProgram.h Factory/ModelFactory.cpp Factory/ModelFactory.h
+        ShaderProgram.h
+        Factory/ModelFactory.cpp Factory/ModelFactory.h
         Observer/Observer.cpp
         Observer/Observer.h
         Observer/Subject.cpp
-        Observer/Subject.h Light.cpp Light.h)
+        Observer/Subject.h Light.cpp Light.h
+
+        Shaders/Shader.cpp
+        Shaders/Shader.h
+        Shaders/ShaderLoader.cpp
+        Shaders/ShaderLoader.h
+        Shaders/ShaderProgram.cpp
+        Shaders/ShaderProgram.h
+        Shaders/ShaderProgramHolder.cpp
+        Shaders/ShaderProgramHolder.h)
 
 #Link libraries on unix OS
 if(UNIX)

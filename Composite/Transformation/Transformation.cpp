@@ -12,9 +12,9 @@ void Transformation::action(glm::mat4 &p_M) {
     transformations.clear();
 }
 
-void Transformation::action(Shader shader) {
+void Transformation::action(ShaderProgram shader) {
     action(this->M);
-    shader.setMatrixUniform("MVP", this->M);
+    shader.setUniform("MVP", this->M);
 }
 
 void Transformation::Add(Composite *composite) {

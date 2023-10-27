@@ -6,8 +6,9 @@
 #ifndef TEST_COMPOSITE_H
 #define TEST_COMPOSITE_H
 
-#include "../Shader.h"
 
+#include <glm/vec3.hpp>
+#include <glm/glm.hpp>
 
 class Composite{
 public:

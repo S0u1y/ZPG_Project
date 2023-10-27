@@ -3,7 +3,12 @@
 //
 
 #include "Shape.h"
-#include "../Shader.h"
+
+#include "../Shaders/ShaderProgram.h"
+
+#include "../Composite/Transformation/Rotation.h"
+#include "../Composite/Transformation/Move.h"
+#include "../Composite/Transformation/Scale.h"
 
 void Shape::draw() {
     transformation.action(*shader);
@@ -25,6 +30,6 @@ void Shape::scale(glm::vec3 scale) {
     transformation.Add(new Scale{scale});
 }
 
-void Shape::setShader(Shader *shader) {
+void Shape::setShader(ShaderProgram *shader) {
     this->shader = shader;
 }

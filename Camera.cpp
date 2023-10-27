@@ -43,7 +43,7 @@ void Camera::lookX(float alpha, float fi) {
     target.x += sin(alpha)*cos(fi);
     notify();
 }
-
+//https://open.gl/transformations
 void Camera::lookX(float degrees) {
     target = glm::rotate(target, glm::radians(-degrees), up);
     notify();

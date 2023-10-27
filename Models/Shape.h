@@ -6,7 +6,7 @@
 #define TEST_SHAPE_H
 
 
-class Shader;
+class ShaderProgram;
 #include "../Composite/Transformation/Transformation.h"
 
 #include <GL/glew.h>
@@ -17,7 +17,7 @@ protected:
     GLuint VBO_A = 0;
     GLuint VAO_A = 0;
 
-    Shader* shader;
+    ShaderProgram* shader;
 
     Transformation transformation;
 
@@ -44,7 +44,7 @@ protected:
 public:
     float size = 0.5;
 
-    void setShader(Shader* shader);
+    void setShader(ShaderProgram* shader);
 
     virtual void draw() = 0;
 
