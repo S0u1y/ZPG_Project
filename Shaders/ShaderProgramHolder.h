@@ -10,16 +10,21 @@
 #include <memory>
 #include "ShaderProgram.h"
 
+#include <functional>
+
 class ShaderProgramHolder {
 private:
-    std::unordered_map<char*, std::shared_ptr<ShaderProgram>> shaders;
+    std::unordered_map<const char*, std::shared_ptr<ShaderProgram>> shaders;
 
 public:
-    void createShader(char* name, Shader vertexShader, Shader fragmentShader);
-    void createShader(char* name, ShaderProgram* shaderProgram);
-    ShaderProgram& getShader(char* name);
-    ShaderProgram* getShaderp(char* name);
+    void createShader(const char* name, Shader vertexShader, Shader fragmentShader);
+    void createShader(const char* name, ShaderProgram* shaderProgram);
+    void createShader(const char* name,const char* vertexShaderFilepath,const char* fragmentShaderFilepath);
+    ShaderProgram& getShader(const char* name);
+    ShaderProgram* getShaderp(const char* name);
+    ShaderProgram* operator[](const char* name);
     void createAllShaders();
+    void forEach(const std::function<void(ShaderProgram*)>& func);
 };
 
 

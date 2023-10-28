@@ -23,6 +23,8 @@ public:
     ShaderProgram(const Shader &vertexShader,
                   const Shader &fragmentShader);
 
+    ShaderProgram(const char* vertexShaderFilepath, const char* fragmentShaderFilepath);
+
     void onNotify(Camera* camera);
     void onNotify(Light* light);
 

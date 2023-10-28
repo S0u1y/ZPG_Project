@@ -10,6 +10,9 @@
 ShaderProgram::ShaderProgram(const Shader &vertexShader, const Shader &fragmentShader)
 : ShaderLoader(vertexShader.filepath, fragmentShader.filepath, &this->shaderProgramID)
 {}
+ShaderProgram::ShaderProgram(const char *vertexShaderFilepath, const char *fragmentShaderFilepath)
+: ShaderLoader(vertexShaderFilepath, fragmentShaderFilepath, &this->shaderProgramID)
+{}
 
 void ShaderProgram::setUniform(const char *name, float var) {
     useShader();
@@ -54,6 +57,8 @@ void ShaderProgram::onNotify(Light *light) {
 
 void ShaderProgram::onNotify() {
 }
+
+
 
 
 
