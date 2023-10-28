@@ -6,7 +6,7 @@
 
 #include "Factory/ModelFactory.h"
 
-#define SCENE 2
+#define SCENE 0
 
 Application* Application::GLFWCallbackWrapper::application = nullptr;
 
@@ -73,8 +73,6 @@ void Application::GLFWCallbackWrapper::cursor_callback(GLFWwindow *window, doubl
     }
 }
 
-//TODO place shader code into their respective files
-//TODO make all shaders using the new ShaderProgram and ShaderProgramHolder
 //TODO maybe create singleton for ShaderProgramHolder ?
 Application::Application() {
 
@@ -139,47 +137,39 @@ void Application::createShaders() {
     shaderProgramHolder.createShader("Constant", "constant.vert", "constant.frag");
     shaderProgramHolder.createShader("Light", "lambert.vert", "lambert.frag");
     shaderProgramHolder.createShader("Phong", "phong.vert", "phong.frag");
-    shaderProgramHolder.createShader("Blinn-Phong", "blinn.vert", "blinn.frag");
+    shaderProgramHolder.createShader("Blinn", "blinn.vert", "blinn.frag");
 
 //    camera.addObserver(shaderProgramHolder.getShaderp("Gradient"));
     shaderProgramHolder.forEach([this](ShaderProgram* shaderProgram){
         camera.addObserver(shaderProgram);
     });
+    camera.notify(); //initial render for camera. Shaders need to be created!
 }
 
 //TODO create scene class
 void Application::createModels() {
 
-    camera.notify(); //initial render for camera. Shaders need to be created!
+
+    light = Light(glm::vec3(-0,0,0), glm::vec3(0,1,0), 90);
+//    light.setLightColor(glm::vec3(1,0,1));
+    shaderProgramHolder.forEach([this](ShaderProgram* shaderProgram){
+        light.addObserver(shaderProgram);
+    });
+    light.notify();
 
     switch(SCENE){
         case 0:
         {
 
             auto sphere0 = new Sphere(1.5,0,0);
-            sphere0->setShader(shaderProgramHolder["Gradient"]);
+            sphere0->setShader(shaderProgramHolder["Phong"]);
 
-//            auto sphere1 = new Sphere(-1.5,0,0);
-//            sphere1->setShader(shaderProgram.getShaderp("MainShader"));
-//
-//            auto sphere2 = new Sphere(0,1.5,0);
-//            sphere2->setShader(shaderProgram.getShaderp("Light"));
-//
-//            auto sphere3 = new Sphere(0,-1.5,0);
-//            sphere3->setShader(shaderProgram.getShaderp("MainShader"));
-//
 ////    auto suziF = ModelFactory::createModel("suzi_flat", 0,0,0);
 ////    suziF->setShader(shaderProgram.getShaderp("MainShader"));
-//
-//
             shapes.push_back(unique_ptr<Shape>(sphere0));
-//            shapes.push_back(unique_ptr<Shape>(sphere1));
-//            shapes.push_back(unique_ptr<Shape>(sphere2));
-//            shapes.push_back(unique_ptr<Shape>(sphere3));
 
-//    shapes.push_back(unique_ptr<Shape>(suziF));
-
-//    shapes[0]->scale(glm::vec3(0.3));
+            shapes.push_back(std::unique_ptr<Shape>(new Sphere(-1.5, 0, 0)));
+            shapes[1]->setShader(shaderProgramHolder["Blinn"]);
 
             break;
         }
@@ -239,7 +229,7 @@ void Application::createModels() {
 
 void Application::drawModels() {
 
-    shaderProgramHolder.getShader("Gradient").setUniform("time", (float)glfwGetTime() );
+    shaderProgramHolder["Gradient"]->setUniform("time", (float)glfwGetTime() );
 
     switch(SCENE){
         case 0:

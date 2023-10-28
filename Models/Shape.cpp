@@ -12,6 +12,7 @@
 
 void Shape::draw() {
     transformation.action(*shader);
+    shader->setUniform("objectColor", color);
 }
 
 void Shape::rotate(float angle, glm::vec3 axis) {

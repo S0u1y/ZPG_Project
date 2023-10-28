@@ -2,6 +2,7 @@
 // Created by wizzy on 25.10.23.
 //
 
+#include <glm/trigonometric.hpp>
 #include "ShaderProgram.h"
 
 #include "../Camera.h"
@@ -52,7 +53,11 @@ void ShaderProgram::onNotify(Camera* subject) {
 }
 
 void ShaderProgram::onNotify(Light *light) {
-
+    useShader();
+    setUniform("lightPosition", light->getPosition());
+    setUniform("lightVector", light->getDirection());
+    setUniform("lightAngle", light->getAngle());
+    setUniform("lightColor", light->getLightColor());
 }
 
 void ShaderProgram::onNotify() {

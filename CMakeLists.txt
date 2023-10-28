@@ -14,21 +14,15 @@ file(COPY ${SHADERS_SOURCES} DESTINATION ${CMAKE_BINARY_DIR})
 add_executable(${PROJECT_NAME} main.cpp
         Application.h
         Application.cpp
-        Models/Shape.h
-        Shader.h Models/Triangle.h Models/Model.h
         Camera.h
-        Shader.cpp
         Camera.cpp
         Composite/Composite.h
         ${MODELS} ${COMPOSITE_TRANSFORMATIONS}
-        ShaderProgram.cpp
-        ShaderProgram.h
         Factory/ModelFactory.cpp Factory/ModelFactory.h
         Observer/Observer.cpp
         Observer/Observer.h
         Observer/Subject.cpp
         Observer/Subject.h Light.cpp Light.h
-
         Shaders/Shader.cpp
         Shaders/Shader.h
         Shaders/ShaderLoader.cpp
@@ -37,6 +31,7 @@ add_executable(${PROJECT_NAME} main.cpp
         Shaders/ShaderProgram.h
         Shaders/ShaderProgramHolder.cpp
         Shaders/ShaderProgramHolder.h)
+
 
 #Link libraries on unix OS
 if(UNIX)
@@ -48,6 +43,7 @@ if(UNIX)
     find_package(GLEW REQUIRED)
 
     include_directories(${GLEW_INCLUDE_DIRS})
+
 
     target_link_libraries(Test ${OPENGL_LIBRARIES} glfw glm::glm ${GLEW_LIBRARIES})
 
@@ -78,4 +74,7 @@ if(WIN32)
     file(COPY ${GLEW_DIR}/bin/Release/x64/glew32.dll DESTINATION ${CMAKE_BINARY_DIR})
 endif ()
 
+#add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+#        COMMAND ${CMAKE_COMMAND} -E copy
+#        ${SHADERS_SOURCES} ${CMAKE_BINARY_DIR})
 

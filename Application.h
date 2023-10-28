@@ -24,6 +24,7 @@
 
 #include "Camera.h"
 #include "Shaders/ShaderProgramHolder.h"
+#include "Light.h"
 
 class Shape;
 
@@ -40,6 +41,7 @@ private:
 
     Camera camera;
 
+    Light light;
     vector<unique_ptr<Shape>> shapes;
 
     float deltaT{0};

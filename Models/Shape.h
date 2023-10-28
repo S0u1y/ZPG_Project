@@ -21,6 +21,8 @@ protected:
 
     Transformation transformation;
 
+    glm::vec3 color{0.385, 0.647, 0.812};
+
     Shape(float x, float y, float z){};
     Shape(float x, float y, float z, float size): size(size) {};
 

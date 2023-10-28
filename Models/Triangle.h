@@ -6,7 +6,6 @@
 #define TEST_TRIANGLE_H
 
 #include "Shape.h"
-#include "../Shader.h"
 
 class Triangle : public Shape{
 private:
