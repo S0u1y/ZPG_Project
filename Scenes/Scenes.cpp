@@ -24,8 +24,12 @@ void Scenes::initialize() {
     scenes.emplace("Scene1", sceneA);
     auto sceneB = new Scene();
     scenes.emplace("Scene2", sceneB);
+    auto sceneD = new Scene();
+    scenes.emplace("Scene3", sceneD);
+    auto sceneE = new Scene();
+    scenes.emplace("Scene4", sceneE);
     auto sceneC = new Scene();
-    scenes.emplace("Scene3", sceneC);
+    scenes.emplace("Scene5", sceneC);
 
 
     for (const auto &item : scenes){
@@ -72,9 +76,9 @@ void Scenes::initialize() {
         kms->action();
 
         planet2->scale({.5,.5,.5});
-        planet2->rotate( 0.5f, { 0, 1, 0 });
+        planet2->rotate( time * 0.5f, { 0, 1, 0 });
         planet2->move(0,0,5);
-        planet2->rotate( 1.f, { 0, 1, 0 });
+        planet2->rotate( time * 1.f, { 0, 1, 0 });
 
         planet3->scale({.25,.25,.25});
         planet3->rotate(time * 0.75f, { 0, 1, 0 });
@@ -88,33 +92,62 @@ void Scenes::initialize() {
 
     //SCENE 3
 
+    sceneD->title = "Orez svetla";
+
+    sceneD->camera.setEye({0,0,3});
+    sceneD->camera.setTarget({0,0,-1});
+
+    sceneD->makeShape("sphere", 0, 0, 1.5, "Phong");
+
+    //SCENE 4
+
+    sceneE->title = "Zmena obrazovky";
+
+    sceneE->makeShape("sphere", 1.5, 0, 0, "Phong");
+    sceneE->makeShape("suzi_flat", -1.5, 0, 0, "Phong");
+    sceneE->makeShape("suzi_smooth", 0, 1.5, 0, "Phong");
+    sceneE->makeShape("gift", 0, -1.5, 0, "Phong");
+
+
+    //SCENE 5
+
     sceneC->title = "Les";
+
+    sceneC->light.move({0,50,0});
 
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_real_distribution<float> dist(-100.f, 100.0);
-
+    std::uniform_real_distribution<float> dist(-50.f, 50.0);
+    std::uniform_real_distribution<float> dist2(0.25, 5);
     for(int i = 0; i < 50; i++){
         auto x = dist(mt);
         auto z = dist(mt);
 
-        auto tree = sceneC->makeShape("tree", x, 0, z, "Constant");
+        auto scale = dist2(mt);
+
+        auto tree = sceneC->makeShape("tree", x, 0, z, "Phong");
         tree->material.color = {0,0.5,0};
         tree->rotate(glm::radians(36.f),{0,1,0});
+        tree->scale({scale,scale,scale});
     }
     for(int i = 0; i < 50; i++){
         auto x = dist(mt);
         auto z = dist(mt);
 
+        auto scale = dist2(mt);
+
         auto bush = sceneC->makeShape("bushes", x, 0, z, "Constant");
         bush->material.color = {0,0.1,0};
         bush->rotate(glm::radians(36.f),{0,1,0});
+        bush->scale({scale,scale,scale});
     }
 
     auto plain = sceneC->makeShape("plain", 0, 0, 0, "Constant");
     plain->material.color = {0, 0.12, 0};
     plain->scale({150, 0, 150});
 
+    auto gift = sceneC->makeShape("gift", 0, 1, 0, "Light");
+    gift->material.color = {0.6,0,0};
 
     sceneC->camera.setEye({0,2,5});
     sceneC->camera.setTarget({0,0,-1});

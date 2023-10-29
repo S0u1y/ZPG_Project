@@ -34,6 +34,7 @@ ShaderProgram *ShaderProgramHolder::getShaderp(const char *name) {
     }
 
     printf("%s not found in shaders.\n", name);
+    exit(-1);
     return nullptr;
 }
 
@@ -51,6 +52,7 @@ ShaderProgram *ShaderProgramHolder::operator[](const char *name) {
     }
 
     printf("%s not found in shaders.\n", name);
+    exit(-1);
     return nullptr;
 }
 

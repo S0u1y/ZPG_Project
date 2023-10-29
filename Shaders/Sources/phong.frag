@@ -21,10 +21,17 @@ void main () {
       vec3 viewDirection = normalize(cameraPosition - worldPosition);
       vec3 reflectionDirection = reflect(-lightDirection, worldNormal);
 
-      float specularLight = 0.50f;
+      float specularLight = 0.5f;
 
-      float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 32);
+      float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 1);
       float specular = specAmount * specularLight;
+//      if(diff == 0){
+//            specular = 0;
+//      }
+      if(dot(lightDirection, worldNormal) < 0){
+            specular = 0;
+      }
+
 
       vec4 ambient = vec4(0.01, 0.1, 0.1, 1.0);
       vec4 diffuse = diff * vec4(1, 1, 1, 1);

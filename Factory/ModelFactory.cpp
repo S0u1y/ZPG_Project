@@ -35,6 +35,8 @@ Shape *ModelFactory::createModel(const char *name, float x, float y, float z) {
     else if(compare(name, "tree")){
         return new Model(x,y,z, tree, sizeof(tree)/sizeof(tree[0]));
     }
+    printf("Could not find model \"%s\"\n", name);
+    exit(-1);
     return nullptr;
 }
 

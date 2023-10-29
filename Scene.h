@@ -19,15 +19,16 @@ using std::vector;
 
 class Scene {
 private:
-
-    Light light{glm::vec3(-0,0,0), glm::vec3(0,0,-1), 360};
+    vector<unique_ptr<Shape>> shapes;
 public:
+
     std::string title{"No title"};
     GLFWwindow* window;
     Camera camera;
+    Light light{glm::vec3(-0,0,0), glm::vec3(0,0,-1), 360};
 
     ShaderProgramHolder* shaderProgramHolder;
-    vector<unique_ptr<Shape>> shapes;
+
 
 
     std::function<void(void)> preDraw{[](){}};//initialize values, so we don't get bad function call errors.

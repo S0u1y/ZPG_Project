@@ -51,6 +51,7 @@ void Application::GLFWCallbackWrapper::window_size_callback(GLFWwindow *window, 
 //    printf("resize %d, %d\n", width, height);
     float ratio{(float)width/(float)height};
     application->camera->setPerspective(60, ratio, 0.1, 100);
+    application->camera->notify();
 
     glViewport(0, 0, width, height);
 
