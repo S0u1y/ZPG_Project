@@ -16,7 +16,7 @@ V několika větách popište kde máte ve zdrojovém kódu danou věc (třída,
      Popis:
         Shaders/ShaderProgramHolder ř. 29
         Shaders/ShaderProgram ř. 34
-        Umožňuje pro gl:
+        funkce umožňují pro gl:
             - nastavit používání shaderu
             - zrušit používání shaderu
 
@@ -88,33 +88,35 @@ V několika větách popište kde máte ve zdrojovém kódu danou věc (třída,
 ----------------------
   a) nesplněno
      Popis: /Material
-
-
-
+        nepoužívám koeficienty r_a, r_d, r_s
 
 Testovací scény
 
 1) Základní test Phongova osvětlovacího modelu.
 ----------------------
-  splněno / nesplněno
+  splněno
   Popis:
 
 2) Test na rotaci a jeji skládání.
 ----------------------
-  splněno / nesplněno
-  Popis:
+  splněno (?)
+  Popis:    Scenes/Scene.cpp ř. 48
+    nejsem si jistý, jestli můžeme používat glfw time.
 
 3) Test na ořezání světla, které nemůže dopadnou na plochu.
 ----------------------
-  splněno / nesplněno
-  Popis:
+  splněno
+  Popis:    Scenes/Scene.cpp ř. 93
+
 
 4) Test na změnu velikosti obrazovky.
 ----------------------
-  splněno / nesplněno
-  Popis:
+  splněno
+  Popis:    Scenes/Scene.cpp ř. 102
 
 5) Testování na více objektů a použití více shaderu ve scéně (procházení lesa).
 ----------------------
-  splněno / nesplněno
-  Popis:
+  splněno
+  Popis:    Scenes/Scene.cpp ř. 112
+    50 stromů, 50 keřů, plain a gift
+    super lesík. dáreček zdarma :)

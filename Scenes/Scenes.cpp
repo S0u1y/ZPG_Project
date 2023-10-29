@@ -37,7 +37,7 @@ void Scenes::initialize() {
     }
 
     //SCENE 1
-    sceneA->makeShape("sphere", 1.5, 0, 0, "Phong");
+    sceneA->makeShape("sphere", 1.5 * 2, 0, 0, "Phong");
     sceneA->makeShape("sphere", -1.5, 0, 0, "Phong");
     sceneA->makeShape("sphere", 0, 1.5, 0, "Phong");
     sceneA->makeShape("sphere", 0, -1.5, 0, "Phong");
@@ -48,6 +48,8 @@ void Scenes::initialize() {
     //SCENE 2
     sceneB->title = "Slunecni soustava";
     sceneB->camera.moveY(5);
+    sceneB->light.a = 0.01;
+    sceneB->light.b = 0.01;
 
     auto sun = sceneB->makeShape("sphere", 0, 0, 0, "Constant");
     sun->scale(glm::vec3(2,2,2));
@@ -114,6 +116,8 @@ void Scenes::initialize() {
     sceneC->title = "Les";
 
     sceneC->light.move({0,50,0});
+    sceneC->light.a = 0.001;
+    sceneC->light.b = 0.001;
 
     std::random_device rd;
     std::mt19937 mt(rd());
@@ -146,7 +150,7 @@ void Scenes::initialize() {
     plain->material.color = {0, 0.12, 0};
     plain->scale({150, 0, 150});
 
-    auto gift = sceneC->makeShape("gift", 0, 1, 0, "Light");
+    auto gift = sceneC->makeShape("gift", 0, 0, 0, "Light");
     gift->material.color = {0.6,0,0};
 
     sceneC->camera.setEye({0,2,5});

@@ -58,6 +58,8 @@ void ShaderProgram::onNotify(Light *light) {
     setUniform("lightVector", light->getDirection());
     setUniform("lightAngle", light->getAngle());
     setUniform("lightColor", light->getLightColor());
+    setUniform("a", light->a);
+    setUniform("b", light->b);
 }
 
 void ShaderProgram::onNotify() {

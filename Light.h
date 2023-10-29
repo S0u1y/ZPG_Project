@@ -17,7 +17,10 @@ private:
     float angle{}; //angle (cone) of light
 
     glm::vec3 lightColor{1,1,1};
+
 public:
+    float a{0.01}, b{0.01};
+
     Light()= default;
     Light(const glm::vec3 &position, const glm::vec3 &direction, float angle) : position(position),
                                                                                 direction(direction), angle(angle) {}
