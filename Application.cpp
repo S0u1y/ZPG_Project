@@ -6,7 +6,6 @@
 
 #include "Factory/ModelFactory.h"
 
-#define SCENE 0
 
 Application* Application::GLFWCallbackWrapper::application = nullptr;
 
@@ -22,16 +21,16 @@ void Application::GLFWCallbackWrapper::key_callback(GLFWwindow *window, int key,
     if(action == GLFW_PRESS or action == GLFW_REPEAT)
     {
         if(key == GLFW_KEY_W){
-            application->camera.moveForward();
+            application->camera->moveForward();
         }
         if(key == GLFW_KEY_A){
-            application->camera.moveLeft(application->deltaT);
+            application->camera->moveLeft(application->deltaT);
         }
         if(key == GLFW_KEY_S){
-            application->camera.moveBack();
+            application->camera->moveBack();
         }
         if(key == GLFW_KEY_D){
-            application->camera.moveRight(application->deltaT);
+            application->camera->moveRight(application->deltaT);
         }
         if(key== GLFW_KEY_Q){
             locked = !locked;
@@ -51,7 +50,7 @@ int _width, _height;
 void Application::GLFWCallbackWrapper::window_size_callback(GLFWwindow *window, int width, int height) {
 //    printf("resize %d, %d\n", width, height);
     float ratio{(float)width/(float)height};
-    application->camera.setPerspective(60, ratio, 0.1, 100);
+    application->camera->setPerspective(60, ratio, 0.1, 100);
 
     glViewport(0, 0, width, height);
 
@@ -66,8 +65,8 @@ void Application::GLFWCallbackWrapper::cursor_callback(GLFWwindow *window, doubl
         float rotX = 100 * (float)(x - ((float)_width / 2)) / (float)_width;
         float rotY = 100 * (float)(y - ((float)_height / 2)) / (float)_height;
 
-        application->camera.lookX(rotX);
-        application->camera.lookY(rotY);
+        application->camera->lookX(rotX);
+        application->camera->lookY(rotY);
 
         glfwSetCursorPos(window, (float)_width/2, (float)_height/2);
     }
@@ -76,7 +75,6 @@ void Application::GLFWCallbackWrapper::cursor_callback(GLFWwindow *window, doubl
 //TODO maybe create singleton for ShaderProgramHolder ?
 Application::Application() {
 
-    camera.setPerspective(60.f, 4.f/3.f, 0.1f, 100.f);
     GLFWCallbackWrapper::setApplication(this);
 }
 
@@ -129,136 +127,30 @@ void Application::initialize() {
     _width = width;
     _height = height;
 
+    scenes.initialize();
+    scene = scenes["Scene2"];
+
+    camera = &scene->camera;
+
+    scene->camera.setPerspective(60.f, 4.f/3.f, 0.1f, 100.f);
+    scene->window = window;
+
 }
 
 void Application::createShaders() {
-    shaderProgramHolder.createShader("MainShader", "main.vert", "main.frag");
-    shaderProgramHolder.createShader("Gradient", "gradient.vert", "gradient.frag");
-    shaderProgramHolder.createShader("Constant", "constant.vert", "constant.frag");
-    shaderProgramHolder.createShader("Light", "lambert.vert", "lambert.frag");
-    shaderProgramHolder.createShader("Phong", "phong.vert", "phong.frag");
-    shaderProgramHolder.createShader("Blinn", "blinn.vert", "blinn.frag");
 
-//    camera.addObserver(shaderProgramHolder.getShaderp("Gradient"));
-    shaderProgramHolder.forEach([this](ShaderProgram* shaderProgram){
-        camera.addObserver(shaderProgram);
-    });
-    camera.notify(); //initial render for camera. Shaders need to be created!
+    scene->initializeShaders();
 }
 
 //TODO create scene class
 void Application::createModels() {
-
-
-    light = Light(glm::vec3(-0,0,0), glm::vec3(0,1,0), 90);
-//    light.setLightColor(glm::vec3(1,0,1));
-    shaderProgramHolder.forEach([this](ShaderProgram* shaderProgram){
-        light.addObserver(shaderProgram);
-    });
-    light.notify();
-
-    switch(SCENE){
-        case 0:
-        {
-
-            auto sphere0 = new Sphere(1.5,0,0);
-            sphere0->setShader(shaderProgramHolder["Phong"]);
-
-////    auto suziF = ModelFactory::createModel("suzi_flat", 0,0,0);
-////    suziF->setShader(shaderProgram.getShaderp("MainShader"));
-            shapes.push_back(unique_ptr<Shape>(sphere0));
-
-            shapes.push_back(std::unique_ptr<Shape>(new Sphere(-1.5, 0, 0)));
-            shapes[1]->setShader(shaderProgramHolder["Blinn"]);
-
-            break;
-        }
-        case 1:{
-
-//            auto sphere0 = new Sphere(0,0,1.5);
-//            sphere0->setShader(shaderProgram.getShaderp("Light"));
-//            shapes.push_back(unique_ptr<Shape>(sphere0));
-            break;
-        }
-        case 2:{
-
-            auto sphere0 = new Sphere(1.5,0,0);
-            sphere0->setShader(shaderProgramHolder["Light"]);
-
-            auto sphere1 = new Sphere(-1.5,0,0);
-            sphere1->setShader(shaderProgramHolder["Light"]);
-
-            auto sphere2 = new Sphere(0,1.5,0);
-            sphere2->setShader(shaderProgramHolder["Light"]);
-
-            auto sphere3 = new Sphere(0,-1.5,0);
-            sphere3->setShader(shaderProgramHolder["Light"]);
-
-            shapes.push_back(unique_ptr<Shape>(sphere0));
-            shapes.push_back(unique_ptr<Shape>(sphere1));
-            shapes.push_back(unique_ptr<Shape>(sphere2));
-            shapes.push_back(unique_ptr<Shape>(sphere3));
-
-            break;
-        }
-        case 3:{
-
-//            auto sphere0 = new Sphere(1.5,0,0);
-//            sphere0->setShader(shaderProgram.getShaderp("Light"));
-//
-//            auto sphere1 = new Sphere(-1.5,0,0);
-//            sphere1->setShader(shaderProgram.getShaderp("Phong"));
-//
-//            auto sphere2 = new Sphere(0,1.5,0);
-//            sphere2->setShader(shaderProgram.getShaderp("Blinn-Phong"));
-//
-//            auto sphere3 = new Sphere(0,-1.5,0);
-//            sphere3->setShader(shaderProgram.getShaderp("Constant"));
-//
-//            shapes.push_back(unique_ptr<Shape>(sphere0));
-//            shapes.push_back(unique_ptr<Shape>(sphere1));
-//            shapes.push_back(unique_ptr<Shape>(sphere2));
-//            shapes.push_back(unique_ptr<Shape>(sphere3));
-
-            break;
-        }
-    }
-
-
 }
 
 void Application::drawModels() {
 
-    shaderProgramHolder["Gradient"]->setUniform("time", (float)glfwGetTime() );
+//    shaderProgramHolder["Gradient"]->setUniform("time", (float)glfwGetTime() );
 
-    switch(SCENE){
-        case 0:
-        {
-//            shapes[2]->rotate(glm::radians(1.f), glm::vec3(1,0,0));
-
-            break;
-        }
-        case 2:{
-            shapes[0]->rotate(glm::radians(1.f), glm::vec3(0,1,0));
-            shapes[0]->move(0, 0, -2);
-            break;
-        }
-
-    }
-
-
-
-    for (const auto &item : shapes){
-
-        item->draw();
-    }
-
-    switch(SCENE){
-        case 2:{
-            shapes[0]->move(0, 0, 2);
-            break;
-        }
-    }
+    scene->drawModels();
 
 }
 

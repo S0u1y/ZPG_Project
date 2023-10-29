@@ -20,14 +20,21 @@ void ShaderProgramHolder::createShader(const char *name,const char *vertexShader
 }
 
 ShaderProgram &ShaderProgramHolder::getShader(const char *name) {
-    return *shaders[name].get();
+    return *this->operator[](name);
 }
 
 void ShaderProgramHolder::createAllShaders() {
 }
 
 ShaderProgram *ShaderProgramHolder::getShaderp(const char *name) {
-    return shaders[name].get();;
+    for (const auto &item : shaders){
+        if(!strcmp(item.first, name)){
+            return item.second.get();
+        }
+    }
+
+    printf("%s not found in shaders.\n", name);
+    return nullptr;
 }
 
 void ShaderProgramHolder::forEach(const std::function<void(ShaderProgram*)>& func) {
@@ -37,7 +44,14 @@ void ShaderProgramHolder::forEach(const std::function<void(ShaderProgram*)>& fun
 }
 
 ShaderProgram *ShaderProgramHolder::operator[](const char *name) {
-    return shaders[name].get();
+    for (const auto &item : shaders){
+        if(!strcmp(item.first, name)){
+            return item.second.get();
+        }
+    }
+
+    printf("%s not found in shaders.\n", name);
+    return nullptr;
 }
 
 

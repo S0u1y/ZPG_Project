@@ -34,3 +34,7 @@ void Transformation::Remove(int index) {
 
 
 }
+
+void Transformation::setTransform(glm::mat4 &p_M) {
+    M = p_M;
+}

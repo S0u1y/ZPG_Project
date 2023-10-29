@@ -12,6 +12,7 @@
 
 class Rotation : public Composite{
 private:
+    glm::mat4 M{1.f};
     float angle;
     glm::vec3 axis;
 
@@ -22,7 +23,9 @@ private:
     }
 
 public:
-    Rotation(float angle, const glm::vec3 &axis) : angle(angle), axis(axis) {}
+    Rotation(float angle, const glm::vec3 &axis) : angle(angle), axis(axis) {
+        M = glm::rotate(M, angle, axis);
+    }
 
     void action(glm::mat4 &M) override;
 

@@ -9,6 +9,7 @@
 
 class Scale : public Composite{
 private:
+    glm::mat4 M{1.f};
     glm::vec3 scale;
 
     void Add(Composite *composite) override{};

@@ -5,5 +5,6 @@
 #include "Move.h"
 
 void Move::action(glm::mat4 &M) {
-    M = glm::translate(M, vector);
+//    M = glm::translate(M, vector);
+    M *= this->M;
 }

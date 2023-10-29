@@ -20,11 +20,12 @@
 #include <vector>
 #include <memory>
 
-//#include "ShaderProgram.h"
-
 #include "Camera.h"
 #include "Shaders/ShaderProgramHolder.h"
 #include "Light.h"
+#include "Scene.h"
+
+#include "Scenes/Scenes.h"
 
 class Shape;
 
@@ -35,14 +36,15 @@ private:
 
     GLFWwindow* window;
 
-//    ShaderProgram shaderProgram;
-
     ShaderProgramHolder shaderProgramHolder;
 
-    Camera camera;
+    Camera* camera;
 
     Light light;
     vector<unique_ptr<Shape>> shapes;
+
+    Scenes scenes;
+    Scene* scene;
 
     float deltaT{0};
     float lastTime{0};

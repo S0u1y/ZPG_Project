@@ -5,11 +5,13 @@
 #ifndef TEST_SHAPE_H
 #define TEST_SHAPE_H
 
-
+class Composite;
 class ShaderProgram;
 #include "../Composite/Transformation/Transformation.h"
+#include "../Material.h"
 
 #include <GL/glew.h>
+
 
 class Shape {
 protected:
@@ -19,14 +21,12 @@ protected:
 
     ShaderProgram* shader;
 
-    Transformation transformation;
 
-    glm::vec3 color{0.385, 0.647, 0.812};
+
+    Material material;
 
     Shape(float x, float y, float z){};
     Shape(float x, float y, float z, float size): size(size) {};
-
-
 
     template<typename T>
     void makeVBO(GLuint* VBO, T& points){
@@ -44,6 +44,7 @@ protected:
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     }
 public:
+    Transformation transformation;
     float size = 0.5;
 
     void setShader(ShaderProgram* shader);
@@ -55,7 +56,9 @@ public:
     virtual void move(glm::vec3 vector);
     virtual void move(float x, float y, float z);
     virtual void scale(glm::vec3 scale);
-
+    void addTransform(Composite* component){
+        transformation.Add(component);
+    }
 };
 
 

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 project(Test)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 SET(CMAKE_BUILD_TYPE Debug)
 
@@ -30,7 +30,7 @@ add_executable(${PROJECT_NAME} main.cpp
         Shaders/ShaderProgram.cpp
         Shaders/ShaderProgram.h
         Shaders/ShaderProgramHolder.cpp
-        Shaders/ShaderProgramHolder.h)
+        Shaders/ShaderProgramHolder.h Material.cpp Material.h Scene.cpp Scene.h Scenes/Scenes.h Scenes/Scenes.cpp Composite/killmeplease.cpp Composite/killmeplease.h)
 
 
 #Link libraries on unix OS

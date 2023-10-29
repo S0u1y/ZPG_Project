@@ -14,8 +14,6 @@ class Transformation :public Composite {
 protected:
     std::vector<Composite*> transformations;
     glm::mat4 M{1.f};
-
-private:
     void action(glm::mat4 &p_M) override;
 
 public:
@@ -39,6 +37,8 @@ public:
     }
 
     void Remove(int index);
+
+    void setTransform(glm::mat4& p_M);
 };
 
 
