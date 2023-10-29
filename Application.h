@@ -83,14 +83,14 @@ private:
 public:
     explicit Application();
 
-    void initialize();;
+    void initialize();
 
-    void createShaders();;
-    void createModels();;
+    void createShaders();
+    void createModels();
 
     void drawModels();
 
-    void run();;
+    void run();
 };
 
 

@@ -27,6 +27,7 @@ Model::Model(float x, float y, float z, const float *modelVertices, size_t size)
         (vertices.get())[i] = modelVertices[i];
     }
     makeBuffers();
+    move(x,y,z);
 }
 
 void Model::draw() {

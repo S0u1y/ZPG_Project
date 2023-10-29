@@ -22,6 +22,7 @@ private:
 
     Light light{glm::vec3(-0,0,0), glm::vec3(0,0,-1), 360};
 public:
+    std::string title{"No title"};
     GLFWwindow* window;
     Camera camera;
 
@@ -48,7 +49,7 @@ public:
 
     void drawModels();
 
-
+    void setWindow(GLFWwindow* other);
 };
 
 

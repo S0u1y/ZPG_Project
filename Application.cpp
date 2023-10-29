@@ -128,12 +128,13 @@ void Application::initialize() {
     _height = height;
 
     scenes.initialize();
-    scene = scenes["Scene1"];
+    scene = scenes["Scene3"];
 
+    scene->setWindow(window);
     camera = &scene->camera;
 
     scene->camera.setPerspective(60.f, 4.f/3.f, 0.1f, 100.f);
-    scene->window = window;
+
 
 }
 

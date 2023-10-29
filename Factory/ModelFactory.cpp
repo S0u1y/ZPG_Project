@@ -4,6 +4,14 @@
 
 #include "ModelFactory.h"
 
+#include "../Models/Sphere.h"
+#include "../Models/tree.h"
+#include "../Models/gift.h"
+#include "../Models/bushes.h"
+#include "../Models/suzi_flat.h"
+#include "../Models/suzi_smooth.h"
+#include "../Models/plain.h"
+
 Shape *ModelFactory::createModel(const char *name, float x, float y, float z) {
     name = lower(name).c_str();
     if(compare(name, "sphere")){
@@ -17,6 +25,15 @@ Shape *ModelFactory::createModel(const char *name, float x, float y, float z) {
     }
     else if(compare(name, "suzi_smooth")){
         return new Model(x,y,z, suziSmooth, sizeof(suziSmooth)/sizeof(suziSmooth[0]));
+    }
+    else if(compare(name, "bushes")){
+        return new Model(x,y,z, bushes, sizeof(bushes)/sizeof(bushes[0]));
+    }
+    else if(compare(name, "gift")){
+        return new Model(x,y,z, gift, sizeof(gift)/sizeof(gift[0]));
+    }
+    else if(compare(name, "tree")){
+        return new Model(x,y,z, tree, sizeof(tree)/sizeof(tree[0]));
     }
     return nullptr;
 }

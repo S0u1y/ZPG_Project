@@ -5,12 +5,6 @@
 #ifndef TEST_MODELFACTORY_H
 #define TEST_MODELFACTORY_H
 
-#include "../Models/Sphere.h"
-#include "../Models/Square.h"
-#include "../Models/suzi_flat.h"
-#include "../Models/suzi_smooth.h"
-#include "../Models/plain.h"
-
 #include "../Models/Model.h"
 
 #include <string>

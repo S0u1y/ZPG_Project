@@ -28,3 +28,8 @@ void Scene::drawModels() {
     }
     postDraw();
 }
+
+void Scene::setWindow(GLFWwindow *other) {
+    this->window = other;
+    glfwSetWindowTitle(window, title.c_str());
+}
