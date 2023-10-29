@@ -82,6 +82,18 @@ const glm::vec3 &Camera::getEye() const {
     return eye;
 }
 
+void Camera::setEye(const glm::vec3 &eye) {
+    Camera::eye = eye;
+}
+
+const glm::vec3 &Camera::getTarget() const {
+    return target;
+}
+
+void Camera::setTarget(const glm::vec3 &target) {
+    Camera::target = target;
+}
+
 
 
 

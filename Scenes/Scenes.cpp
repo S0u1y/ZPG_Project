@@ -35,13 +35,15 @@ void Scenes::initialize() {
     sceneA->makeShape("sphere", 0, 1.5, 0, "Phong");
     sceneA->makeShape("sphere", 0, -1.5, 0, "Phong");
 
-
+    sceneA->camera.setEye({0,0,5});
+    sceneA->camera.setTarget({0,0,-1});
 
     //SCENE 2
     sceneB->camera.moveY(5);
 
     auto sun = sceneB->makeShape("sphere", 0, 0, 0, "Constant");
     sun->scale(glm::vec3(2,2,2));
+    sun->material.color = {.75,.75,0};
 
     auto planet = sceneB->makeShape("sphere", 0, 0, 0, "Light");
     auto planet2 = sceneB->makeShape("sphere", 0, 0, 0, "Light");
@@ -49,6 +51,8 @@ void Scenes::initialize() {
 
 
     auto* kms = new killmeplease();
+    auto* kms2 = new killmeplease();
+
     kms->shapes.push_back(planet);
     kms->shapes.push_back(planet2);
     kms->shapes.push_back(planet3);
@@ -59,12 +63,6 @@ void Scenes::initialize() {
     sceneB->preDraw = [=](){
         auto time = (float)glfwGetTime();
 
-//        planet->rotate(.01, { 0, 1, 0 });
-//        planet->move(0,0,5);
-//
-//        planet->performTransformation();
-//        planet2->transformation = planet->transformation;
-
         kms->Add(new Rotation(0.01, {0,1,0}));
         kms->Add(new Move({0,0,10}));
         kms->action();
@@ -73,7 +71,7 @@ void Scenes::initialize() {
         planet2->rotate(time * 0.5f, { 0, 1, 0 });
         planet2->move(0,0,5);
 
-//        planet3->scale({.25,.25,.25});
+        planet3->scale({.25,.25,.25});
         planet3->rotate(time * 0.75f, { 0, 1, 0 });
         planet3->move(0,0,7);
 
@@ -84,6 +82,10 @@ void Scenes::initialize() {
         kms->Add(new Move({0,0,-10}));
 //        planet2->move(0,0,-5);
     };
+
+    //SCENE 3
+    
+
 }
 
 Scene *Scenes::operator[](const char* name) {

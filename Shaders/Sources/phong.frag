@@ -17,7 +17,7 @@ uniform vec3 objectColor;
 
 void main () {
       vec3 lightDirection = normalize(lightPosition - worldPosition);
-      float diff = max(dot(normalize(lightPosition - worldPosition), worldNormal), 0.0);
+      float diff = max(dot(lightDirection, worldNormal), 0.0);
       vec3 viewDirection = normalize(cameraPosition - worldPosition);
       vec3 reflectionDirection = reflect(-lightDirection, worldNormal);
 

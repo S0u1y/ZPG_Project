@@ -16,14 +16,11 @@ class ShaderProgram;
 class Shape {
 protected:
 
+
     GLuint VBO_A = 0;
     GLuint VAO_A = 0;
 
     ShaderProgram* shader;
-
-
-
-    Material material;
 
     Shape(float x, float y, float z){};
     Shape(float x, float y, float z, float size): size(size) {};
@@ -45,6 +42,8 @@ protected:
     }
 public:
     Transformation transformation;
+    Material material;
+
     float size = 0.5;
 
     void setShader(ShaderProgram* shader);

@@ -26,6 +26,9 @@ public:
     void createAllShaders();
     void forEach(const std::function<void(ShaderProgram*)>& func);
     //TODO add unbind func
+    void unbindShader(){
+        glUseProgram(0);
+    }
 };
 
 

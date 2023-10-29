@@ -45,6 +45,12 @@ public:
     void lookY(float amount);
 
     const glm::vec3 &getEye() const;
+
+    void setEye(const glm::vec3 &eye);
+
+    const glm::vec3 &getTarget() const;
+
+    void setTarget(const glm::vec3 &target);
 };
 
 

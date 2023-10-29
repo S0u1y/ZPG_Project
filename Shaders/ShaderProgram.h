@@ -31,6 +31,9 @@ public:
     void onNotify() override;
 
     void useShader();
+    void unbindShader(){
+        glUseProgram(0);
+    }
 
     GLint getUniform(const char* name) const;
 
