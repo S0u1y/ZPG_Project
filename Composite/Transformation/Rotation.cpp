@@ -4,7 +4,7 @@
 
 #include "Rotation.h"
 
-void Rotation::action(glm::mat4 &M) {
+void Rotation::action(glm::mat4 &p_M) {
 //    M = glm::rotate(M, angle, axis);
-    M *= this->M;
+    p_M *= this->M;
 }

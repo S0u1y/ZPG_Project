@@ -12,12 +12,14 @@
 
 class Transformation :public Composite {
 protected:
-    std::vector<Composite*> transformations;
-    glm::mat4 M{1.f};
-    void action(glm::mat4 &p_M) override;
+    std::vector<Composite*> transformations{};
+
 
 public:
+    glm::mat4 M{1.f};
 
+
+    void action(glm::mat4 &p_M) override;
     void action(ShaderProgram shader);
 
     void Add(Composite *composite) override ;
@@ -39,6 +41,7 @@ public:
     void Remove(int index);
 
     void setTransform(glm::mat4& p_M);
+    void addTransform(glm::mat4& p_M);
 };
 
 

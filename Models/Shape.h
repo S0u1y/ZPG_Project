@@ -59,6 +59,12 @@ public:
     void addTransform(Composite* component){
         transformation.Add(component);
     }
+    void copyTransform(Transformation* other){
+        other = &transformation;
+    }
+    void performTransformation(){
+        transformation.action(*shader);
+    }
 };
 
 

@@ -7,11 +7,13 @@
 #include "../Scene.h"
 
 #include <unordered_map>
-
+class killmeplease;
 class Scenes{
 public:
     std::unordered_map<const char*, std::shared_ptr<Scene>> scenes{};
     ShaderProgramHolder shaderProgramHolder{};
+
+    std::vector<shared_ptr<killmeplease>> composites;
 
     void initializeShaders();
     void initialize();

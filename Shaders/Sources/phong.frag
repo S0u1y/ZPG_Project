@@ -1,7 +1,7 @@
 #version 400
 out vec4 frag_colour;
 in vec3 worldNormal;
-in vec4 worldPosition;
+in vec3 worldPosition;
 
 uniform vec3 cameraPosition;
 
@@ -16,12 +16,13 @@ uniform vec3 lightColor;
 uniform vec3 objectColor;
 
 void main () {
-      vec3 lightDirection = normalize(lightPosition - vec3(worldPosition));
-      float diff = max(dot(normalize(lightPosition - vec3(worldPosition)), normalize(worldNormal)), 0.0);
+      vec3 lightDirection = normalize(lightPosition - worldPosition);
+      float diff = max(dot(normalize(lightPosition - worldPosition), worldNormal), 0.0);
+      vec3 viewDirection = normalize(cameraPosition - worldPosition);
+      vec3 reflectionDirection = reflect(-lightDirection, worldNormal);
 
       float specularLight = 0.50f;
-      vec3 reflectionDirection = reflect(-lightDirection, worldNormal);
-      vec3 viewDirection = normalize(cameraPosition - vec3(worldPosition));
+
       float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 32);
       float specular = specAmount * specularLight;
 

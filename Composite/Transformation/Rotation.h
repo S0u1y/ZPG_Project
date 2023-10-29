@@ -27,7 +27,7 @@ public:
         M = glm::rotate(M, angle, axis);
     }
 
-    void action(glm::mat4 &M) override;
+    void action(glm::mat4 &p_M) override;
 
 };
 

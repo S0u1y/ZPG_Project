@@ -29,33 +29,60 @@ void Scenes::initialize() {
         item.second->shaderProgramHolder = &shaderProgramHolder;
     }
 
-
+    //SCENE 1
     sceneA->makeShape("sphere", 1.5, 0, 0, "Phong");
     sceneA->makeShape("sphere", -1.5, 0, 0, "Phong");
     sceneA->makeShape("sphere", 0, 1.5, 0, "Phong");
     sceneA->makeShape("sphere", 0, -1.5, 0, "Phong");
 
 
+
+    //SCENE 2
     sceneB->camera.moveY(5);
 
     auto sun = sceneB->makeShape("sphere", 0, 0, 0, "Constant");
     sun->scale(glm::vec3(2,2,2));
-//    sceneB->makeShape("sphere", -1.5, 0, 0, "Light");
 
     auto planet = sceneB->makeShape("sphere", 0, 0, 0, "Light");
     auto planet2 = sceneB->makeShape("sphere", 0, 0, 0, "Light");
-//    planet->scale(glm::vec3(.5,.5,.5));
-    planet2->scale(glm::vec3(.5,.5,.5));
+    auto planet3 = sceneB->makeShape("sphere", 0,0,0, "Phong");
 
-    killmeplease kms;
-    kms.shapes.push_back(planet);
-    kms.shapes.push_back(planet2);
 
-    kms.Add(new Rotation(.01, glm::vec3(0,1,0)));
-    kms.Add(new Move(glm::vec3(0,0,5)));
+    auto* kms = new killmeplease();
+    kms->shapes.push_back(planet);
+    kms->shapes.push_back(planet2);
+    kms->shapes.push_back(planet3);
+
+    composites.push_back(shared_ptr<killmeplease>(kms));
+
+
     sceneB->preDraw = [=](){
+        auto time = (float)glfwGetTime();
+
+//        planet->rotate(.01, { 0, 1, 0 });
+//        planet->move(0,0,5);
+//
+//        planet->performTransformation();
+//        planet2->transformation = planet->transformation;
+
+        kms->Add(new Rotation(0.01, {0,1,0}));
+        kms->Add(new Move({0,0,10}));
+        kms->action();
+
+        planet2->scale({.5,.5,.5});
+        planet2->rotate(time * 0.5f, { 0, 1, 0 });
+        planet2->move(0,0,5);
+
+//        planet3->scale({.25,.25,.25});
+        planet3->rotate(time * 0.75f, { 0, 1, 0 });
+        planet3->move(0,0,7);
+
     };
     sceneB->postDraw = [=](){
+//        planet->move(0,0,-5);
+
+        kms->Add(new Move({0,0,-10}));
+//        planet2->move(0,0,-5);
     };
 }
 

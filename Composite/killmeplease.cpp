@@ -5,13 +5,21 @@
 #include "killmeplease.h"
 
 
-void killmeplease::action(glm::mat4 &M) {}
+void killmeplease::action(glm::mat4 &M) {
+    for(auto & transformation : transformations){
+        transformation->action(this->M);
+    }
+}
 
 void killmeplease::action() {
-    Transformation::action(M);
+    if (transformations.empty()) return;
+
+    action(this->M);
     for (const auto &item : shapes){
         item->transformation.setTransform(M);
     }
+    transformations.clear();
+//    this->M = glm::mat4{1.f};
 }
 
 void killmeplease::Add(Composite *composite) {
