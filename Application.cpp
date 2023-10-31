@@ -134,7 +134,7 @@ void Application::initialize() {
     scene->setWindow(window);
     camera = &scene->camera;
 
-    scene->camera.setPerspective(60.f, 4.f/3.f, 0.1f, 100.f);
+    scene->camera.setPerspective(60.f, ratio, 0.1f, 100.f);
 
 
 }

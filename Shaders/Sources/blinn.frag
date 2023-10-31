@@ -17,6 +17,10 @@ uniform float b;
 //object variables
 uniform vec3 objectColor;
 
+uniform float r_a;
+uniform float r_d;
+uniform float r_s;
+
 float getIntensity(float p_a, float p_b){
 
       vec3 lightVec = lightPosition - vec3(worldPosition);

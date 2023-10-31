@@ -11,7 +11,7 @@
 class Material {
 private:
 public:
-    glm::vec3 r_a, r_d, r_s;
+    float r_a{1}, r_d{1}, r_s{1};
     glm::vec3 color{0.385, 0.647, 0.812};
 
 };

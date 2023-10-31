@@ -17,6 +17,10 @@ uniform float b;
 //object variables
 uniform vec3 objectColor;
 
+uniform float r_a;
+uniform float r_d;
+uniform float r_s;
+
 float getIntensity(float p_a, float p_b){
 
       vec3 lightVec = lightPosition - worldPosition;
@@ -31,22 +35,20 @@ void main () {
       vec3 viewDirection = normalize(cameraPosition - worldPosition);
       vec3 reflectionDirection = reflect(-lightDirection, normalize(worldNormal));
 
+      vec4 ambient = vec4(0.01, 0.1, 0.1, 1.0) * r_a;
+      vec4 diffuse = (diff * r_d) * vec4(lightColor, 1);
+      float intensity = getIntensity(a, b);
+
       float specularLight = 0.5f;
 
       float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 1);
-      float specular = specAmount * specularLight;
+      vec4 specular = vec4(specAmount * r_s * specularLight) * vec4(lightColor, 1);
 //      if(diff == 0){
 //            specular = 0;
 //      }
       if(dot(lightDirection, worldNormal) < 0){
-            specular = 0;
+            specular = vec4(0);
       }
-
-
-      vec4 ambient = vec4(0.01, 0.1, 0.1, 1.0);
-      vec4 diffuse = diff * vec4(1, 1, 1, 1);
-
-      float intensity = getIntensity(a, b);
 
       frag_colour = ( ambient + diffuse * intensity + specular * intensity)* vec4(objectColor, 1) ;
 }

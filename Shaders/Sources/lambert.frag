@@ -15,6 +15,10 @@ uniform float b;
 //object variables
 uniform vec3 objectColor;
 
+uniform float r_a;
+uniform float r_d;
+uniform float r_s;
+
 float getIntensity(float p_a, float p_b){
 
       vec3 lightVec = lightPosition - vec3(worldPosition);
@@ -33,8 +37,8 @@ void main () {
 //      float inten = clamp(angle, 0, 1);
       float inten = getIntensity(a, b);;
 
-      vec4 ambient = vec4(.1,0.1,0.1,1.0);
-      vec4 diffuse = vec4(diff * lightColor, 1);
+      vec4 ambient = vec4(.1,0.1,0.1,1.0) * r_a;
+      vec4 diffuse = vec4(diff * r_d * lightColor, 1);
 
 
       frag_colour = ( ambient + diffuse * inten) * vec4(objectColor, 1);

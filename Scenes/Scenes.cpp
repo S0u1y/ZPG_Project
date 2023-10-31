@@ -37,59 +37,124 @@ void Scenes::initialize() {
     }
 
     //SCENE 1
-    sceneA->makeShape("sphere", 1.5 * 2, 0, 0, "Phong");
+    sceneA->camera.setEye({0,0,5});
+    sceneA->camera.setTarget({0,0,-1});
+    sceneA->light.a = 3;
+    sceneA->light.b = 0.7;
+
+    sceneA->makeShape("sphere", 1.5, 0, 0, "Phong");
     sceneA->makeShape("sphere", -1.5, 0, 0, "Phong");
     sceneA->makeShape("sphere", 0, 1.5, 0, "Phong");
     sceneA->makeShape("sphere", 0, -1.5, 0, "Phong");
 
-    sceneA->camera.setEye({0,0,5});
-    sceneA->camera.setTarget({0,0,-1});
+
 
     //SCENE 2
     sceneB->title = "Slunecni soustava";
     sceneB->camera.moveY(5);
-    sceneB->light.a = 0.01;
-    sceneB->light.b = 0.01;
+//    sceneB->light.setLightColor({0.5,0.5,0});
+    sceneB->light.a = 0.001;
+    sceneB->light.b = 0.001;
 
     auto sun = sceneB->makeShape("sphere", 0, 0, 0, "Constant");
     sun->scale(glm::vec3(2,2,2));
     sun->material.color = {.75,.75,0};
 
-    auto planet = sceneB->makeShape("sphere", 0, 0, 0, "Light");
-    auto planet2 = sceneB->makeShape("sphere", 0, 0, 0, "Light");
-    auto planet3 = sceneB->makeShape("sphere", 0,0,0, "Phong");
+    auto merkur = sceneB->makeShape("sphere", 0, 0, 0, "Light");
+    merkur->scale({.5,.5,.5});
+    auto venus = sceneB->makeShape("sphere", 0, 0, 0, "Light");
+    venus->scale({.9,.9,.9});
+    auto earth = sceneB->makeShape("sphere", 0, 0, 0, "Light");
+    auto moon = sceneB->makeShape("sphere", 0, 0, 0, "Light");
+    auto mars = sceneB->makeShape("sphere", 0, 0, 0, "Light");
+    auto mars_moon_one = sceneB->makeShape("sphere", 0, 0, 0, "Light");
+    auto mars_moon_two = sceneB->makeShape("sphere", 0, 0, 0, "Light");
+    auto jupiter = sceneB->makeShape("sphere", 0, 0, 0, "Light");
+    auto jupiter_moon1 = sceneB->makeShape("sphere", 0, 0, 0, "Light");
+    auto jupiter_moon2 = sceneB->makeShape("sphere", 0, 0, 0, "Light");
+    auto jupiter_moon3 = sceneB->makeShape("sphere", 0, 0, 0, "Light");
+    auto jupiter_moon4 = sceneB->makeShape("sphere", 0, 0, 0, "Light");
 
+    auto earthOrbit = new killmeplease();
+    earthOrbit->shapes.push_back(earth);
+    earthOrbit->shapes.push_back(moon);
 
-    auto* kms = new killmeplease();
-//    auto* kms2 = new killmeplease();
+    auto marsOrbit = new killmeplease();
+    marsOrbit->shapes.push_back(mars);
+    marsOrbit->shapes.push_back(mars_moon_one);
+    marsOrbit->shapes.push_back(mars_moon_two);
 
-    kms->shapes.push_back(planet);
-    kms->shapes.push_back(planet2);
-    kms->shapes.push_back(planet3);
+    auto jupiterOrbit = new killmeplease();
+    jupiterOrbit->shapes.push_back(jupiter);
+    jupiterOrbit->shapes.push_back(jupiter_moon1);
+    jupiterOrbit->shapes.push_back(jupiter_moon2);
+    jupiterOrbit->shapes.push_back(jupiter_moon3);
+    jupiterOrbit->shapes.push_back(jupiter_moon4);
 
-    composites.push_back(shared_ptr<killmeplease>(kms));
+//    composites.push_back(shared_ptr<killmeplease>(kms));
 
 
     sceneB->preDraw = [=](){
         auto time = (float)glfwGetTime();
 
-        kms->Add(new Rotation(0.01, {0,1,0}));
-        kms->Add(new Move({0,0,10}));
-        kms->action();
+        earthOrbit->Add(new Rotation(0.015, {0,1,0}));
+        earthOrbit->Add(new Move({0,0,25}));
+        earthOrbit->action();
 
-        planet2->scale({.5,.5,.5});
-        planet2->rotate( time * 0.5f, { 0, 1, 0 });
-        planet2->move(0,0,5);
-        planet2->rotate( time * 1.f, { 0, 1, 0 });
+        marsOrbit->Add(new Rotation(0.008, {0,1,0}));
+        marsOrbit->Add(new Move({0,0,40}));
+        marsOrbit->action();
 
-        planet3->scale({.25,.25,.25});
-        planet3->rotate(time * 0.75f, { 0, 1, 0 });
-        planet3->move(0,0,7);
+        jupiterOrbit->Add(new Rotation(0.01, {0,1,0}));
+        jupiterOrbit->Add(new Move({0,0,60}));
+        jupiterOrbit->action();
+
+
+        merkur->rotate(0.05, {0,1,0});
+        merkur->move(0,0,15);
+
+        venus->rotate(0.025, {0,1,0});
+        venus->move(0,0,15);
+
+        moon->scale({.5,.5,.5});
+        moon->rotate(time * 0.75f, { 0, 1, 0 });
+        moon->move(0,0,7);
+
+        mars_moon_one->scale({.25,.25,.25});
+        mars_moon_one->rotate(time * 0.75f, { 0, 1, 0 });
+        mars_moon_one->move(0,0,7);
+
+        mars_moon_two->scale({.15,.15,.15});
+        mars_moon_two->rotate(time * 0.50f, { 0, 1, 0 });
+        mars_moon_two->move(0,0,7);
+
+        jupiter->scale({2.5,2.5,2.5});
+
+        jupiter_moon1->rotate(time * 0.250f, { 0, 1, 0 });
+        jupiter_moon1->move(0,0,2);
+        jupiter_moon1->scale({.05,.05,.05});
+
+        jupiter_moon2->rotate(time * 0.50f, { 0, 1, 0 });
+        jupiter_moon2->move(0,0,3);
+        jupiter_moon2->scale({.15,.15,.15});
+
+        jupiter_moon3->rotate(time * 0.50f, { 0, 1, 0 });
+        jupiter_moon3->move(0,0,2);
+        jupiter_moon3->scale({.15,.15,.15});
+
+        jupiter_moon4->rotate(time * 0.50f, { 0, 1, 0 });
+        jupiter_moon4->move(0,0,4);
+        jupiter_moon4->scale({.15,.15,.15});
 
     };
     sceneB->postDraw = [=](){
+        earthOrbit->Add(new Move({0,0,-25}));
+        marsOrbit->Add(new Move({0,0,-40}));
+        jupiterOrbit->Add(new Move({0,0,-60}));
 
-        kms->Add(new Move({0,0,-10}));
+        merkur->move(0,0,-15);
+        venus->move(0,0,-15);
+
     };
 
     //SCENE 3
@@ -104,6 +169,9 @@ void Scenes::initialize() {
     //SCENE 4
 
     sceneE->title = "Zmena obrazovky";
+
+    sceneE->light.a = 3;
+    sceneE->light.b = 0.7;
 
     sceneE->makeShape("sphere", 1.5, 0, 0, "Phong");
     sceneE->makeShape("suzi_flat", -1.5, 0, 0, "Phong");

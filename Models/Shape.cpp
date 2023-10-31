@@ -13,6 +13,10 @@
 void Shape::draw() {
     transformation.action(*shader);
     shader->setUniform("objectColor", material.color);
+
+    shader->setUniform("r_a", material.r_a);
+    shader->setUniform("r_d", material.r_d);
+    shader->setUniform("r_s", material.r_s);
 }
 
 void Shape::rotate(float angle, glm::vec3 axis) {

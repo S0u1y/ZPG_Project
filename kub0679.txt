@@ -86,11 +86,13 @@ V několika větách popište kde máte ve zdrojovém kódu danou věc (třída,
 
 6. Třída Material
 ----------------------
-  a) nesplněno
-     Popis: /Material
-        nepoužívám koeficienty r_a, r_d, r_s
+  a) splněno
+     Popis: třída Material
 
 Testovací scény
+
+    Všechny scény jsou v Scenes/Scenes třídě.
+    V Application.cpp se nastavuje, kterou scénu chceme.
 
 1) Základní test Phongova osvětlovacího modelu.
 ----------------------
