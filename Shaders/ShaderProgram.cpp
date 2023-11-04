@@ -60,6 +60,7 @@ void ShaderProgram::onNotify(Light *light) {
     setUniform("lightColor", light->getLightColor());
     setUniform("a", light->a);
     setUniform("b", light->b);
+    setUniform("k", light->k);
 }
 
 void ShaderProgram::onNotify() {

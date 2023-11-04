@@ -13,6 +13,7 @@ uniform float lightAngle;
 uniform vec3 lightColor;
 uniform float a;
 uniform float b;
+uniform float k;
 
 //object variables
 uniform vec3 objectColor;
@@ -26,7 +27,7 @@ float getIntensity(float p_a, float p_b){
       vec3 lightVec = lightPosition - worldPosition;
       float distance = length(lightVec);
 
-      return 1 / (p_a * distance * distance + p_b * distance * 1);
+      return 1 / (k + p_a * distance * distance + p_b * distance * 1);
 }
 
 void main () {
@@ -41,7 +42,7 @@ void main () {
 
       float specularLight = 0.5f;
 
-      float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 1);
+      float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 32);
       vec4 specular = vec4(specAmount * r_s * specularLight) * vec4(lightColor, 1);
 //      if(diff == 0){
 //            specular = 0;
@@ -50,5 +51,5 @@ void main () {
             specular = vec4(0);
       }
 
-      frag_colour = ( ambient + diffuse * intensity + specular * intensity)* vec4(objectColor, 1) ;
+      frag_colour = ( ambient + (diffuse + specular) * intensity)* vec4(objectColor, 1) ;
 }

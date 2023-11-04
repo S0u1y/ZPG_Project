@@ -19,7 +19,7 @@ private:
     glm::vec3 lightColor{1,1,1};
 
 public:
-    float a{0.01}, b{0.01};
+    float a{0.01}, b{0.01}, k{0.0};
 
     Light()= default;
     Light(const glm::vec3 &position, const glm::vec3 &direction, float angle) : position(position),

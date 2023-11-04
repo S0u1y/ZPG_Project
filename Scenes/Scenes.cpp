@@ -39,11 +39,12 @@ void Scenes::initialize() {
     //SCENE 1
     sceneA->camera.setEye({0,0,5});
     sceneA->camera.setTarget({0,0,-1});
-    sceneA->light.a = 3;
-    sceneA->light.b = 0.7;
+    sceneA->light.a = 0;
+    sceneA->light.b = 0;
+    sceneA->light.k = 1;
 
     sceneA->makeShape("sphere", 1.5, 0, 0, "Phong");
-    sceneA->makeShape("sphere", -1.5, 0, 0, "Phong");
+    sceneA->makeShape("sphere", -1.5, 0, 0, "Blinn");
     sceneA->makeShape("sphere", 0, 1.5, 0, "Phong");
     sceneA->makeShape("sphere", 0, -1.5, 0, "Phong");
 
@@ -52,9 +53,11 @@ void Scenes::initialize() {
     //SCENE 2
     sceneB->title = "Slunecni soustava";
     sceneB->camera.moveY(5);
+    sceneB->camera.setEye({0,50,0});
 //    sceneB->light.setLightColor({0.5,0.5,0});
-    sceneB->light.a = 0.001;
-    sceneB->light.b = 0.001;
+    sceneB->light.a = 0.000;
+    sceneB->light.b = 0.000;
+    sceneB->light.k = 1;
 
     auto sun = sceneB->makeShape("sphere", 0, 0, 0, "Constant");
     sun->scale(glm::vec3(2,2,2));
@@ -97,23 +100,23 @@ void Scenes::initialize() {
     sceneB->preDraw = [=](){
         auto time = (float)glfwGetTime();
 
-        earthOrbit->Add(new Rotation(0.015, {0,1,0}));
+        earthOrbit->Add(new Rotation(-0.0015, {0,1,0}));
         earthOrbit->Add(new Move({0,0,25}));
         earthOrbit->action();
 
-        marsOrbit->Add(new Rotation(0.008, {0,1,0}));
+        marsOrbit->Add(new Rotation(0.0008, {0,1,0}));
         marsOrbit->Add(new Move({0,0,40}));
         marsOrbit->action();
 
-        jupiterOrbit->Add(new Rotation(0.01, {0,1,0}));
+        jupiterOrbit->Add(new Rotation(0.001, {0,1,0}));
         jupiterOrbit->Add(new Move({0,0,60}));
         jupiterOrbit->action();
 
 
-        merkur->rotate(0.05, {0,1,0});
+        merkur->rotate(0.005, {0,1,0});
         merkur->move(0,0,15);
 
-        venus->rotate(0.025, {0,1,0});
+        venus->rotate(0.0025, {0,1,0});
         venus->move(0,0,15);
 
         moon->scale({.5,.5,.5});
@@ -186,6 +189,7 @@ void Scenes::initialize() {
     sceneC->light.move({0,50,0});
     sceneC->light.a = 0.001;
     sceneC->light.b = 0.001;
+    sceneC->light.k = 0.5;
 
     std::random_device rd;
     std::mt19937 mt(rd());

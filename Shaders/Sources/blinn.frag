@@ -1,7 +1,7 @@
 #version 400
 out vec4 frag_colour;
 in vec3 worldNormal;
-in vec4 worldPosition;
+in vec3 worldPosition;
 
 uniform vec3 cameraPosition;
 
@@ -13,6 +13,7 @@ uniform float lightAngle;
 uniform vec3 lightColor;
 uniform float a;
 uniform float b;
+uniform float k;
 
 //object variables
 uniform vec3 objectColor;
@@ -26,7 +27,7 @@ float getIntensity(float p_a, float p_b){
       vec3 lightVec = lightPosition - vec3(worldPosition);
       float distance = length(lightVec);
 
-      return 1 / (p_a * distance * distance + p_b * distance * 1);
+      return 1 / (k + p_a * distance * distance + p_b * distance * 1);
 }
 
 void main () {
