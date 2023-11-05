@@ -8,6 +8,7 @@
 
 #include <unordered_map>
 class killmeplease;
+
 class Scenes{
 public:
     std::unordered_map<const char*, std::shared_ptr<Scene>> scenes{};
@@ -15,8 +16,8 @@ public:
 
     std::vector<shared_ptr<killmeplease>> composites;
 
-    void initializeShaders();
-    void initialize();
+    virtual void initializeShaders();
+    virtual void initialize();
     Scene* operator[] (const char* name);
 };
 

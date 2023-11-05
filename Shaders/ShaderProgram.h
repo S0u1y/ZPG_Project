@@ -15,6 +15,17 @@
 
 class Camera; class Light;
 
+using glm::vec3;
+struct lightSource{
+    vec3 lightPosition;
+    vec3 lightDirection;
+    vec3 lightColor;
+    float angle;
+    float a;
+    float b;
+    float k;
+};
+
 class ShaderProgram : public ShaderLoader, public Observer<Camera>, public Observer<Light>{
 private:
     Shader vertexShader;
@@ -42,6 +53,10 @@ public:
     void setUniform(const char* name, glm::vec3 vector);
 
     void setUniform(const char* name, float var);
+
+    void setUniform(const char* name, int var);
+
+    void setUniform(std::string name, lightSource lightSource);
 
 
 

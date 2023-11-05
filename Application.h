@@ -25,7 +25,7 @@
 #include "Light.h"
 #include "Scene.h"
 
-#include "Scenes/Scenes.h"
+#include "Scenes/Scenes_07.h"
 
 class Shape;
 
@@ -43,7 +43,7 @@ private:
     Light light;
     vector<unique_ptr<Shape>> shapes;
 
-    Scenes scenes;
+    Scenes_07 scenes;
     Scene* scene;
 
     float deltaT{0};

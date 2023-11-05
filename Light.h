@@ -20,6 +20,7 @@ private:
 
 public:
     float a{0.01}, b{0.01}, k{0.0};
+    int id{0};
 
     Light()= default;
     Light(const glm::vec3 &position, const glm::vec3 &direction, float angle) : position(position),

@@ -15,9 +15,20 @@ ShaderProgram::ShaderProgram(const char *vertexShaderFilepath, const char *fragm
 : ShaderLoader(vertexShaderFilepath, fragmentShaderFilepath, &this->shaderProgramID)
 {}
 
-void ShaderProgram::setUniform(const char *name, float var) {
+void ShaderProgram::setUniform(const char *name, float floating_number) {
     useShader();
-    glUniform1f(getUniform(name), var);
+    auto id = getUniform(name);
+    if(id < 0)
+        return;
+    glUniform1f(getUniform(name), floating_number);
+}
+
+void ShaderProgram::setUniform(const char *name, int integer) {
+    useShader();
+    auto id = getUniform(name);
+    if(id < 0)
+        return;
+    glUniform1i(getUniform(name), integer);
 }
 
 void ShaderProgram::useShader() {
@@ -61,10 +72,37 @@ void ShaderProgram::onNotify(Light *light) {
     setUniform("a", light->a);
     setUniform("b", light->b);
     setUniform("k", light->k);
+
+    lightSource light_{
+        light->getPosition(),
+        light->getDirection(),
+        light->getLightColor(),
+        light->getAngle(),
+        light->a,
+        light->b,
+        light->k
+    };
+    setUniform("lightSources["+std::to_string(light->id)+"]", light_);
 }
 
 void ShaderProgram::onNotify() {
 }
+
+void ShaderProgram::setUniform(std::string name, lightSource lightSource) {
+    if(getUniform((name + ".lightPosition").c_str()) < 0){
+//        printf("%s", ("Shader has no " + name + ".lightPosition\n").c_str());
+        return;
+    }
+    setUniform((name + ".lightPosition").c_str(), lightSource.lightPosition);
+    setUniform((name + ".lightVector").c_str(), lightSource.lightDirection);
+    setUniform((name + ".lightAngle").c_str(), lightSource.angle);
+    setUniform((name + ".lightColor").c_str(), lightSource.lightColor);
+    setUniform((name + ".a").c_str(), lightSource.a);
+    setUniform((name + ".b").c_str(), lightSource.b);
+    setUniform((name + ".k").c_str(), lightSource.k);
+}
+
+
 
 
 
