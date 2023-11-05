@@ -35,12 +35,12 @@ uniform float r_a;
 uniform float r_d;
 uniform float r_s;
 
-float getIntensity(float p_k, float p_a, float p_b){
+float getIntensity(lightSource light){
 
-      vec3 lightVec = lightPosition - worldPosition;
+      vec3 lightVec = light.lightPosition - worldPosition;
       float distance = length(lightVec);
 
-      return 1 / (p_k + p_a * distance * distance + p_b * distance * 1);
+      return 1 / (light.k + light.a * distance * distance + light.b * distance * 1);
 }
 
 void main () {
@@ -56,7 +56,7 @@ void main () {
 
 
             vec4 diffuse = (diff * r_d) * vec4(lightColor, 1);
-            float intensity = getIntensity(lightSources[i].k, lightSources[i].a, lightSources[i].b);
+            float intensity = getIntensity(lightSources[i]);
             //something probably wrong with intensity
             float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 32);
             vec4 specular = vec4(specAmount * r_s * 0.5f) * vec4(lightSources[i].lightColor, 1);

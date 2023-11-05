@@ -11,7 +11,7 @@
 #include "Observer/Subject.h"
 
 class Light : public Subject<Light>{
-private:
+protected:
     glm::vec3 position{};
     glm::vec3 direction{}; //direction in which the light shines
     float angle{}; //angle (cone) of light
@@ -19,7 +19,7 @@ private:
     glm::vec3 lightColor{1,1,1};
 
 public:
-    float a{0.01}, b{0.01}, k{0.0};
+    float a{0.0}, b{0.0}, k{1.0};
     int id{0};
 
     Light()= default;

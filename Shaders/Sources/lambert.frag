@@ -36,7 +36,7 @@ void main () {
 //spotlight
 //      float angle = dot(normalize(vec3(worldPosition) - lightPosition), normalize(lightVector));
 //      float inten = clamp(angle, 0, 1);
-      float inten = getIntensity(a, b);;
+      float inten = getIntensity(a, b);
 
       vec4 ambient = vec4(.1,0.1,0.1,1.0) * r_a;
       vec4 diffuse = vec4(diff * r_d * lightColor, 1);

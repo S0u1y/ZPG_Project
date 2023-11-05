@@ -26,12 +26,12 @@ uniform float r_a;
 uniform float r_d;
 uniform float r_s;
 
-float getIntensity(float p_k, float p_a, float p_b){
+float getIntensity(lightSource light){
 
-      vec3 lightVec = lightPosition - worldPosition;
+      vec3 lightVec = light.lightPosition - worldPosition;
       float distance = length(lightVec);
 
-      return 1 / (p_k + p_a * distance * distance + p_b * distance * 1);
+      return 1 / (light.k + light.a * distance * distance + light.b * distance * 1);
 }
 
 void main () {
@@ -55,8 +55,8 @@ void main () {
                   specular = vec4(spec * specularStrength);// * vec4(1,0,1,1) ;
             }
 
-            float intensity = 1;//getIntensity(k, a, b);
-            vec4 diffuse = diff * vec4(lightColor, 1) * intensity;
+            float intensity = getIntensity(lightSources[i]);
+            vec4 diffuse = diff * vec4(lightSources[i].lightColor, 1) * intensity;
             specular *= intensity;
 
             specular_final += specular;

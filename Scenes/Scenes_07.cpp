@@ -7,6 +7,7 @@
 #include "../Composite/killmeplease.h"
 #include "../Composite/Transformation/Rotation.h"
 #include "../Composite/Transformation/Move.h"
+#include "../CameraLight.h"
 
 void Scenes_07::initialize() {
     Scenes::initialize();
@@ -34,18 +35,27 @@ void Scenes_07::initialize() {
     mainLight->b = 0;
     mainLight->k = 1;
 
-    auto secondLight = sceneA->makeLight({0, 5, 0}, {0, -1, 0}, 360);
-    secondLight->a = 0.5;
-    secondLight->b = 0.05;
-    secondLight->k = 0.75;
+    auto cameraLight = sceneA->makeCameraLight(60);
+    cameraLight->a = 0.7;
+    cameraLight->b = 3;
+
+//    auto cameraLight = sceneA->addLight(new CameraLight({0,0,0}, {0,0,0}, 60));
+//    cameraLight->k = 1;
+//    cameraLight->b = 0;
+//    cameraLight->a = 0;
+//    sceneA->camera.addObserver((CameraLight*)cameraLight);
+
+//    auto secondLight = sceneA->makeLight({0, 5, 0}, {0, -1, 0}, 360);
+//    secondLight->a = 0.5;
+//    secondLight->b = 0.05;
+//    secondLight->k = 0.75;
 
     sceneA->makeShape("sphere", 1.5, 0, 0, "Phong");
     sceneA->makeShape("sphere", -1.5, 0, 0, "Blinn");
     sceneA->makeShape("sphere", 0, 1.5, 0, "Phong");
     sceneA->makeShape("sphere", 0, -1.5, 0, "Phong");
 
-
-
+/*
     //SCENE 2
     sceneB->title = "Slunecni soustava";
     sceneB->camera.moveY(5);
@@ -186,7 +196,7 @@ void Scenes_07::initialize() {
     sceneC->title = "Les";
 
     mainLight = sceneC->lights[0].get();
-    mainLight->move({0,50,0});
+    mainLight->move({0,50,-25});
     mainLight->a = 0.001;
     mainLight->b = 0.001;
     mainLight->k = 0.5;
@@ -227,6 +237,7 @@ void Scenes_07::initialize() {
 
     sceneC->camera.setEye({0,2,5});
     sceneC->camera.setTarget({0,0,-1});
+    */
 }
 
 void Scenes_07::initializeShaders() {

@@ -21,6 +21,8 @@ class Scene {
 private:
     bool shadersInitialized = false;
     vector<unique_ptr<Shape>> shapes;
+
+    void updateShaders();
 public:
 
     std::string title{"No title"};
@@ -43,6 +45,8 @@ public:
     Shape* makeShape(const char *name, float x, float y, float z, ShaderProgram *shaderProgram);
     Shape* makeShape(const char *name, float x, float y, float z, const char* shaderName);
     Light* makeLight(glm::vec3 position, glm::vec3 direction, float angle);
+    Light* makeCameraLight(float angle);
+    Light* addLight(Light* light);
 
     void createShaderProgram(const char* name, const char* vertexFilepath, const char* fragmentFilepath);
 

@@ -32,7 +32,9 @@ add_executable(${PROJECT_NAME} main.cpp
         Shaders/ShaderProgramHolder.cpp
         Shaders/ShaderProgramHolder.h Material.cpp Material.h Scene.cpp Scene.h Scenes/Scenes.h Scenes/Scenes.cpp Composite/killmeplease.cpp Composite/killmeplease.h
         Scenes/Scenes_07.h
-        Scenes/Scenes_07.cpp)
+        Scenes/Scenes_07.cpp
+        CameraLight.cpp
+        CameraLight.h)
 
 
 #Link libraries on unix OS
