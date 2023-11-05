@@ -7,7 +7,7 @@
 
 void CameraLight::onNotify(Camera *subject) {
 
-    this->position = subject->getEye() + subject->getTarget();
+    this->position = subject->getEye();
     this->direction = subject->getTarget();
     notify();
 }

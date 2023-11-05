@@ -35,15 +35,10 @@ void Scenes_07::initialize() {
     mainLight->b = 0;
     mainLight->k = 1;
 
-    auto cameraLight = sceneA->makeCameraLight(60);
-    cameraLight->a = 0.7;
-    cameraLight->b = 3;
-
-//    auto cameraLight = sceneA->addLight(new CameraLight({0,0,0}, {0,0,0}, 60));
-//    cameraLight->k = 1;
-//    cameraLight->b = 0;
-//    cameraLight->a = 0;
-//    sceneA->camera.addObserver((CameraLight*)cameraLight);
+    auto cameraLight = sceneA->makeCameraLight(15.f);
+    cameraLight->a = 0;
+    cameraLight->b = 0;
+    cameraLight->k = 1;
 
 //    auto secondLight = sceneA->makeLight({0, 5, 0}, {0, -1, 0}, 360);
 //    secondLight->a = 0.5;
@@ -51,7 +46,7 @@ void Scenes_07::initialize() {
 //    secondLight->k = 0.75;
 
     sceneA->makeShape("sphere", 1.5, 0, 0, "Phong");
-    sceneA->makeShape("sphere", -1.5, 0, 0, "Blinn");
+    sceneA->makeShape("sphere", -1.5, 0, 0, "Phong");
     sceneA->makeShape("sphere", 0, 1.5, 0, "Phong");
     sceneA->makeShape("sphere", 0, -1.5, 0, "Phong");
 
