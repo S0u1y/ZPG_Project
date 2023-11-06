@@ -65,22 +65,15 @@ void ShaderProgram::onNotify(Camera* subject) {
 
 void ShaderProgram::onNotify(Light *light) {
     useShader();
-    setUniform("lightPosition", light->getPosition());
-    setUniform("lightVector", light->getDirection());
-    setUniform("lightAngle", light->getAngle());
-    setUniform("lightColor", light->getLightColor());
-    setUniform("a", light->a);
-    setUniform("b", light->b);
-    setUniform("k", light->k);
 
     lightSource light_{
         light->getPosition(),
         light->getDirection(),
         light->getLightColor(),
         light->getAngle(),
-        light->a,
-        light->b,
-        light->k
+        light->linear,
+        light->quadratic,
+        light->constant
     };
     setUniform("lightSources["+std::to_string(light->id)+"]", light_);
 }
@@ -97,9 +90,9 @@ void ShaderProgram::setUniform(std::string name, lightSource lightSource) {
     setUniform((name + ".lightVector").c_str(), lightSource.lightDirection);
     setUniform((name + ".lightAngle").c_str(), lightSource.angle);
     setUniform((name + ".lightColor").c_str(), lightSource.lightColor);
-    setUniform((name + ".a").c_str(), lightSource.a);
-    setUniform((name + ".b").c_str(), lightSource.b);
-    setUniform((name + ".k").c_str(), lightSource.k);
+    setUniform((name + ".linear").c_str(), lightSource.linear);
+    setUniform((name + ".quadratic").c_str(), lightSource.quadratic);
+    setUniform((name + ".constant").c_str(), lightSource.constant);
 }
 
 

@@ -19,7 +19,7 @@ protected:
     glm::vec3 lightColor{1,1,1};
 
 public:
-    float a{0.0}, b{0.0}, k{1.0};
+    float linear{0.0}, quadratic{0.0}, constant{1.0};
     int id{0};
 
     Light()= default;

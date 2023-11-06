@@ -31,14 +31,14 @@ void Scenes_07::initialize() {
     sceneA->camera.setEye({0,0,5});
     sceneA->camera.setTarget({0,0,-1});
     auto mainLight = sceneA->lights[0].get();
-    mainLight->a = 0;
-    mainLight->b = 0;
-    mainLight->k = 1;
+    mainLight->linear = 0;
+    mainLight->quadratic = 0;
+    mainLight->constant = 1;
 
     auto cameraLight = sceneA->makeCameraLight(15.f);
-    cameraLight->a = 0;
-    cameraLight->b = 0;
-    cameraLight->k = 1;
+    cameraLight->linear = 1;
+    cameraLight->quadratic = 0;
+    cameraLight->constant = 1;
 
 //    auto secondLight = sceneA->makeLight({0, 5, 0}, {0, -1, 0}, 360);
 //    secondLight->a = 0.5;

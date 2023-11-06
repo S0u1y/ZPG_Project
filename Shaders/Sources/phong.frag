@@ -6,24 +6,15 @@ in vec3 worldPosition;
 uniform vec3 cameraPosition;
 
 //light source variables
-uniform vec3 lightPosition;
-uniform vec3 lightVector;
-uniform float lightAngle;
-
-uniform vec3 lightColor;
-uniform float a;
-uniform float b;
-uniform float k;
-
 struct lightSource{
       vec3 lightPosition;
       vec3 lightVector;
       float lightAngle;
 
       vec3 lightColor;
-      float a;
-      float b;
-      float k;
+      float linear;
+      float quadratic;
+      float constant;
 };
 uniform int lightSources_n;
 uniform lightSource lightSources[5];
@@ -40,7 +31,7 @@ float getIntensity(lightSource light){
       vec3 lightVec = light.lightPosition - worldPosition;
       float distance = length(lightVec);
 
-      return 1 / (light.k + light.a * distance * distance + light.b * distance * 1);
+      return 1 / (light.constant + light.quadratic * distance * distance + light.linear * distance * 1);
 }
 
 void main () {
@@ -56,14 +47,14 @@ void main () {
                   //spotlight
                   float alpha = radians(lightSources[i].lightAngle);
                   float angle = dot(-lightDirection, normalize(lightSources[i].lightVector));
-                  float inten = (angle - (alpha))/(1 - (alpha));
+                  float inten = (angle - cos(alpha))/(1 - cos(alpha));
                   if ( angle > cos(alpha)){//if we're inside the cone, then calculate the lighting...
 
                         float diff = max(dot(lightDirection, normalize(worldNormal)), 0.0);
                         vec3 viewDirection = normalize(cameraPosition - worldPosition);
                         vec3 reflectionDirection = reflect(-lightDirection, normalize(worldNormal));
 
-                        vec4 diffuse = (diff * r_d) * vec4(lightColor, 1);
+                        vec4 diffuse = (diff * r_d) * vec4(lightSources[i].lightColor, 1);
                         float intensity = getIntensity(lightSources[i]);
                         float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 32);
                         vec4 specular = vec4(specAmount * r_s * 0.5f) * vec4(lightSources[i].lightColor, 1);
@@ -81,7 +72,7 @@ void main () {
                   vec3 viewDirection = normalize(cameraPosition - worldPosition);
                   vec3 reflectionDirection = reflect(-lightDirection, normalize(worldNormal));
 
-                  vec4 diffuse = (diff * r_d) * vec4(lightColor, 1);
+                  vec4 diffuse = (diff * r_d) * vec4(lightSources[i].lightColor, 1);
                   float intensity = getIntensity(lightSources[i]);
                   float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 32);
                   vec4 specular = vec4(specAmount * r_s * 0.5f) * vec4(lightSources[i].lightColor, 1);

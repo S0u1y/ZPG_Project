@@ -17,9 +17,9 @@ void CameraLight::onNotify() {}
 CameraLight::CameraLight(const glm::vec3 &position, const glm::vec3 &direction, float angle)
 : Light(position,direction,angle)
 {
-    this->a = 0;
-    this->b = 0;
-    this->k = 1;
+    this->linear = 0;
+    this->constant = 0;
+    this->quadratic = 1;
 }
 
 CameraLight::CameraLight(Camera *camera, float angle)

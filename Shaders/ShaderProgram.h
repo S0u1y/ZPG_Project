@@ -21,9 +21,9 @@ struct lightSource{
     vec3 lightDirection;
     vec3 lightColor;
     float angle;
-    float a;
-    float b;
-    float k;
+    float linear;
+    float quadratic;
+    float constant;
 };
 
 class ShaderProgram : public ShaderLoader, public Observer<Camera>, public Observer<Light>{
