@@ -20,7 +20,9 @@ protected:
 
 public:
     float linear{0.0}, quadratic{0.0}, constant{1.0};
+    //note that the ID is a value, that MUST be set when making a light..
     int id{0};
+    int type{1};
 
     Light()= default;
     Light(const glm::vec3 &position, const glm::vec3 &direction, float angle) : position(position),

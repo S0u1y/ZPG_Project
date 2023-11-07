@@ -2,7 +2,6 @@
 // Created by wizzy on 25.10.23.
 //
 
-#include <glm/trigonometric.hpp>
 #include "ShaderProgram.h"
 
 #include "../Camera.h"
@@ -73,11 +72,11 @@ void ShaderProgram::onNotify(Light *light) {
         light->getAngle(),
         light->linear,
         light->quadratic,
-        light->constant
+        light->constant,
+        light->type,
     };
     setUniform("lightSources["+std::to_string(light->id)+"]", light_);
 }
-
 void ShaderProgram::onNotify() {
 }
 
@@ -93,7 +92,10 @@ void ShaderProgram::setUniform(std::string name, lightSource lightSource) {
     setUniform((name + ".linear").c_str(), lightSource.linear);
     setUniform((name + ".quadratic").c_str(), lightSource.quadratic);
     setUniform((name + ".constant").c_str(), lightSource.constant);
+    setUniform((name + ".type").c_str(), lightSource.type);
 }
+
+
 
 
 

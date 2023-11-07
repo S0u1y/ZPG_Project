@@ -7,6 +7,7 @@ uniform vec3 cameraPosition;
 
 //light source variables
 struct lightSource{
+      int type;
       vec3 lightPosition;
       vec3 lightVector;
       float lightAngle;
@@ -42,12 +43,17 @@ void main () {
       for(int i = 0; i < lightSources_n; i++){
 
             vec3 lightDirection = normalize(lightSources[i].lightPosition - worldPosition);
+            if ( lightSources[i].type == 2){
+                  lightDirection = lightSources[i].lightVector;
+            }
 
             if(lightSources[i].lightAngle != 360){
                   //spotlight
+
                   float alpha = radians(lightSources[i].lightAngle);
                   float angle = dot(-lightDirection, normalize(lightSources[i].lightVector));
                   float inten = (angle - cos(alpha))/(1 - cos(alpha));
+
                   if ( angle > cos(alpha)){//if we're inside the cone, then calculate the lighting...
 
                         float diff = max(dot(lightDirection, normalize(worldNormal)), 0.0);

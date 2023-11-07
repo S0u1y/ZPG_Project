@@ -24,6 +24,7 @@ struct lightSource{
     float linear;
     float quadratic;
     float constant;
+    int type;
 };
 
 class ShaderProgram : public ShaderLoader, public Observer<Camera>, public Observer<Light>{

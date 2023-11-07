@@ -58,8 +58,7 @@ Light *Scene::makeCameraLight(float angle) {
     return output;
 }
 
-
-Light* Scene::addLight(Light *light) {
+Light* Scene::addLight(DirectionalLight* light) {
     this->lights.push_back(unique_ptr<Light>(light));
     auto output = lights[lights.size()-1].get();
     output->id = lights.size()-1;

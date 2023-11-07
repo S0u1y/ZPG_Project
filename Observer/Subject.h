@@ -18,13 +18,13 @@ public:
     {
         observers.push_back(observer);
     }
-    void notify ()
+    virtual void notify ()
     {
         for (const auto &item : observers){
             item->onNotify((T*)this);
         }
     }
-private:
+protected:
     std::vector<Observer<T> *> observers;
 };
 

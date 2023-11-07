@@ -34,7 +34,11 @@ add_executable(${PROJECT_NAME} main.cpp
         Scenes/Scenes_07.h
         Scenes/Scenes_07.cpp
         CameraLight.cpp
-        CameraLight.h)
+        CameraLight.h
+        Scenes/Scenes_08.cpp
+        Scenes/Scenes_08.h
+        DirectionalLight.cpp
+        DirectionalLight.h)
 
 
 #Link libraries on unix OS
