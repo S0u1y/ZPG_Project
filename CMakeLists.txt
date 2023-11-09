@@ -49,8 +49,10 @@ if(UNIX)
     find_package(glfw3 REQUIRED)
     find_package(glm REQUIRED)
     find_package(GLEW REQUIRED)
+#    find_package(SOIL REQUIRED) # for loading textures
 
     include_directories(${GLEW_INCLUDE_DIRS})
+    link_directories("/usr/local/lib/libSOIL.a")
 
 
     target_link_libraries(Test ${OPENGL_LIBRARIES} glfw glm::glm ${GLEW_LIBRARIES})

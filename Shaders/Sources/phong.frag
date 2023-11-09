@@ -27,6 +27,8 @@ uniform float r_a;
 uniform float r_d;
 uniform float r_s;
 
+//uniform sample2D texture;
+
 float getIntensity(lightSource light){
 
       vec3 lightVec = light.lightPosition - worldPosition;
@@ -44,7 +46,7 @@ void main () {
 
             vec3 lightDirection = normalize(lightSources[i].lightPosition - worldPosition);
             if ( lightSources[i].type == 2){
-                  lightDirection = lightSources[i].lightVector;
+                  lightDirection = normalize(lightSources[i].lightVector);
             }
 
             if(lightSources[i].lightAngle != 360){

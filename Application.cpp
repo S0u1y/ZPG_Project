@@ -6,7 +6,6 @@
 
 #include "Factory/ModelFactory.h"
 
-
 Application* Application::GLFWCallbackWrapper::application = nullptr;
 
 void Application::GLFWCallbackWrapper::setApplication(Application *p_application) {
@@ -75,7 +74,6 @@ void Application::GLFWCallbackWrapper::cursor_callback(GLFWwindow *window, doubl
 
 //TODO maybe create singleton for ShaderProgramHolder ?
 Application::Application() {
-
     GLFWCallbackWrapper::setApplication(this);
 }
 
@@ -140,12 +138,16 @@ void Application::initialize() {
 }
 
 void Application::createShaders() {
-
     scene->initializeShaders();
 }
 
 //TODO create scene class
 void Application::createModels() {
+//    //activate texture we want to set
+//    glActiveTexture(GL_TEXTURE0);
+//    image = SOIL_load_OGL_texture("wooden_fence.png", SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+//    //set image to texture
+//    glBindTexture(GL_TEXTURE_2D, image);
 }
 
 void Application::drawModels() {
