@@ -68,11 +68,13 @@ if(WIN32)
     set(GLFW_DIR "${LIBS_DIR}/glfw-3.3.8.bin.WIN64")
     set(GLEW_DIR "${LIBS_DIR}/glew-2.1.0")
     set(GLM_DIR "${LIBS_DIR}/glm")
+    set(SOIL_DIR "${LIBS_DIR}/soil")
 
     # Nastavení cest k hlavičkovým souborům pro GLFW, GLEW, GLM
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/include)
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLEW_DIR}/include)
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLM_DIR})
+    target_include_directories(${PROJECT_NAME} PRIVATE ${SOIL_DIR}/include)
 
     # Linkování s knihovnami GLFW, GLEW a OPENGL
     target_link_libraries(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/lib-mingw-w64/glfw3.dll)

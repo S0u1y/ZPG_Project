@@ -72,7 +72,6 @@ void Application::GLFWCallbackWrapper::cursor_callback(GLFWwindow *window, doubl
     }
 }
 
-//TODO maybe create singleton for ShaderProgramHolder ?
 Application::Application() {
     GLFWCallbackWrapper::setApplication(this);
 }
@@ -141,7 +140,6 @@ void Application::createShaders() {
     scene->initializeShaders();
 }
 
-//TODO create scene class
 void Application::createModels() {
 //    //activate texture we want to set
 //    glActiveTexture(GL_TEXTURE0);
