@@ -133,7 +133,6 @@ void Application::initialize() {
 
     scene->camera.setPerspective(60.f, ratio, 0.1f, 100.f);
 
-
 }
 
 void Application::createShaders() {
@@ -142,10 +141,10 @@ void Application::createShaders() {
 
 void Application::createModels() {
 //    //activate texture we want to set
-//    glActiveTexture(GL_TEXTURE0);
-//    image = SOIL_load_OGL_texture("wooden_fence.png", SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-//    //set image to texture
-//    glBindTexture(GL_TEXTURE_2D, image);
+    glActiveTexture(GL_TEXTURE0);
+    image = SOIL_load_OGL_texture("wooden_fence.png", SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+    //set image to texture
+    glBindTexture(GL_TEXTURE_2D, image);
 }
 
 void Application::drawModels() {

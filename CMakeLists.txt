@@ -38,7 +38,13 @@ add_executable(${PROJECT_NAME} main.cpp
         Scenes/Scenes_08.cpp
         Scenes/Scenes_08.h
         DirectionalLight.cpp
-        DirectionalLight.h)
+        DirectionalLight.h
+        Models/ModelVisitor.cpp
+        Models/ModelVisitor.h
+        Models/TextureModel.cpp
+        Models/TextureModel.h
+        Models/NoTextureModel.cpp
+        Models/NoTextureModel.h)
 
 
 #Link libraries on unix OS
@@ -74,11 +80,23 @@ if(WIN32)
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/include)
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLEW_DIR}/include)
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLM_DIR})
+
+#    cringe!
+#    library does get found, but linking it all together does not work..
+    include(CMakePrintHelpers)
+
+    file(GLOB_RECURSE SOIL_SOURCES "${SOIL_DIR}/include/*.c")
+    cmake_print_variables(SOIL_SOURCES)
+#    add_library(Testus ${SOIL_DIR}/include/SOIL.c ${SOIL_DIR}/include/stb_image_aug.c ${SOIL_DIR}/include/image_DXT.c ${SOIL_DIR}/include/image_helper.c)
+    add_library(Testus ${SOIL_SOURCES})
     target_include_directories(${PROJECT_NAME} PRIVATE ${SOIL_DIR}/include)
+#    TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE ${SOIL_DIR}/lib/libSOIL.a)
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE Testus)
 
     # Linkování s knihovnami GLFW, GLEW a OPENGL
     target_link_libraries(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/lib-mingw-w64/glfw3.dll)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${GLEW_DIR}/bin/Release/x64/glew32.dll)
+
     target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENGL_gl_LIBRARY})
 
     # Kopírovaní glfw3.dll do cmake-build folder

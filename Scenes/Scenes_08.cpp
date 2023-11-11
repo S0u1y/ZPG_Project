@@ -23,6 +23,11 @@ void Scenes_08::initialize() {
 
     sceneA->lights[0]->constant = 50;
 
+    auto cameraLight = sceneA->makeCameraLight(15);
+    cameraLight->constant = 1;
+    cameraLight->linear = 0;
+    cameraLight->quadratic = 0;
+
     auto light = sceneA->addLight(new DirectionalLight({0,2,0}, {0,1,-1}, 360));
 
     light->constant = 1;
@@ -35,4 +40,9 @@ void Scenes_08::initialize() {
     auto sphere2 = sceneA->makeShape("sphere", -3, -1.5, 0, "Phong");
     sphere2->material.r_s = 1;
     sphere2->material.r_d = 0.5;
+
+    auto suzi = sceneA->makeShape("suzi_smooth", 0, 3, 0, "Phong");
+    suzi->rotate(glm::radians(180.f), {0,1,0});
+
+
 }

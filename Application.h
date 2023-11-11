@@ -28,7 +28,7 @@
 #include "Scenes/Scenes_07.h"
 #include "Scenes/Scenes_08.h"
 
-#include "SOIL/SOIL.h"
+#include "SOIL.h"
 
 class Shape;
 
@@ -46,7 +46,7 @@ private:
     Light light;
     vector<unique_ptr<Shape>> shapes;
 
-    Scenes_07 scenes;
+    Scenes_08 scenes;
     Scene* scene;
 
     GLuint image;

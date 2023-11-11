@@ -16,10 +16,14 @@
 //TODO add some list of string-object later.
 class ModelFactory {
 private:
+    static bool isTextured;
     static bool compare(const char* first, const char* second);
     static std::string lower(std::string in);
+    template<typename T>
+    static Shape* createModelTemplated(const char* name, float x, float y, float z);
 public:
     static Shape* createModel(const char* name, float x, float y, float z);
+    static void setTextured(bool isTextured);
 };
 
 
