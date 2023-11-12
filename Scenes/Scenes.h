@@ -16,6 +16,8 @@ public:
 
     std::vector<shared_ptr<killmeplease>> composites;
 
+    Scene* createScene(const char* name);
+
     virtual void initializeShaders();
     virtual void initialize();
     Scene* operator[] (const char* name);

@@ -6,17 +6,13 @@
 
 void Scenes_08::initializeShaders() {
     Scenes::initializeShaders();
+    shaderProgramHolder.createShader("BasicTextured", "BasicTexture.vert", "BasicTexture.frag");
 }
 
 void Scenes_08::initialize() {
     Scenes::initialize();
 
-    auto sceneA = new Scene();
-    scenes.emplace("Scene1", sceneA);
-
-    for (const auto &item : scenes){
-        item.second->shaderProgramHolder = &shaderProgramHolder;
-    }
+    auto sceneA = createScene("Scene1");
 
     sceneA->camera.setEye({0,0,5});
     sceneA->camera.setTarget({0,0,-1});

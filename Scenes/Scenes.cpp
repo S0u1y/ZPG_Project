@@ -34,6 +34,15 @@ Scene *Scenes::operator[](const char* name) {
     return nullptr;
 }
 
+Scene *Scenes::createScene(const char *name) {
+    auto pair = scenes.emplace(name, new Scene);
+    if(pair.second){//second from returned pair is whether it has been added or not.
+        pair.first->second->shaderProgramHolder = &shaderProgramHolder;
+        return pair.first->second.get();
+    }
+    return nullptr;//maybe instead of nullptr, make the program exit here?
+}
+
 
 
 
