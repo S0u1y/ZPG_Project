@@ -39,12 +39,10 @@ add_executable(${PROJECT_NAME} main.cpp
         Scenes/Scenes_08.h
         DirectionalLight.cpp
         DirectionalLight.h
-        Models/ModelVisitor.cpp
-        Models/ModelVisitor.h
-        Models/TextureModel.cpp
-        Models/TextureModel.h
-        Models/NoTextureModel.cpp
-        Models/NoTextureModel.h)
+        Textures/Texture.cpp
+        Textures/Texture.h
+        ModelLoader.cpp
+        ModelLoader.h)
 
 
 #Link libraries on unix OS
@@ -68,6 +66,10 @@ endif ()
 #Link libraries on Windows OS
 if(WIN32)
 
+    include(CMakePrintHelpers)
+
+    find_package(assimp REQUIRED)
+
     set(LIBS_DIR ${CMAKE_SOURCE_DIR}/libs)
 
     find_package(OpenGL REQUIRED)
@@ -75,33 +77,37 @@ if(WIN32)
     set(GLEW_DIR "${LIBS_DIR}/glew-2.1.0")
     set(GLM_DIR "${LIBS_DIR}/glm")
     set(SOIL_DIR "${LIBS_DIR}/soil")
+#    set(ASSIMP_DIR "${LIBS_DIR}/assimp/assimp")
 
-    # Nastavení cest k hlavičkovým souborům pro GLFW, GLEW, GLM
+#    find_library(ASSIMP_LIBRARY NAMES assimp-vc143-mtd HINTS ${ASSIMP_DIR}/lib/Debug)
+#    cmake_print_variables(ASSIMP_LIBRARY)
+
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/include)
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLEW_DIR}/include)
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLM_DIR})
 
-#    cringe!
-#    library does get found, but linking it all together does not work..
-    include(CMakePrintHelpers)
+#    target_include_directories(${PROJECT_NAME} PRIVATE ${ASSIMP_DIR}/include)
 
+#    library does get found, but linking it all together does not work..
     file(GLOB_RECURSE SOIL_SOURCES "${SOIL_DIR}/include/*.c")
     cmake_print_variables(SOIL_SOURCES)
 #    add_library(Testus ${SOIL_DIR}/include/SOIL.c ${SOIL_DIR}/include/stb_image_aug.c ${SOIL_DIR}/include/image_DXT.c ${SOIL_DIR}/include/image_helper.c)
     add_library(Testus ${SOIL_SOURCES})
     target_include_directories(${PROJECT_NAME} PRIVATE ${SOIL_DIR}/include)
 #    TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE ${SOIL_DIR}/lib/libSOIL.a)
-    TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE Testus)
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME} Testus)
 
-    # Linkování s knihovnami GLFW, GLEW a OPENGL
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/lib-mingw-w64/glfw3.dll)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${GLEW_DIR}/bin/Release/x64/glew32.dll)
+    target_link_libraries(${PROJECT_NAME} ${GLFW_DIR}/lib-mingw-w64/glfw3.dll)
+    target_link_libraries(${PROJECT_NAME} ${GLEW_DIR}/bin/Release/x64/glew32.dll)
+#    target_link_libraries(${PROJECT_NAME} PRIVATE ${ASSIMP_DIR}/bin/Debug/assimp-vc143-mtd.dll)
+#    target_link_libraries(${PROJECT_NAME} PRIVATE ${ASSIMP_LIBRARY})
+    target_link_libraries(${PROJECT_NAME} assimp::assimp)
+    target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENGL_gl_LIBRARY})
-
-    # Kopírovaní glfw3.dll do cmake-build folder
     file(COPY ${GLFW_DIR}/lib-mingw-w64/glfw3.dll DESTINATION ${CMAKE_BINARY_DIR})
     file(COPY ${GLEW_DIR}/bin/Release/x64/glew32.dll DESTINATION ${CMAKE_BINARY_DIR})
+#    file(COPY ${ASSIMP_DIR}/bin/Debug/assimp-vc143-mtd.dll DESTINATION ${CMAKE_BINARY_DIR})
+#    file(COPY ${ASSIMP_DIR}/lib/Debug/assimp-vc143-mtd.lib DESTINATION ${CMAKE_BINARY_DIR})
 endif ()
 
 #add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD

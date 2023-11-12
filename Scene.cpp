@@ -8,6 +8,7 @@
 
 #include "Factory/ModelFactory.h"
 #include "CameraLight.h"
+#include "SOIL.h"
 
 Shape* Scene::makeShape(const char *name, float x, float y, float z, ShaderProgram* shaderProgram) {
     auto newModel = std::unique_ptr<Shape>(ModelFactory::createModel(name, x, y, z));
@@ -89,6 +90,40 @@ void Scene::drawModels() {
 void Scene::setWindow(GLFWwindow *other) {
     this->window = other;
     glfwSetWindowTitle(window, title.c_str());
+}
+
+void Scene::initializeShaders() {
+    shadersInitialized = true;
+
+    //      activate texture we want to set
+    glActiveTexture(GL_TEXTURE0);
+    GLuint image = SOIL_load_OGL_texture("../Textures/Sources/wooden_fence.png", SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+    if(image == NULL){
+        printf("SOMETHING WENT WRONG\n");
+    }
+    //set image to texture
+    glBindTexture(GL_TEXTURE_2D, image);
+
+    auto it = shaderProgramHolder->shaders.begin();
+    shaderProgramHolder->forEach([this, &it](ShaderProgram* shaderProgram){
+        camera.addObserver(shaderProgram);
+        for (const auto &item: lights){
+            item->addObserver(shaderProgram);
+        }
+//            if(shaderProgram->getUniform("lightSources[0].lightPosition") < 0){
+//                printf("No multiple LightSources defined for shader %s.\n", (*it).first);
+//            }
+        shaderProgram->setUniform("lightSources_n", (int)lights.size());
+        it++;
+    });
+    camera.notify();
+    for (const auto &item: lights){
+        item->notify();
+    }
+}
+
+void Scene::setModelFactoryMode(bool mode) {
+    ModelFactory::setTextured(mode);
 }
 
 

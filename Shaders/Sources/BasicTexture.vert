@@ -15,5 +15,5 @@ out vec2 vt_out;
 
 void main() {
     gl_Position = projectionMatrix * viewMatrix * MVP * vec4(vp, 1.0);
-    vt_out = vt;
+    vt_out = uv;
 }

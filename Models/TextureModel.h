@@ -15,6 +15,8 @@ public:
     void accept(ModelVisitor &visitor) override;
 
     void draw() override;
+
+    GLuint textureID;
 };
 
 

@@ -46,6 +46,7 @@ public:
         makeLight(glm::vec3(0,0,0), glm::vec3(0,0,0), 360);
     }
 
+    void setModelFactoryMode(bool mode);
     Shape* makeShape(const char *name, float x, float y, float z, ShaderProgram *shaderProgram);
     Shape* makeShape(const char *name, float x, float y, float z, const char* shaderName);
     Light* makeLight(glm::vec3 position, glm::vec3 direction, float angle);
@@ -55,27 +56,8 @@ public:
 
     void createShaderProgram(const char* name, const char* vertexFilepath, const char* fragmentFilepath);
 
-    //TODO add loading textures.
-    void initializeShaders(){
-        shadersInitialized = true;
-
-        auto it = shaderProgramHolder->shaders.begin();
-        shaderProgramHolder->forEach([this, &it](ShaderProgram* shaderProgram){
-            camera.addObserver(shaderProgram);
-            for (const auto &item: lights){
-                item->addObserver(shaderProgram);
-            }
-//            if(shaderProgram->getUniform("lightSources[0].lightPosition") < 0){
-//                printf("No multiple LightSources defined for shader %s.\n", (*it).first);
-//            }
-            shaderProgram->setUniform("lightSources_n", (int)lights.size());
-            it++;
-        });
-        camera.notify();
-        for (const auto &item: lights){
-            item->notify();
-        }
-    }
+    //TODO add loading textures..
+    void initializeShaders();
 
     void drawModels();
 

@@ -5,10 +5,6 @@
 #ifndef TEST_SHADER_H
 #define TEST_SHADER_H
 
-
-#include <GL/glew.h>
-#include <string>
-
 class Shader {
 public:
     const char* filepath;
