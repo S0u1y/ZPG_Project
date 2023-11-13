@@ -8,7 +8,7 @@
 
 #include "Factory/ModelFactory.h"
 #include "CameraLight.h"
-#include "SOIL.h"
+#include "SOIL/SOIL.h"
 
 Shape* Scene::makeShape(const char *name, float x, float y, float z, ShaderProgram* shaderProgram) {
     auto newModel = std::unique_ptr<Shape>(ModelFactory::createModel(name, x, y, z));

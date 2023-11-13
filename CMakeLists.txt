@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
+include(CMakePrintHelpers)
+
 project(Test)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -42,7 +44,9 @@ add_executable(${PROJECT_NAME} main.cpp
         Textures/Texture.cpp
         Textures/Texture.h
         ModelLoader.cpp
-        ModelLoader.h)
+        ModelLoader.h
+        Textures/TextureHolder.cpp
+        Textures/TextureHolder.h)
 
 
 #Link libraries on unix OS
@@ -53,20 +57,19 @@ if(UNIX)
     find_package(glfw3 REQUIRED)
     find_package(glm REQUIRED)
     find_package(GLEW REQUIRED)
-#    find_package(SOIL REQUIRED) # for loading textures
+    find_package(assimp REQUIRED)
 
     include_directories(${GLEW_INCLUDE_DIRS})
-    link_directories("/usr/local/lib/libSOIL.a")
+    include_directories(${ASSIMP_INCLUDE_DIRS})
 
+    cmake_print_variables(ASSIMP_INCLUDE_DIRS assimp::assimp GLEW_INCLUDE_DIRS)
 
-    target_link_libraries(Test ${OPENGL_LIBRARIES} glfw glm::glm ${GLEW_LIBRARIES})
+    target_link_libraries(Test glfw glm::glm ${GLEW_LIBRARIES} "/usr/lib/libSOIL.so" assimp::assimp ${OPENGL_LIBRARIES})
 
 endif ()
 
 #Link libraries on Windows OS
 if(WIN32)
-
-    include(CMakePrintHelpers)
 
     find_package(assimp REQUIRED)
 

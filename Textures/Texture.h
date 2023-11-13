@@ -5,15 +5,23 @@
 #ifndef TEST_TEXTURE_H
 #define TEST_TEXTURE_H
 
-#include "SOIL.h"
+#include "SOIL/SOIL.h"
 #include "GL/glew.h"
 
 class Texture {
 private:
     GLuint id;
-    int textureUnit{-1};
+    GLenum textureUnit{0};
+    GLenum textureType{0};
 public:
-    Texture(const char* filepath, int textureUnit);
+    Texture(const char* filepath, GLenum textureUnit, GLenum textureType);
+
+    GLenum getTextureUnit(){
+        return textureUnit;
+    }
+
+    void activate();
+    void unbind();
 };
 
 

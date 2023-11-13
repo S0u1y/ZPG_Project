@@ -3,7 +3,6 @@
 //
 
 #include "Scenes_08.h"
-#include "SOIL.h"
 #include "../Models/TextureModel.h"
 
 void Scenes_08::initializeShaders() {

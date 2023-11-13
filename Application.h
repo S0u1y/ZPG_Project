@@ -28,7 +28,7 @@
 #include "Scenes/Scenes_07.h"
 #include "Scenes/Scenes_08.h"
 
-#include "SOIL.h"
+#include "SOIL/SOIL.h"
 
 class Shape;
 
