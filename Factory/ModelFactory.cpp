@@ -16,6 +16,8 @@
 #include "../Models/TextureModel.h"
 #include "../Models/NoTextureModel.h"
 #include "../Models/ModelVisitor.h"
+#include "../Models/skycube.h"
+#include "../Models/CubemapModel.h"
 
 bool ModelFactory::isTextured = false;
 
@@ -40,8 +42,9 @@ void ModelFactory::setTextured(bool isTextured) {
 template<typename T>
 Shape *ModelFactory::createModelTemplated(const char *name, float x, float y, float z) {
     T* newModel = nullptr;
-    name = lower(name).c_str();
-    if(compare(name, "sphere")){
+    auto lowered_name = lower(name);
+    name = lowered_name.c_str();
+    if(!strcmp(name, "sphere")){
         newModel = new T(x,y,z, sphere, sizeof(sphere)/sizeof(sphere[0]));
     }
     else if(compare(name, "plain")){
@@ -74,9 +77,16 @@ template<>
 Shape *ModelFactory::createModelTemplated<TextureModel>(const char *name, float x, float y, float z) {
 
     TextureModel* newModel = nullptr;
-    name = lower(name).c_str();
+    auto lowered_name = lower(name);
+    name = lowered_name.c_str();
     if(compare(name, "plain")){
         newModel = new TextureModel(x,y,z, textured_plain, sizeof(textured_plain)/sizeof(textured_plain[0]));
+    }
+    if(compare(name, "sky_cube") || compare(name, "skycube")){
+        auto newModel = new CubemapModel(x,y,z, skycube, sizeof(skycube)/sizeof(skycube[0]));
+        CreateModelVisitor visitor;
+        newModel->accept(visitor);
+        return newModel;
     }
     if(newModel != nullptr){
         CreateModelVisitor visitor;

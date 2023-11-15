@@ -20,6 +20,7 @@ public:
 
     virtual void initializeShaders();
     virtual void initialize();
+    virtual void initializeTextures();
     Scene* operator[] (const char* name);
 };
 

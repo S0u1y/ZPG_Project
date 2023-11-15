@@ -9,16 +9,24 @@
 #include "GL/glew.h"
 
 class Texture {
-private:
-    GLuint id;
+protected:
+//    GLuint id{0};
     GLenum textureUnit{0};
     GLenum textureType{0};
+
+    //different types of textures may need these, but for the end user we don't want these to be accessible..
+    Texture(GLenum textureUnit, GLenum textureType): textureUnit(textureUnit), textureType(textureType) {};
+    Texture() = default;
+
+//    virtual void create(const char* filepath) = 0;
 public:
     Texture(const char* filepath, GLenum textureUnit, GLenum textureType);
 
-    GLenum getTextureUnit(){
-        return textureUnit;
+
+    virtual GLenum getTextureUnit(){
+        return textureUnit - GL_TEXTURE0;
     }
+
 
     void activate();
     void unbind();

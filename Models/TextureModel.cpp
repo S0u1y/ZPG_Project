@@ -20,7 +20,7 @@ TextureModel::TextureModel(float x, float y, float z, const float *modelVertices
 
 void TextureModel::draw() {
     Model::draw();
-    shader->setUniform("textureUnitID", 0);
+    shader->setUniform("textureUnitID", (int)textureID);
     // draw triangles
     glDrawArrays(GL_TRIANGLES, 0, size/8); //mode,first,count
 }

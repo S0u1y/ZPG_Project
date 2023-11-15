@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.22.1)
 include(CMakePrintHelpers)
 
 project(Test)
@@ -46,7 +46,13 @@ add_executable(${PROJECT_NAME} main.cpp
         ModelLoader.cpp
         ModelLoader.h
         Textures/TextureHolder.cpp
-        Textures/TextureHolder.h)
+        Textures/TextureHolder.h
+        Textures/CubemapTexture.cpp
+        Textures/CubemapTexture.h
+        Models/skycube.h
+        Models/CubemapModel.cpp
+        Models/CubemapModel.h
+)
 
 
 #Link libraries on unix OS
@@ -71,46 +77,37 @@ endif ()
 #Link libraries on Windows OS
 if(WIN32)
 
+    find_package(OpenGL REQUIRED)
     find_package(assimp REQUIRED)
+    find_package(Soil REQUIRED)
 
     set(LIBS_DIR ${CMAKE_SOURCE_DIR}/libs)
 
-    find_package(OpenGL REQUIRED)
+
     set(GLFW_DIR "${LIBS_DIR}/glfw-3.3.8.bin.WIN64")
     set(GLEW_DIR "${LIBS_DIR}/glew-2.1.0")
     set(GLM_DIR "${LIBS_DIR}/glm")
-    set(SOIL_DIR "${LIBS_DIR}/soil")
-#    set(ASSIMP_DIR "${LIBS_DIR}/assimp/assimp")
-
-#    find_library(ASSIMP_LIBRARY NAMES assimp-vc143-mtd HINTS ${ASSIMP_DIR}/lib/Debug)
-#    cmake_print_variables(ASSIMP_LIBRARY)
 
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/include)
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLEW_DIR}/include)
     target_include_directories(${PROJECT_NAME} PRIVATE ${GLM_DIR})
 
-#    target_include_directories(${PROJECT_NAME} PRIVATE ${ASSIMP_DIR}/include)
+    target_include_directories(${PROJECT_NAME} PUBLIC include)
 
-#    library does get found, but linking it all together does not work..
-    file(GLOB_RECURSE SOIL_SOURCES "${SOIL_DIR}/include/*.c")
-    cmake_print_variables(SOIL_SOURCES)
-#    add_library(Testus ${SOIL_DIR}/include/SOIL.c ${SOIL_DIR}/include/stb_image_aug.c ${SOIL_DIR}/include/image_DXT.c ${SOIL_DIR}/include/image_helper.c)
-    add_library(Testus ${SOIL_SOURCES})
-    target_include_directories(${PROJECT_NAME} PRIVATE ${SOIL_DIR}/include)
-#    TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE ${SOIL_DIR}/lib/libSOIL.a)
-    TARGET_LINK_LIBRARIES(${PROJECT_NAME} Testus)
+    cmake_print_variables(ASSIMP_INCLUDE_DIRS assimp::assimp GLEW_INCLUDE_DIRS)
+    cmake_print_variables(SOIL_INCLUDE_DIRS Soil::Soil SOIL_LIBRARIES SOIL_INCLUDE_LIBRARIES)
+    cmake_print_variables(Soil::soil)
+    cmake_print_variables(assimp ASSIMP_INCLUDE_LIBRARIES ASSIMP_LIBRARIES)
+    cmake_print_variables(SOIL ASSIMP include OPENGL_gl_LIBRARY)
 
-    target_link_libraries(${PROJECT_NAME} ${GLFW_DIR}/lib-mingw-w64/glfw3.dll)
-    target_link_libraries(${PROJECT_NAME} ${GLEW_DIR}/bin/Release/x64/glew32.dll)
-#    target_link_libraries(${PROJECT_NAME} PRIVATE ${ASSIMP_DIR}/bin/Debug/assimp-vc143-mtd.dll)
-#    target_link_libraries(${PROJECT_NAME} PRIVATE ${ASSIMP_LIBRARY})
-    target_link_libraries(${PROJECT_NAME} assimp::assimp)
+    target_link_libraries(${PROJECT_NAME} ${GLFW_DIR}/lib-vc2022/glfw3.lib)
+    target_link_libraries(${PROJECT_NAME} ${GLEW_DIR}/lib/Release/x64/glew32.lib)
+    target_link_libraries(${PROJECT_NAME} assimp::assimp ${ASSIMP_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME} soil)
     target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
-    file(COPY ${GLFW_DIR}/lib-mingw-w64/glfw3.dll DESTINATION ${CMAKE_BINARY_DIR})
+    file(COPY ${GLFW_DIR}/lib-vc2022/glfw3.dll DESTINATION ${CMAKE_BINARY_DIR})
     file(COPY ${GLEW_DIR}/bin/Release/x64/glew32.dll DESTINATION ${CMAKE_BINARY_DIR})
-#    file(COPY ${ASSIMP_DIR}/bin/Debug/assimp-vc143-mtd.dll DESTINATION ${CMAKE_BINARY_DIR})
-#    file(COPY ${ASSIMP_DIR}/lib/Debug/assimp-vc143-mtd.lib DESTINATION ${CMAKE_BINARY_DIR})
 endif ()
 
 #add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD

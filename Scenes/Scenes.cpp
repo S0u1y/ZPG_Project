@@ -3,9 +3,8 @@
 //
 
 #include "Scenes.h"
-#include "../Composite/killmeplease.h"
-#include "../Composite/Transformation/Rotation.h"
-#include "../Composite/Transformation/Move.h"
+
+#include "../Textures/TextureHolder.h"
 
 #include <random>
 
@@ -41,6 +40,14 @@ Scene *Scenes::createScene(const char *name) {
         return pair.first->second.get();
     }
     return nullptr;//maybe instead of nullptr, make the program exit here?
+}
+
+void Scenes::initializeTextures() {
+    std::string sourcesP = "../Textures/Sources/";
+    TextureHolder::createTexture("wood_planks", (sourcesP + "wooden_fence.png").c_str(), GL_TEXTURE_2D);
+    TextureHolder::createCubemap("skycube", sourcesP + "posx.jpg", sourcesP + "negx.jpg", sourcesP + "posy.jpg",
+                                 sourcesP + "negy.jpg", sourcesP + "posz.jpg", sourcesP + "negz.jpg", GL_TEXTURE_2D);
+    TextureHolder::createTexture("grass", (sourcesP + "grass.png").c_str(), GL_TEXTURE_2D);
 }
 
 

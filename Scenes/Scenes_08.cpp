@@ -2,16 +2,22 @@
 // Created by Filip on 07.11.2023.
 //
 
+#include <random>
 #include "Scenes_08.h"
 #include "../Models/TextureModel.h"
+#include "../Textures/TextureHolder.h"
+#include "../Models/CubemapModel.h"
+#include "../Textures/CubemapTexture.h"
 
 void Scenes_08::initializeShaders() {
     Scenes::initializeShaders();
     shaderProgramHolder.createShader("BasicTextured", "BasicTexture.vert", "BasicTexture.frag");
+    shaderProgramHolder.createShader("SkyCube", "cubemap.vert", "cubemap.frag");
 }
 
 void Scenes_08::initialize() {
     initializeShaders();
+    initializeTextures();
     {
         auto sceneA = createScene("Scene1");
 
@@ -56,6 +62,69 @@ void Scenes_08::initialize() {
         };
 
     }
+    {
+        auto scene = createScene("Scene3");
+
+        scene->lights[0]->constant = 3;
+
+        scene->camera.setEye({0,2,5});
+        scene->camera.setTarget({0,0,-1});
+
+        scene->setModelFactoryMode(true);
+        auto skycube = scene->makeShape("skycube", 0,0,0, "SkyCube");
+        skycube->scale({1,1,1});
+        auto ptr = (TextureHolder::getInstance())->operator[]("skycube");
+        ((CubemapModel*)skycube)->textureID = ((CubemapTexture*)ptr)->getTextureUnit();
 
 
+        auto plain = scene->makeShape("plain", 0, 0, 0, "BasicTextured");
+        plain->rotate(glm::radians(90.f), {1,0,0});//why do I have to rotate it?
+        plain->scale({100, 100, 100});
+        auto grass_texture = TextureHolder::getInstance()->operator[]("grass");
+        ((TextureModel*)plain)->textureID = grass_texture->getTextureUnit();
+
+//        grass_texture->activate();
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+//        grass_texture->unbind();
+
+        scene->setModelFactoryMode(false);
+
+
+
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_real_distribution<float> dist(-50.f, 50.0);
+        std::uniform_real_distribution<float> dist2(0.25, 5);
+        for(int i = 0; i < 50; i++){
+            auto x = dist(mt);
+            auto z = dist(mt);
+
+            auto scale = dist2(mt);
+
+            auto tree = scene->makeShape("tree", x, 0, z, "Phong");
+            tree->material.color = {0,0.5,0};
+            tree->rotate(glm::radians(36.f),{0,1,0});
+            tree->scale({scale,scale,scale});
+        }
+        for(int i = 0; i < 50; i++){
+            auto x = dist(mt);
+            auto z = dist(mt);
+
+            auto scale = dist2(mt);
+
+            auto bush = scene->makeShape("bushes", x, 0, z, "Constant");
+            bush->material.color = {0,0.1,0};
+            bush->rotate(glm::radians(36.f),{0,1,0});
+            bush->scale({scale,scale,scale});
+        }
+
+
+    }
+
+
+}
+//probably will crash.. opengl needs to be initialized before this.
+void Scenes_08::initializeTextures() {
+    Scenes::initializeTextures();
 }

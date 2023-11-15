@@ -8,7 +8,6 @@
 
 #include "Factory/ModelFactory.h"
 #include "CameraLight.h"
-#include "SOIL/SOIL.h"
 
 Shape* Scene::makeShape(const char *name, float x, float y, float z, ShaderProgram* shaderProgram) {
     auto newModel = std::unique_ptr<Shape>(ModelFactory::createModel(name, x, y, z));
@@ -94,15 +93,6 @@ void Scene::setWindow(GLFWwindow *other) {
 
 void Scene::initializeShaders() {
     shadersInitialized = true;
-
-    //      activate texture we want to set
-    glActiveTexture(GL_TEXTURE0);
-    GLuint image = SOIL_load_OGL_texture("../Textures/Sources/wooden_fence.png", SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-    if(image == NULL){
-        printf("SOMETHING WENT WRONG\n");
-    }
-    //set image to texture
-    glBindTexture(GL_TEXTURE_2D, image);
 
     auto it = shaderProgramHolder->shaders.begin();
     shaderProgramHolder->forEach([this, &it](ShaderProgram* shaderProgram){

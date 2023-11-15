@@ -42,6 +42,10 @@ public:
 
     void setTransform(glm::mat4& p_M);
     void addTransform(glm::mat4& p_M);
+
+    void reset(){
+        M = glm::mat4{1};
+    }
 };
 
 

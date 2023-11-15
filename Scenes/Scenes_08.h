@@ -12,7 +12,10 @@ class Scenes_08 : public Scenes{
 public:
     void initializeShaders() override;
 
+    void initializeTextures() override;
+
     void initialize() override;
+
 };
 
 

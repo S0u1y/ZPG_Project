@@ -7,6 +7,7 @@
 #include "Model.h"
 #include "NoTextureModel.h"
 #include "TextureModel.h"
+#include "CubemapModel.h"
 
 void CreateModelVisitor::visitNoTextureModel(NoTextureModel &model) {
     auto &VAO = model.getVAO();
@@ -42,4 +43,17 @@ void CreateModelVisitor::visitTextureModel(TextureModel &model) {
 
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float)*8, (GLvoid *)(sizeof(float)*6));
     glEnableVertexAttribArray(2);
+}
+
+void CreateModelVisitor::visitCubeMapModel(CubemapModel &model) {
+    auto &VAO = model.getVAO();
+//    auto &VBO = model.getVBO();
+
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    model.generateVBO();
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float)*3, nullptr);
+    glEnableVertexAttribArray(0);
 }
