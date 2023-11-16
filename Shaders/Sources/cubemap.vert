@@ -14,6 +14,6 @@ void main() {
     mat4 matice = MVP;
     matice[3] = vec4(cameraPosition, 1);
 
-    gl_Position = projectionMatrix * viewMatrix * matice * vec4(vp, 1.0);
+    gl_Position = projectionMatrix * viewMatrix * vec4(cameraPosition + vp, 1.0);
     worldPosition = vp;
 }

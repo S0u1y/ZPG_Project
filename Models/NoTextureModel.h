@@ -12,6 +12,8 @@ class NoTextureModel : public Model{
 public:
     NoTextureModel(float x, float y, float z, const float *modelVertices, size_t size);
 
+    NoTextureModel(float x, float y, float z, vector<float> modelVertices);
+
     void accept(ModelVisitor &visitor) override;
 
     void draw() override;

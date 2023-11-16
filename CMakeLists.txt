@@ -52,6 +52,8 @@ add_executable(${PROJECT_NAME} main.cpp
         Models/skycube.h
         Models/CubemapModel.cpp
         Models/CubemapModel.h
+        Models/ModelVerticesHolder.cpp
+        Models/ModelVerticesHolder.h
 )
 
 

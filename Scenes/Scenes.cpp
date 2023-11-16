@@ -48,6 +48,7 @@ void Scenes::initializeTextures() {
     TextureHolder::createCubemap("skycube", sourcesP + "posx.jpg", sourcesP + "negx.jpg", sourcesP + "posy.jpg",
                                  sourcesP + "negy.jpg", sourcesP + "posz.jpg", sourcesP + "negz.jpg", GL_TEXTURE_2D);
     TextureHolder::createTexture("grass", (sourcesP + "grass.png").c_str(), GL_TEXTURE_2D);
+    TextureHolder::createTexture("model", (sourcesP + "model.png").c_str(), GL_TEXTURE_2D);
 }
 
 

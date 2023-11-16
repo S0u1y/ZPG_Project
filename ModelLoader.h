@@ -9,12 +9,16 @@
 #include <assimp/postprocess.h>
 #include "assimp/Importer.hpp"
 
+#include <memory>
+#include <vector>
+
+//TODO make a ModelHolder class
 class ModelLoader {
 public:
     static Assimp::Importer importer;
     static unsigned int importOptions;
 
-    static const aiScene* loadScene(const char* filePath);
+    static std::vector<float> getVertices(const char* filepath);
 };
 
 

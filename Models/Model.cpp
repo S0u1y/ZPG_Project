@@ -24,9 +24,24 @@ Model::Model(float x, float y, float z, const float *modelVertices, size_t size)
 //    for (int i = 0; i < size; ++i) {
 //        (vertices.get())[i] = modelVertices[i];
 //    }
-    vertices = modelVertices;
+
+    vertices = new float[size];
+    for (int i = 0; i < size; ++i) {
+        vertices[i] = modelVertices[i];
+    }
+
 //    makeBuffers();
     move(x,y,z);
+}
+
+Model::Model(float x1, float y1, float z1, float x, float y, float z, std::vector<float> modelVertices,
+             size_t size) : Shape(x1, y1, z1) {
+    vertices = new float[size];
+    for (int i = 0; i < size; ++i) {
+        vertices[i] = modelVertices[i];
+    }
+
+    move(x, y, z);
 }
 
 void Model::draw() {
@@ -35,5 +50,6 @@ void Model::draw() {
     Shape::draw();
 
 }
+
 
 

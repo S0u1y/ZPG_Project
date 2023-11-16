@@ -47,6 +47,7 @@ public:
     }
 
     void setModelFactoryMode(bool mode);
+    Shape* makeShape(Shape* shape, const char* shaderName);
     Shape* makeShape(const char *name, float x, float y, float z, ShaderProgram *shaderProgram);
     Shape* makeShape(const char *name, float x, float y, float z, const char* shaderName);
     Light* makeLight(glm::vec3 position, glm::vec3 direction, float angle);
@@ -57,6 +58,7 @@ public:
     void createShaderProgram(const char* name, const char* vertexFilepath, const char* fragmentFilepath);
 
     //TODO add loading textures..
+    //TODO add loading models..
     void initializeShaders();
 
     void drawModels();

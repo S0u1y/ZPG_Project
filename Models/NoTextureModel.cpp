@@ -14,8 +14,12 @@ NoTextureModel::NoTextureModel(float x, float y, float z, const float *modelVert
 {
 }
 
+NoTextureModel::NoTextureModel(float x, float y, float z, vector<float> modelVertices)
+: Model(0, 0, 0, x, y, z, modelVertices, modelVertices.size()) {}
+
 void NoTextureModel::draw() {
     Model::draw();
     // draw triangles
     glDrawArrays(GL_TRIANGLES, 0, size/6); //mode,first,count
 }
+

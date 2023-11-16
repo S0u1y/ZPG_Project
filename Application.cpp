@@ -124,7 +124,7 @@ void Application::initialize() {
     _height = height;
 
     scenes.initialize();
-    scene = scenes["Scene3"];
+    scene = scenes["Object"];
 
     scene->setWindow(window);
     camera = &scene->camera;

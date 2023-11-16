@@ -9,6 +9,13 @@
 #include "Factory/ModelFactory.h"
 #include "CameraLight.h"
 
+
+Shape *Scene::makeShape(Shape *shape, const char *shaderName) {
+    shape->setShader(shaderProgramHolder->getShaderp(shaderName));
+    shapes.push_back(std::unique_ptr<Shape>(shape));
+    return shapes[shapes.size()-1].get();
+}
+
 Shape* Scene::makeShape(const char *name, float x, float y, float z, ShaderProgram* shaderProgram) {
     auto newModel = std::unique_ptr<Shape>(ModelFactory::createModel(name, x, y, z));
     newModel->setShader(shaderProgram);
@@ -115,6 +122,7 @@ void Scene::initializeShaders() {
 void Scene::setModelFactoryMode(bool mode) {
     ModelFactory::setTextured(mode);
 }
+
 
 
 

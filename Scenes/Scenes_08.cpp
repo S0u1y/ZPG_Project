@@ -4,10 +4,14 @@
 
 #include <random>
 #include "Scenes_08.h"
+#include "../Models/NoTextureModel.h"
 #include "../Models/TextureModel.h"
 #include "../Textures/TextureHolder.h"
 #include "../Models/CubemapModel.h"
 #include "../Textures/CubemapTexture.h"
+#include "../ModelLoader.h"
+#include "../Models/ModelVisitor.h"
+//#include "../Models/ModelVisitor.h"
 
 void Scenes_08::initializeShaders() {
     Scenes::initializeShaders();
@@ -72,7 +76,7 @@ void Scenes_08::initialize() {
 
         scene->setModelFactoryMode(true);
         auto skycube = scene->makeShape("skycube", 0,0,0, "SkyCube");
-        skycube->scale({1,1,1});
+//        skycube->scale({1,1,1});
         auto ptr = (TextureHolder::getInstance())->operator[]("skycube");
         ((CubemapModel*)skycube)->textureID = ((CubemapTexture*)ptr)->getTextureUnit();
 
@@ -120,6 +124,18 @@ void Scenes_08::initialize() {
         }
 
 
+    }
+    {
+        auto scene = createScene("Object");
+        scene->lights[0]->move({0,10,0});
+        scene->camera.setEye({0, 5, -5});
+        static auto vertices = ModelLoader::getVertices("../Models/Sources/model.obj");
+        auto newModel = new TextureModel(0, 0, 0, vertices.data(), vertices.size());
+        CreateModelVisitor visitor;
+        newModel->accept(visitor);
+        ((TextureModel*)newModel)->textureID = TextureHolder::getInstance()->operator[]("model")->getTextureUnit();
+//        newModel->setShader(shaderProgramHolder.getShaderp("Phong"));
+        scene->makeShape(newModel, "BasicTextured");
     }
 
 
