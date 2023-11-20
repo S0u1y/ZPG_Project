@@ -22,6 +22,7 @@ public:
     virtual void initialize();
     //TODO move initialization - in this case loading - of textures to Scene class.
     virtual void initializeTextures();
+    virtual void initializeModelVertices();
     Scene* operator[] (const char* name);
 };
 

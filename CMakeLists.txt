@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22.1)
+cmake_minimum_required(VERSION 3.20)
 include(CMakePrintHelpers)
 
 project(Test)
@@ -7,8 +7,9 @@ set(CMAKE_CXX_STANDARD 20)
 
 SET(CMAKE_BUILD_TYPE Debug)
 
-file(GLOB_RECURSE MODELS "${CMAKE_SOURCE_DIR}/Models/*")
-file(GLOB_RECURSE COMPOSITE_TRANSFORMATIONS "${CMAKE_SOURCE_DIR}/Composite/Transformation/*")
+file(GLOB_RECURSE MODELS "${CMAKE_SOURCE_DIR}/Models/*.h*" "${CMAKE_SOURCE_DIR}/Models/*.c*")
+file(GLOB_RECURSE COMPOSITE_TRANSFORMATIONS "${CMAKE_SOURCE_DIR}/Composite/Transformation/*.h*" "${CMAKE_SOURCE_DIR}/Composite/Transformation/*.c*")
+file(GLOB_RECURSE SHADERS "${CMAKE_SOURCE_DIR}/Shaders/*.h*" "${CMAKE_SOURCE_DIR}/Shaders/*.c*")
 file(GLOB_RECURSE SHADERS_SOURCES "${CMAKE_SOURCE_DIR}/Shaders/Sources/*")
 
 file(COPY ${SHADERS_SOURCES} DESTINATION ${CMAKE_BINARY_DIR})
@@ -25,14 +26,8 @@ add_executable(${PROJECT_NAME} main.cpp
         Observer/Observer.h
         Observer/Subject.cpp
         Observer/Subject.h Light.cpp Light.h
-        Shaders/Shader.cpp
-        Shaders/Shader.h
-        Shaders/ShaderLoader.cpp
-        Shaders/ShaderLoader.h
-        Shaders/ShaderProgram.cpp
-        Shaders/ShaderProgram.h
-        Shaders/ShaderProgramHolder.cpp
-        Shaders/ShaderProgramHolder.h Material.cpp Material.h Scene.cpp Scene.h Scenes/Scenes.h Scenes/Scenes.cpp Composite/killmeplease.cpp Composite/killmeplease.h
+        ${SHADERS}
+        Material.cpp Material.h Scene.cpp Scene.h Scenes/Scenes.h Scenes/Scenes.cpp Composite/killmeplease.cpp Composite/killmeplease.h
         Scenes/Scenes_07.h
         Scenes/Scenes_07.cpp
         CameraLight.cpp
@@ -49,11 +44,6 @@ add_executable(${PROJECT_NAME} main.cpp
         Textures/TextureHolder.h
         Textures/CubemapTexture.cpp
         Textures/CubemapTexture.h
-        Models/skycube.h
-        Models/CubemapModel.cpp
-        Models/CubemapModel.h
-        Models/ModelVerticesHolder.cpp
-        Models/ModelVerticesHolder.h
 )
 
 
@@ -98,7 +88,7 @@ if(WIN32)
 
     cmake_print_variables(ASSIMP_INCLUDE_DIRS assimp::assimp GLEW_INCLUDE_DIRS)
     cmake_print_variables(SOIL_INCLUDE_DIRS Soil::Soil SOIL_LIBRARIES SOIL_INCLUDE_LIBRARIES)
-    cmake_print_variables(Soil::soil)
+    cmake_print_variables(Soil::soil soil include)
     cmake_print_variables(assimp ASSIMP_INCLUDE_LIBRARIES ASSIMP_LIBRARIES)
     cmake_print_variables(SOIL ASSIMP include OPENGL_gl_LIBRARY)
 

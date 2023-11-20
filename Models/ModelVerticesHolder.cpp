@@ -19,6 +19,10 @@ const std::vector<float> &ModelVerticesHolder::operator[](const std::string &key
     exit(-1);
 }
 
+const std::vector<float> &ModelVerticesHolder::getVerticesAt(const std::string &key) {
+    return getInstance()->operator[](key);
+}
+
 ModelVerticesHolder *ModelVerticesHolder::getInstance() {
     if(ModelVerticesHolder::instance == nullptr)
         ModelVerticesHolder::instance = new ModelVerticesHolder;
@@ -37,3 +41,5 @@ const std::vector<float> &ModelVerticesHolder::createVerticesFromFile(const char
     printf("There was an error while creating model vertices.\n");
     exit(-1);
 }
+
+

@@ -5,6 +5,7 @@
 #include "Scenes.h"
 
 #include "../Textures/TextureHolder.h"
+#include "../Models/ModelVerticesHolder.h"
 
 #include <random>
 
@@ -49,6 +50,13 @@ void Scenes::initializeTextures() {
                                  sourcesP + "negy.jpg", sourcesP + "posz.jpg", sourcesP + "negz.jpg", GL_TEXTURE_2D);
     TextureHolder::createTexture("grass", (sourcesP + "grass.png").c_str(), GL_TEXTURE_2D);
     TextureHolder::createTexture("model", (sourcesP + "model.png").c_str(), GL_TEXTURE_2D);
+    TextureHolder::createTexture("wooden_chair", (sourcesP + "wooden_chair.jpg").c_str(), GL_TEXTURE_2D);
+}
+
+void Scenes::initializeModelVertices() {
+    std::string sourcesP = "../Models/Sources/";
+    ModelVerticesHolder::createVerticesFromFile("wooden_chair", (sourcesP + "wooden_chair.blend").c_str());
+
 }
 
 

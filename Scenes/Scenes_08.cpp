@@ -11,6 +11,7 @@
 #include "../Textures/CubemapTexture.h"
 #include "../ModelLoader.h"
 #include "../Models/ModelVisitor.h"
+#include "../Models/ModelVerticesHolder.h"
 //#include "../Models/ModelVisitor.h"
 
 void Scenes_08::initializeShaders() {
@@ -22,6 +23,8 @@ void Scenes_08::initializeShaders() {
 void Scenes_08::initialize() {
     initializeShaders();
     initializeTextures();
+    initializeModelVertices();
+
     {
         auto sceneA = createScene("Scene1");
 
@@ -129,13 +132,29 @@ void Scenes_08::initialize() {
         auto scene = createScene("Object");
         scene->lights[0]->move({0,10,0});
         scene->camera.setEye({0, 5, -5});
-        static auto vertices = ModelLoader::getVertices("../Models/Sources/model.obj");
+        static auto vertices = ModelLoader::getVertices("../Models/Sources/house.obj");
         auto newModel = new TextureModel(0, 0, 0, vertices.data(), vertices.size());
         CreateModelVisitor visitor;
         newModel->accept(visitor);
         ((TextureModel*)newModel)->textureID = TextureHolder::getInstance()->operator[]("model")->getTextureUnit();
 //        newModel->setShader(shaderProgramHolder.getShaderp("Phong"));
         scene->makeShape(newModel, "BasicTextured");
+    }
+    {
+        auto scene = createScene("Zidle");
+        static auto vertices = ModelVerticesHolder::getVerticesAt("wooden_chair");
+        auto zidle = new TextureModel(0, 0, 0, vertices.data(), vertices.size());
+        CreateModelVisitor visitor;
+        zidle->accept(visitor);
+        ((TextureModel*)zidle)->textureID = TextureHolder::getInstance()->operator[]("wooden_chair")->getTextureUnit();
+        scene->makeShape(zidle, "BasicTextured");
+
+        zidle->rotate(glm::radians(-90.f), {1,0,0});
+
+//        scene->preDraw = [zidle]{
+//            zidle->rotate(glm::radians(1.f), {0,0,1});
+//        };
+
     }
 
 

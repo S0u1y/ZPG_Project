@@ -18,6 +18,8 @@ public:
     std::unordered_map<std::string, std::vector<float>> vertices;
 
     const std::vector<float>& operator[](const std::string& key);
+    static const std::vector<float>& getVerticesAt(const std::string& key);
+
     static ModelVerticesHolder* getInstance();
 
 //    TextureHolder() = delete;
@@ -25,7 +27,7 @@ public:
     ModelVerticesHolder(ModelVerticesHolder&&) = delete;
     ~ModelVerticesHolder() = delete;
 
-    const std::vector<float>& createVerticesFromFile(const char* name, const char* filepath);
+    static const std::vector<float>& createVerticesFromFile(const char* name, const char* filepath);
 
 };
 
