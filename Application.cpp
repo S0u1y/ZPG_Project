@@ -11,6 +11,8 @@ void Application::GLFWCallbackWrapper::setApplication(Application *p_application
 }
 
 bool locked = false;
+bool picking = false;
+
 void Application::GLFWCallbackWrapper::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
@@ -38,35 +40,64 @@ void Application::GLFWCallbackWrapper::key_callback(GLFWwindow *window, int key,
                 glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
             }
         }
+        if(key== GLFW_KEY_P){
+            picking = !picking;
+        }
     }
 //    printf("key_callback [%d,%d,%d,%d] \n", key, scancode, action, mods);
 }
 
-int _width, _height;
+int width_, height_;
+int x_{0};
+int y_{0};
 
 void Application::GLFWCallbackWrapper::window_size_callback(GLFWwindow *window, int width, int height) {
 //    printf("resize %d, %d\n", width, height);
-    float ratio{(float)width/(float)height};
+    float ratio{(float)width_/(float)height_};
     application->camera->setPerspective(60, ratio, 0.1, 100);
     application->camera->notify();
 
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, width_, height_);
 
-    _width = width;
-    _height = height;
+    width_ = width;
+    height_ = height;
 }
 
 void Application::GLFWCallbackWrapper::cursor_callback(GLFWwindow *window, double x, double y) {
 
     if(locked){
 
-        float rotX = 100 * (float)(x - ((float)_width / 2)) / (float)_width;
-        float rotY = 100 * (float)(y - ((float)_height / 2)) / (float)_height;
+        float rotX = 100 * (float)(x - ((float)width_ / 2)) / (float)width_;
+        float rotY = 100 * (float)(y - ((float)height_ / 2)) / (float)height_;
 
         application->camera->lookX(rotX);
         application->camera->lookY(rotY);
 
-        glfwSetCursorPos(window, (float)_width/2, (float)_height/2);
+        glfwSetCursorPos(window, (float)width_/2, (float)height_/2);
+    }
+    x_ = x;
+    y_ = y;
+
+}
+
+void Application::GLFWCallbackWrapper::button_callback(GLFWwindow *window, int button, int action, int mode) {
+    if (action == GLFW_PRESS && picking){
+        GLuint index;
+
+        glReadPixels(x_, height_ - y_ - 10, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+
+        printf("button_callback [%d,%d,%d]\n", button, action, mode);
+        printf("stencil index %u\n", index);
+
+        int i = 0;
+        application->scene->shapesForEach([&i, &index](Shape* shape){
+            shape->material.color = {1,1,1};
+            if( i+1 == index ){
+                shape->material.color = {0, 1, 0};
+            }
+            i++;
+        });
+
     }
 }
 
@@ -106,7 +137,7 @@ void Application::initialize() {
 
     glfwSetCursorPosCallback(window, GLFWCallbackWrapper::cursor_callback);
 
-    glfwSetMouseButtonCallback(window, button_callback);
+    glfwSetMouseButtonCallback(window, GLFWCallbackWrapper::button_callback);
 
     glfwSetWindowFocusCallback(window, window_focus_callback);
 
@@ -120,8 +151,8 @@ void Application::initialize() {
     float ratio = (float)width / (float)height;
     glViewport(0, 0, width, height);
 
-    _width = width;
-    _height = height;
+    width_ = width;
+    height_ = height;
 
     scenes.initialize();
     scene = scenes["Zidle"];
@@ -153,13 +184,17 @@ void Application::run() {
 
     glEnable(GL_DEPTH_TEST);
 
+    //enable stencil
+    glEnable(GL_STENCIL_TEST);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
     while (!glfwWindowShouldClose(window))
     {
         deltaT = (float)glfwGetTime() - lastTime;
         lastTime = (float)glfwGetTime();
 
         // clear color and depth buffer
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         drawModels();
 

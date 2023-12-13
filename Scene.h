@@ -64,6 +64,13 @@ public:
     void drawModels();
 
     void setWindow(GLFWwindow* other);
+
+    void shapesForEach(const std::function<void(Shape*)>& func){
+        for (const auto &item: shapes){
+            func(item.get());
+        }
+    }
+
 };
 
 

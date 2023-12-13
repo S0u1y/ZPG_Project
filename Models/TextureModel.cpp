@@ -16,6 +16,7 @@ TextureModel::TextureModel(float x, float y, float z, const float *modelVertices
         printf("Bad vertices array! Array has to consist of rows that are 8 long.\n");
         exit(-1);
     }
+    this->material.color = {1,1,1};
 }
 
 void TextureModel::draw() {

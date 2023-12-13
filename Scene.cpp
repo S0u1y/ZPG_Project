@@ -87,8 +87,17 @@ void Scene::createShaderProgram(const char* name, const char* vertexFilepath, co
 
 void Scene::drawModels() {
     preDraw();
-    for (const auto &item : shapes){
-        item->draw();
+//    for (const auto &item : shapes){
+//
+//        item->draw();
+//    }
+    for (int i = 0; i < shapes.size(); i++) {
+        //stencil buffer clears every frame
+        //also it wouldn't align if we move camera
+        //so write into it every frame
+        glStencilFunc(GL_ALWAYS, i+1, 0xFF);
+        shapes[i]->draw();
+
     }
     postDraw();
 }

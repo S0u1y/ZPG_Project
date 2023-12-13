@@ -60,12 +60,6 @@ private:
 
     static void window_iconify_callback(GLFWwindow* window, int iconified){ printf("window_iconify_callback \n"); }
 
-
-
-    static void button_callback(GLFWwindow* window, int button, int action, int mode){
-        if (action == GLFW_PRESS) printf("button_callback [%d,%d,%d]\n", button, action, mode);
-    }
-
     class GLFWCallbackWrapper{
     public:
         GLFWCallbackWrapper() = delete;
@@ -76,7 +70,7 @@ private:
         static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void cursor_callback(GLFWwindow *window, double x, double y);
         static void window_size_callback(GLFWwindow* window, int width, int height);
-
+        static void button_callback(GLFWwindow* window, int button, int action, int mode);
         static void setApplication(Application* p_application);
 
     private:

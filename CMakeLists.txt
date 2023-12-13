@@ -44,6 +44,8 @@ add_executable(${PROJECT_NAME} main.cpp
         Textures/TextureHolder.h
         Textures/CubemapTexture.cpp
         Textures/CubemapTexture.h
+        Composite/Transformation/Bezier.cpp
+        Composite/Transformation/Bezier.h
 )
 
 

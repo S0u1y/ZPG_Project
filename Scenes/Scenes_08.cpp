@@ -151,6 +151,12 @@ void Scenes_08::initialize() {
 
         zidle->rotate(glm::radians(-90.f), {1,0,0});
 
+        auto zidle2 = new TextureModel(0, 0, -5, vertices.data(), vertices.size());
+        zidle2->accept(visitor);
+        ((TextureModel*)zidle2)->textureID = TextureHolder::getInstance()->operator[]("wooden_chair")->getTextureUnit();
+        scene->makeShape(zidle2, "BasicTextured");
+
+
 //        scene->preDraw = [zidle]{
 //            zidle->rotate(glm::radians(1.f), {0,0,1});
 //        };
